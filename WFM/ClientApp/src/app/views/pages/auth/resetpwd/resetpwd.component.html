@@ -1,0 +1,100 @@
+
+<div class="spinner"></div>
+<div class="img-wapper">
+  <img
+    src="https://aassurecomply.com/wp-content/uploads/2024/12/dark-logo-4.svg"
+    alt="Logo"
+    width="200px"
+    height="100%"
+    class="d-inline-block align-text-top"
+  />
+</div>
+<div class="row h-100 g-0">
+  <div class="d-none d-lg-block col-lg-7">
+    <div class="slider-light">
+      <div>
+        <div>
+          <div
+            class="position-relative h-100 d-flex justify-content-center align-items-center"
+            style="
+              background-image: url('https://aassurecomply.com/wp-content/uploads/2024/12/Heading-3.png');
+              /* background-image: url('assets/images/satelliteimagery.png'); */
+              background-position: right;
+              background-repeat: no-repeat;
+              background-size: cover;
+              height: 100vh !important;
+            "
+          >
+            <div
+              class="carousel-caption d-flex flex-column align-items-center justify-content-center"
+            >
+              <h5 class="text-uppercase fw-bold mb-3">
+                Transform Your Invoicing Process with Ease
+
+              </h5>
+              <p class="mb-4">
+                Experience seamless, automated e-invoicing that boosts efficiency and ensures compliance globally
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-flex bg-white justify-content-center align-items-center col-md-12 col-lg-5">
+    <div class="mx-auto app-login-box col-sm-12 col-md-10 col-lg-5">
+      <h2 class="mb-3">
+        <div>Reset Password</div>
+      </h2>
+      <div>
+        <form [formGroup]="resetpwdform" autocomplete="off">
+          <div class="mb-3 e-float-input e-input-group">
+            <input type="password" formControlName="newPwd" class="e-input"  required
+            pattern="(?=^.{8,100}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+}{:;?/>.<,])(?!.*\s).*$"
+            >
+            <span class="e-float-line"></span>
+            <label class="e-float-text">New Password </label>
+          </div>
+          <div>
+              <span *ngIf="resetpwdform?.controls['newPwd'].errors?.required
+              && resetpwdform?.controls['newPwd'].touched" class="text-danger mt-1 validationError"
+               style="font-size:small">Enter new password</span>
+
+               <span *ngIf="resetpwdform?.controls['newPwd'].errors?.pattern
+               && resetpwdform?.controls['newPwd'].touched" class="text-danger mt-1 validationError"
+                style="font-size:small">Invalid password</span>
+
+                    <span *ngIf="resetpwdform?.controls['newPwd'].hasError('minlength')" class="text-danger mt-1 validationError">
+                      Password needs to have minimum of 8 characters,
+                    </span>
+            </div>
+
+              <div class="mb-3 e-float-input e-input-group">
+                <input type="password" formControlName="confirmPwd" class="e-input"  required>
+                <span class="e-float-line"></span>
+                <label class="e-float-text">Confirm Password </label>
+              </div>
+              <div>
+                  <span *ngIf="resetpwdform?.controls['confirmPwd'].errors?.required
+                  && resetpwdform?.controls['confirmPwd'].touched" class="text-danger mt-1 validationError"
+                   style="font-size:small">Enter confirm password</span>
+                </div>
+                  <div class="text-danger mt-1 validationError" style="font-size:small" *ngIf="resetpwdform.errors?.['PasswordNoMatch'] && resetpwdform?.controls['confirmPwd'].touched">
+                    Password does'nt match.
+                  </div>
+
+          <div style="display:flex;flex-direction:row; justify-content: space-between;">
+              <button type="button" (click)="ResetPwd()"  class="btn btn-secondary btn-lg btn-block me-2">Update</button>
+              <button type="button" routerLink="/login"  class="btn btn-secondary btn-lg btn-block mt-0">Go To Login</button>
+            </div>
+
+
+        </form>
+
+      </div>
+
+    </div>
+  </div>
+
+</div>

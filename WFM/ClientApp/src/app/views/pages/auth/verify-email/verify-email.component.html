@@ -1,0 +1,55 @@
+<div class="d-flex h-100 my-3">
+    <div class="signup-container m-auto">
+        <div class="card boxshadow" style="padding: 0;">
+            <div class="card-body" style="padding: 0;">
+                <div class="row" style="padding: 0;">
+                    <div class="col-12" style="padding: 10px 20px;">
+                        <br />
+                        <div class="row">
+                            <div class="col-1">&nbsp;</div>
+
+                            <div class="col-10">
+                                <div [@fadeInOut] class="d-flex align-items-center justify-content-center my-5"
+                                    *ngIf="isSuccess">
+                                    <div class="col-12">
+                                        <div style="text-align: center;">
+                                            <header class="pageHeader">
+                                                <h3 class="text-success"><i class="fa fa-check-circle fa-lg fa"
+                                                        aria-hidden="true"></i> </h3>
+                                            </header>
+                                        </div>
+                                        <h5 class="success_head text-center">Account Verified</h5>
+                                        <p class="success_p text-center">Your email ID : <span class="success_email"
+                                                style="font-weight:bold">{{_email}}</span> has been successflly
+                                            verified.</p>
+
+                                    </div>
+                                </div>
+
+                                <div [@fadeInOut] class="col-12  d-flex align-items-center justify-content-center my-5"
+                                    *ngIf="hasError">
+                                    <div class="m-auto text-center">
+                                        <header class="pageHeader">
+                                            <h3 class="text-danger"><i class="fa fa-times-circle fa-lg"
+                                                    aria-hidden="true"></i> </h3>
+                                        </header>
+                                        <p class="success_p_small">{{errorMsg}}</p>
+                                        <div class="my-2">
+                                            <a mat-raised-button color="primary" routerLink="/signup">SignUp</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="text-success success_p_small text-center">Redirecting to setup your account in
+                                    2 secs</p>
+                            </div>
+                            <div class="col-1">&nbsp;</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>

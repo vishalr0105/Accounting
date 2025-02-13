@@ -1,0 +1,109 @@
+<div class="row">
+    <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 mt-2">
+        <h4 class="ml-2">Accounts</h4>
+        <p class="ml-2">Manage and organize company accounts effortlessly.</p>
+    </div>
+    <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 mt-2">
+        <div class="row">
+            <div class="col-4 text-center">
+                <div class="content">
+                    <h3>{{totalClients}}</h3>
+                    <p clas="p-0 m-0 accountTiles">Total</p>
+                </div>
+                <div class="color-indicator" style="background-color: #FD7E14;" (click)="filterByStatus('')" [@indicatorAnimation]="indicatorState['']"></div>
+            </div>
+            <div class="col-4 text-center">
+                <div class="content">
+                    <h3>{{noOfActiveClients}}</h3>
+                    <p clas="p-0 m-0 accountTiles">Active</p>
+                </div>
+                <div class="color-indicator" style="background-color: #198754;" (click)="filterByStatus('Active')" [@indicatorAnimation]="indicatorState['Active']"></div>
+            </div>
+            <div class="col-4 text-center">
+                <div class="content">
+                    <h3>{{noOfInActiveClients}}</h3>
+                    <p clas="p-0 m-0">InActive</p>
+                </div>
+                <div class="color-indicator" style="background-color: #0D6EFD;" (click)="filterByStatus('InActive')" [@indicatorAnimation]="indicatorState['InActive']"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="d-flex w-100 justify-content-between mt-4">
+    <div  class="form-group">
+    </div>
+    <div>
+        <button class="btn btn-primary ms-2 mt-3" routerLink='/admin/customer360/account/add'>Add Account</button>
+    </div>
+</div>
+<div class="row mt-3" *ngIf="tableData">
+  <app-shared-table
+  [isView]="true"
+  [exportName]="'Account'"
+  [fieldsAndHeaders]="fieldsAndHeaders"
+  [tableData]="filteredTableData"
+  (view)="view($event)"
+  (edit)="edit($event)"
+  (delete)="deleteByID($event)"
+  (deleteBatch)="deleteList($event)"
+  >
+ </app-shared-table>
+</div>
+<div #mapContainer style="height: 400px;"></div>
+<ng-template id="ngbModel" #xlModal let-modal>
+    <ng-container *ngIf="selectedAccount">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">{{selectedAccount?.account?.accountName}}
+                <ng-container *ngIf="selectedAccount.account.activityStatus =='Active'">
+                    <span class="badge bg-success">Active</span>
+                </ng-container>
+                <ng-container *ngIf="selectedAccount.account.activityStatus =='InActive'">
+                    <span class="badge bg-danger">InActive</span>
+                </ng-container>
+                <ng-container *ngIf="selectedAccount.account.activityStatus =='On Hold'">
+                    <span class="badge bg-secondary">On Hold</span>
+                </ng-container>
+            </h5>
+            <button type="button" class="btn btn-secondary"
+                [routerLink]="['admin/customer360/account/edit',selectedAccount?.account?.id]"
+                (click)="modal.close('by: close icon')" aria-label="Close">Edit</button>
+        </div>
+        <div class="modal-body">
+            <ul ngbNav #fillJustifyNav="ngbNav" class="nav-tabs nav-fill">
+                <li [ngbNavItem]="1">
+                    <a ngbNavLink>Account details</a>
+                    <ng-template ngbNavContent>
+                      <h3>ffsjfksjfksjf</h3>
+                        <!--<app-account-detail [accountDetails]="selectedAccount.account"></app-account-detail>-->
+                    </ng-template>
+                </li>
+                <li [ngbNavItem]="2">
+                    <a ngbNavLink>Contacts</a>
+                    <ng-template ngbNavContent>
+                        <!--<app-contact-details [contactDetail]="selectedAccount.contacts"></app-contact-details>-->
+                    </ng-template>
+                </li>
+                <li [ngbNavItem]="3">
+                    <a ngbNavLink>Updates</a>
+                    <ng-template ngbNavContent>
+                        <div class="container">
+                            <div class="wrapper">
+                              <h1> </h1>
+                              <ul class="sessions">
+                                <li *ngFor="let item of timeLine">
+                                  <div class="time">{{item.time | date:'d MMM y'}}</div>
+                                  <p>{{item.description}}</p>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                    </ng-template>
+                </li>
+            </ul>
+            <div [ngbNavOutlet]="fillJustifyNav" class="border border-top-0 p-3"></div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="modal.close('by: close button')">Close</button>
+        </div>
+    </ng-container>
+</ng-template>

@@ -1,0 +1,151 @@
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+
+                <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
+                    <div>
+                        <h4 class="mb-3 mb-md-0">Add Roles</h4>
+                    </div>
+
+                </div>
+                <form name="form" action="javascript:{}" #form="ngForm" novalidate autocomplete="off">
+                    <div class="row" *ngIf="!isDisabledEdit">
+                        <div class="col-sm-12">
+                            <div class="mb-3">
+                                <label class="form-label"> User Role Name <span style="color: red;">*</span></label>
+
+                                <input type="text" ngModel [(ngModel)]="role.name" name="requried" #requried="ngModel"
+                                    [disabled]="isDisabled" required class="form-control" placeholder="Enter name">
+                                <div *ngIf="requried.errors && (requried.dirty || requried.touched)"
+                                    style="font-size: smaller;">
+                                    <div [hidden]="!requried.errors.required">
+                                        <span class="text-danger mt-1">Name required!</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- Col -->
+                        <div class="col-sm-12">
+                            <div class="mb-3">
+                                <label class="form-label">Description</label>
+                                <input type="text" [(ngModel)]="role.description" name="Description"
+                                    [disabled]="isDisabled" #Description="ngModel" ngModel class="form-control"
+                                    placeholder="Enter description">
+                            </div>
+                        </div><!-- Col -->
+                    </div>
+
+                    <div class="row" *ngIf="isDisabledEdit">
+                      <div class="col-sm-12">
+                          <div class="mb-3">
+                              <label class="form-label"> User Role name <span style="color: red;">*</span></label>
+
+                              <input type="text" ngModel [(ngModel)]="role.name" name="requried" #requried="ngModel"
+                                  [disabled]="isDisabledEdit" required class="form-control" placeholder="Enter name">
+                              <div *ngIf="requried.errors && (requried.dirty || requried.touched)"
+                                  style="font-size: smaller;">
+                                  <div [hidden]="!requried.errors.required">
+                                      <span class="text-danger mt-1">Name required!</span>
+                                  </div>
+                              </div>
+                          </div>
+                      </div><!-- Col -->
+                      <div class="col-sm-12">
+                          <div class="mb-3">
+                              <label class="form-label">Description</label>
+                              <input type="text" [(ngModel)]="role.description" name="Description"
+                                  [disabled]="isDisabledEdit" #Description="ngModel" ngModel class="form-control"
+                                  placeholder="Enter description">
+                          </div>
+                      </div><!-- Col -->
+                  </div>
+                    <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
+                        <div>
+                            <h6 class="mb-3 mb-md-0">Permissions</h6>
+                        </div>
+                        <div class="d-flex align-items-center flex-wrap text-nowrap">
+                            <!-- <button type="button" class="btn btn-outline-primary btn-icon-text me-2 mb-2 mb-md-0"
+                                [disabled]="isDisabled" (click)="resetPermissions()">
+                                Reset Permissions
+                            </button> -->
+                            <button type="button" class="btn btn-outline-primary btn-icon-text me-2 mb-2 mb-md-0"
+                            [disabled]="isDisabled" routerLink="/admin/sidebar-setting">
+                            Reset Permissions
+                        </button>
+                        </div>
+                    </div>
+                    <ng-container *ngFor="let item of modules; let i = index">
+                        <div *ngIf="item.permissions.length > 0" class="row" style="padding-bottom: 20px;">
+                            <div class="col-sm-12">
+                                <ul class="list-group">
+                                    <li class="list-group-item btn-primary d-flex justify-content-between align-items-center active"
+                                        >
+                                        <div>
+                                            <i class="btn-icon-prepend" data-feather="user" appFeatherIcon></i>
+                                            {{ item.name }}
+                                        </div>
+                                        <div class="form-check form-switch">
+                                            <input type="checkbox" name="fordmSwitch{{ i }}" [disabled]="isDisabled"
+                                                [(ngModel)]="item.isSelected" (change)="checkUncheckAllSubItems(i)"
+                                                class="form-check-input" id="fordmSwitch{{ i }}">
+                                        </div>
+                                    </li>
+
+                                    <li class="list-group-item d-flex justify-content-between align-items-center"
+                                        *ngFor="let obj of item.permissions">
+                                        {{ obj.name }}
+                                        <div class="form-check form-switch">
+                                            <input name="{{ obj.id }}" [(ngModel)]="obj.isSelected"
+                                                [disabled]="isDisabled" (change)="isAllSelected()" value="{{ obj.id }}"
+                                                type="checkbox" class="form-check-input" id="formSwitch{{ obj.id }}">
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <!-- <div class="row" style="padding-bottom: 20px;" *ngFor="let item of checklist; let i = index">
+                        <div class="col-sm-12">
+                            <ul class="list-group">
+                                <li class="list-group-item d-flex justify-content-between align-items-center active"
+                                    style="background-color: #5C5F5F; border-color: #5C5F5F;">
+                                    <div>
+                                        <i class="btn-icon-prepend" data-feather="user" appFeatherIcon></i>
+                                        {{ item.mainmenu }}
+                                    </div>
+                                    <div class="form-check form-switch">
+                                        <input type="checkbox" [(ngModel)]="item.isSelected" name="fordmSwitch{{ i }}"
+                                            (change)="checkUncheckAllSubItems(i)" class="form-check-input"
+                                            id="fordmSwitch{{ i }}">
+                                    </div>
+                                </li>
+
+                                <li class="list-group-item d-flex justify-content-between align-items-center"
+                                    *ngFor="let obj of item.subItems">
+                                    {{ obj.value }}
+                                    <div class="form-check form-switch">
+                                        <input [(ngModel)]="obj.isSelected" name="{{ obj.id }}"
+                                            (change)="isAllSelected()" value="{{ obj.id }}" type="checkbox"
+                                            class="form-check-input" id="formSwitch{{ obj.id }}">
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div> -->
+
+                    <!-- <button class="btn btn-secondary" type="submit">Submit form</button> -->
+                </form>
+                <div class="d-flex align-items-center flex-wrap text-nowrap" style="float: right;">
+                    <button type="button" class="btn btn me-2 mb-2 mb-md-0"
+                        style="border-color: #EEF1F4;background-color: #EEF1F4;" (click)="goBack()">
+                        Back
+                    </button>
+                    <button type="button" class="btn btn-primary" (click)="save()"
+                        [disabled]="form.invalid || isDisabled" [routerLink]="['/admin/role-and-permission','add']">
+                        Save Changes
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

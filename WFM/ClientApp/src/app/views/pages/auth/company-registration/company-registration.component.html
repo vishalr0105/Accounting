@@ -1,0 +1,203 @@
+<!-- <div class="spinner-wrapper full-screen" *ngIf="isLoading">
+  <div class="spinner"></div>
+</div>
+<div class="row w-100 mx-0 auth-page">
+  <div class="col-md-8 col-xl-6 mx-auto">
+    <div class="card">
+      <div class="row">
+        <div class="col-md-4 pe-md-0">
+          <div class="auth-side-wrapper"
+            style="background-image: url(&quot;https://www.nobleui.com/angular/template/demo1/assets/images/photos/img6.jpg&quot;);">
+          </div>
+        </div>
+        <div class="col-md-8 ps-md-0">
+          <div class="auth-form-wrapper px-4 py-5"><span class="nobleui-logo d-block mb-2" href="#">Welcome
+              Etaprise!</span>
+            <h5 class="text-muted fw-normal mb-4">Log into your account with email.</h5>
+            <form name="loginForm" action="javascript:{}" #userForm="ngForm" novalidate autocomplete="off">
+              <div class="mb-3">
+                <label class="form-label" for="email"> Email Address</label>
+                <input type="email" [(ngModel)]="userLogin.userName" ngModel name="requried"
+                  pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$" #requried="ngModel" required
+                  class="form-control textborder" id="exampleInputEmail1" placeholder="Work Email ID">
+                <div *ngIf="requried.errors && (requried.dirty || requried.touched)" style="font-size: smaller;">
+                  <div [hidden]="!requried.errors.required">
+                    <span class="text-danger mt-1">Email required!</span>
+                  </div>
+                  <div [hidden]="!requried.errors.pattern">
+                    <span style="color: red;"> Invalid Email Id!</span>
+                  </div>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="email"> Password</label>
+                <input type="password" class="form-control textborder" [(ngModel)]="userLogin.password" ngModel
+                  name="password" required #password="ngModel"
+                  pattern="(?=^.{8,100}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+}{:;?/>.<,])(?!.*\s).*$"
+                  id="exampleInputPassword1" autocomplete="current-password" placeholder="Password">
+                <div *ngIf="password.errors && (password.dirty || password.touched)" style="font-size: smaller;">
+                  <div [hidden]="!password.errors.required">
+                    <span class="text-danger mt-1">Password required!</span>
+                  </div>
+                  <div [hidden]="!password.errors.pattern">
+                    <span class="text-danger mt-1"> Password needs to have minimum of 8 characters, 1 capital letter, 1
+                      number and 1 Special Character! </span>
+                  </div>
+                </div>
+              </div>
+
+              <div><button type="submit" [disabled]="userForm.invalid" class="btn btn-secondary btn-lg btn-block"
+                  (click)="onLoggedin($event)" fdprocessedid="s3ylxq">Login</button></div>
+                  <span class="d-block mt-3 text-muted">Don’t have an account yet? <a style="color: black;"  href="/auth/pricing"><b>Create An Account</b></a></span>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<!--<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+
+<body>
+    <div class="spinner-wrapper full-screen" *ngIf="isLoading">
+        <div class="spinner"></div>
+    </div>
+    <div class="row h-100 g-0">
+        <div class="d-none d-lg-block col-lg-5">
+            <div class="slider-light">-->
+                <!--<carousel>
+                    <slide>
+                        <div class="position-relative h-100 d-flex justify-content-center align-items-center">
+                            <img src="assets/images/EtapriseLogin.png" class="fixed-size-image img-fluid">
+                        </div>
+                    </slide>
+                </carousel>-->
+            <!--</div>
+        </div>
+
+        <div class="d-flex bg-white justify-content-center align-items-center col-md-12 col-lg-7">
+            <div class="mx-auto app-login-box col-sm-12 col-md-10 col-lg-5">
+                <h2 class="mb-3">
+                    <div>Getting started with Etaprise!</div>
+                </h2>
+                <h5 class="mb-5">
+                    <div>Create your account or <a routerLink="/auth/login">Login</a></div>
+                </h5>
+
+                <div class="divider"></div>
+                <div>
+                    <form name="loginForm" action="javascript:{}" #userForm="ngForm" novalidate autocomplete="off">
+                        <div class="mb-3">
+                            <input type="email" [(ngModel)]="userLogin.userName" ngModel name="requried"
+                                pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$" #requried="ngModel" required
+                                class="form-control textborder" id="exampleInputEmail1" placeholder="Work Email ID">
+                            <div *ngIf="requried.errors && (requried.dirty || requried.touched)"
+                                style="font-size: smaller;">
+                                <div [hidden]="!requried.errors.required">
+                                    <span class="text-danger mt-1">Email required!</span>
+                                </div>
+                                <div [hidden]="!requried.errors.pattern">
+                                    <span style="color: red;"> Invalid Email Id!</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <input type="password" class="form-control textborder" [(ngModel)]="userLogin.password"
+                                ngModel name="password" required #password="ngModel" x
+                                pattern="(?=^.{8,100}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+}{:;?/>.<,])(?!.*\s).*$"
+                                id="exampleInputPassword1" autocomplete="current-password" placeholder="Password">
+                            <div *ngIf="password.errors && (password.dirty || password.touched)"
+                                style="font-size: smaller;">
+                                <div [hidden]="!password.errors.required">
+                                    <span class="text-danger mt-1">Password required!</span>
+                                </div>
+                                <div [hidden]="!password.errors.pattern">
+                                    <span class="text-danger mt-1"> Password needs to have minimum of 8 characters, 1
+                                        capital letter, 1
+                                        number and 1 Special Character! </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="width: 121px;"><button type="submit" [disabled]="userForm.invalid"
+                                class="btn brand-color btn-lg btn-block" (click)="onLoggedin($event)"
+                                fdprocessedid="s3ylxq">Sign up <i class="mdi mdi-arrow-right"></i>
+                            </button>
+                        </div>
+
+                    </form>
+
+
+                    <div id="dynamicLine"></div>
+
+                    <div class="row" style="background-color: white; padding: 15px;">
+                        <div class="col-lg-4">
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-light btn-lg btn-block custom-button"
+                                    (click)="signInWithFB()" fdprocessedid="s3ylxq" style="width: 100%;">
+                                    <i class="mdi mdi-facebook" style="color:blue;"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="text-center">-->
+                                <!--<asl-google-signin-button
+                                    class="btn btn-light btn-lg btn-block custom-button"></asl-google-signin-button>-->
+                            <!--</div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="text-center">
+                                <button type="submit" [disabled]="userForm.invalid"
+                                    class="btn btn-light btn-lg btn-block custom-button" (click)="onLoggedin($event)"
+                                    fdprocessedid="s3ylxq" style="width: 100%;">
+                                    <i class="mdi mdi-apple"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <p style="margin-top: 5px;">By creating an account, you agree to the <a href="">Terms of Service</a>
+                        and <a href="">Privacy Policy</a>.</p>
+                    <div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>-->
+    <!-- Include Bootstrap JS -->
+    <!--<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>-->
+    <!-- Add your other script tags here -->
+<!--</body>
+<script>
+    window.fbAsyncInit = function () {
+        FB.init({
+            appId: '737540788341261',
+            cookie: true,
+            xfbml: true,
+            version: '{api-version}'
+        });
+
+        FB.AppEvents.logPageView();
+
+    };
+
+    (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) { return; }
+        js = d.createElement(s); js.id = id;
+        js.src = "https://connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
+
+</html>-->

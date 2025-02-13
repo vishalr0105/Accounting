@@ -1,0 +1,330 @@
+<div class="container mt-5">
+  <h2 class="mb-4">Account settings</h2>
+  <!-- Tab Navigation -->
+  <ul class="nav nav-tabs mb-3">
+    <li class="nav-item">
+      <a class="nav-link active" data-bs-toggle="tab" href="#account">Account details</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-bs-toggle="tab" href="#creditcard">Credit card</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-bs-toggle="tab" href="#billinginfo">Billing info</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-bs-toggle="tab" href="#purchaseCredits">Purchase credits</a>
+    </li>
+  </ul>
+
+  <!-- Tab Content -->
+  <div class="tab-content">
+    <!-- Account Details Tab -->
+    <div class="tab-pane fade show active" id="account">
+      <div class="card">
+        <div class="card-body">
+          <div class="mb-3">
+            <label for="accountId" class="form-label">Account ID</label>
+            <input
+              type="text"
+              id="accountId"
+              class="form-control text-danger"
+              value="1f1fae86-79b9-484f-acf6-d90032c1c0a1"
+              readonly
+            />
+          </div>
+
+          <div class="mb-3">
+            <div class="alert alert-primary" role="alert">
+              <strong>Professional plan</strong><br />
+              Full access to UP42 offering
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <h5>Advintek Consulting Services</h5>
+            <p>India</p>
+          </div>
+
+          <div>
+            <a
+              href="#"
+              class="text-decoration-none"
+              >Learn more about account management in the
+              <strong>Documentation hub</strong></a
+            >
+          </div>
+        </div>
+      </div>
+      <div class="mt-4">
+        <button class="btn btn-danger">Delete account</button>
+      </div>
+    </div>
+
+    <!-- Credit Card Tab -->
+    <div class="tab-pane fade" id="creditcard">
+      <div class="card">
+        <div class="card-body">
+          <!-- <h5 class="mb-4">Credit Card Details</h5> -->
+
+          <!-- Credit Card Number -->
+          <div class="mb-3">
+            <label for="cardNumber" class="form-label">Credit Card Number</label>
+            <input
+              type="text"
+              id="cardNumber"
+              class="form-control"
+              placeholder="Enter credit card number"
+            />
+          </div>
+
+          <!-- Name on Card -->
+          <div class="mb-3">
+            <label for="nameOnCard" class="form-label">Name on Card</label>
+            <input
+              type="text"
+              id="nameOnCard"
+              class="form-control"
+              placeholder="Enter name on card"
+            />
+          </div>
+
+          <!-- Expiry Date -->
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="expiresMonth" class="form-label">Expires (MM)</label>
+              <input
+                type="text"
+                id="expiresMonth"
+                class="form-control"
+                placeholder="MM"
+                maxlength="2"
+              />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="expiresYear" class="form-label">Expires (YY)</label>
+              <input
+                type="text"
+                id="expiresYear"
+                class="form-control"
+                placeholder="YY"
+                maxlength="2"
+              />
+            </div>
+          </div>
+
+          <!-- CVV -->
+          <div class="mb-3">
+            <label for="cvv" class="form-label">CVV</label>
+            <input
+              type="text"
+              id="cvv"
+              class="form-control"
+              placeholder="Enter CVV"
+              maxlength="3"
+            />
+          </div>
+
+          <!-- Add Payment Method Button -->
+          <button class="btn btn-primary">Add Payment Method</button>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Billing Info Tab -->
+    <div class="tab-pane fade" id="billinginfo">
+      <div class="card">
+        <div class="card-body">
+
+          <!-- Contact Name -->
+          <div class="mb-3">
+            <label for="contactName" class="form-label">Contact Name (optional)</label>
+            <input
+              type="text"
+              id="contactName"
+              class="form-control"
+              placeholder="Enter contact name"
+            />
+          </div>
+
+          <!-- Email Address -->
+          <div class="mb-3">
+            <label for="emailAddress" class="form-label">Email Address</label>
+            <input
+              type="email"
+              id="emailAddress"
+              class="form-control"
+              placeholder="Enter email address"
+            />
+          </div>
+
+          <!-- Address Line 1 -->
+          <div class="mb-3">
+            <label for="addressLine1" class="form-label">Address Line 1</label>
+            <input
+              type="text"
+              id="addressLine1"
+              class="form-control"
+              placeholder="Enter address line 1"
+            />
+          </div>
+
+          <!-- Address Line 2 -->
+          <div class="mb-3">
+            <label for="addressLine2" class="form-label">Address Line 2 (optional)</label>
+            <input
+              type="text"
+              id="addressLine2"
+              class="form-control"
+              placeholder="Enter address line 2"
+            />
+          </div>
+
+          <!-- City -->
+          <div class="mb-3">
+            <label for="city" class="form-label">City</label>
+            <input
+              type="text"
+              id="city"
+              class="form-control"
+              placeholder="Enter city"
+            />
+          </div>
+
+          <!-- State -->
+          <div class="mb-3">
+            <label for="state" class="form-label">State (optional)</label>
+            <input
+              type="text"
+              id="state"
+              class="form-control"
+              placeholder="Enter state"
+            />
+          </div>
+
+          <!-- Postal Code -->
+          <div class="mb-3">
+            <label for="postalCode" class="form-label">Postal Code (optional)</label>
+            <input
+              type="text"
+              id="postalCode"
+              class="form-control"
+              placeholder="Enter postal code"
+            />
+          </div>
+
+          <!-- Country -->
+          <div class="mb-3">
+            <label for="country" class="form-label">Country</label>
+            <input
+              type="text"
+              id="country"
+              class="form-control"
+              placeholder="Enter country"
+            />
+          </div>
+
+          <!-- Tax ID -->
+          <div class="mb-3">
+            <label for="taxId" class="form-label">Tax ID</label>
+            <input
+              type="text"
+              id="taxId"
+              class="form-control"
+              placeholder="Enter tax ID"
+            />
+          </div>
+
+          <!-- Update Billing Information Button -->
+          <button class="btn btn-primary">Update Billing Information</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Billing Info Tab -->
+    <div class="tab-pane fade" id="purchaseCredits">
+      <div class="row">
+        <!-- Description Section -->
+        <div class="col-md-6">
+          <h5>Envision Beyond credits are monetary units used to buy geospatial data and apply analytics.</h5>
+          <p>
+            100 credits are equivalent to €1. Credits are non-refundable and are valid
+            for 2 years.
+          </p>
+          <p>
+            You can buy from <strong>10,000 credits (€100)</strong> up to
+            <strong>5,000,000 (€50,000)</strong>. For larger purchases,
+            <a href="#">contact us</a>.
+          </p>
+          <p>
+            For purchases over <strong>1,000,000 credits</strong>, we provide bonus credits — an
+            additional <strong>5% free of charge</strong>.
+          </p>
+        </div>
+
+        <!-- Purchase Section -->
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="mb-4">PURCHASE UP42 CREDITS</h5>
+
+              <!-- Popular Credit Amounts -->
+              <div class="mb-3">
+                <h6 class="fw-bold">POPULAR CREDIT AMOUNTS</h6>
+                <div class="btn-group" role="group">
+                  <button class="btn btn-outline-primary">50,000</button>
+                  <button class="btn btn-outline-primary">250,000</button>
+                  <button class="btn btn-outline-primary">1,000,000</button>
+                </div>
+              </div>
+
+              <!-- Credits Input -->
+              <div class="mb-3">
+                <label for="credits" class="form-label">CREDITS</label>
+                <input
+                  type="text"
+                  id="credits"
+                  class="form-control"
+                  placeholder="Enter number of credits"
+                />
+              </div>
+
+              <!-- Bonus Credits -->
+              <div class="mb-3">
+                <label class="form-label">BONUS CREDITS</label>
+                <p class="text-muted">None applied</p>
+              </div>
+
+              <!-- Total Credits -->
+              <div class="mb-3">
+                <label class="form-label">TOTAL CREDITS</label>
+                <p class="fw-bold">--,--- credits</p>
+              </div>
+
+              <!-- Price -->
+              <div class="mb-3">
+                <label class="form-label">PRICE (WITHOUT VAT)</label>
+                <p class="fw-bold">€---,--</p>
+              </div>
+
+              <!-- Checkout Button -->
+              <button class="btn btn-primary w-100" disabled>Go to checkout</button>
+            </div>
+          </div>
+        </div>
+      </div>
+       <!-- Pending Purchases Table -->
+  <div class="mt-5">
+    <h5>Pending Purchases</h5>
+    <ejs-grid [dataSource]="pendingPurchases" [allowPaging]="true" [pageSettings]="{ pageSize: 5 }">
+      <e-columns>
+        <e-column field="date" headerText="Date" width="120" textAlign="Left"></e-column>
+        <e-column field="credits" headerText="Credits" width="120" textAlign="Right"></e-column>
+        <e-column field="totalPrice" headerText="Total Price" width="150" textAlign="Right"></e-column>
+      </e-columns>
+    </ejs-grid>
+  </div>
+    </div>
+
+  </div>
+</div>

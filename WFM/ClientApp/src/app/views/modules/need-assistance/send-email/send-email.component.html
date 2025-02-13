@@ -1,0 +1,39 @@
+<div class="container">
+  <h1>How Can We Help You?</h1>
+
+  <form (ngSubmit)="onSubmit()" #helpForm="ngForm">
+    <div class="form-group">
+      <label for="requestType">Type Of Request</label>
+      <select id="requestType" name="requestType" [(ngModel)]="requestData.requestType" required>
+        <option value="" disabled>Select Request</option>
+        <option value="contactsupport">Contact Support</option>
+        <option value="requestdemo">Request a Demo</option>
+        <option value="requestcall">Request a Call</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="subject">Subject</label>
+      <textarea id="subject" name="subject" [(ngModel)]="requestData.subject" placeholder="Enter your request here..." required></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="attachments">Attachments</label>
+      <input type="file" id="attachments" name="attachments" (change)="onFileChange($event)" multiple>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email ID</label>
+      <input type="text" id="email" name="email" [(ngModel)]="requestData.email" placeholder="Enter your email Id" required>
+    </div>
+
+    <div class="form-group">
+      <label for="contactNumber">Contact Number</label>
+      <input type="text" id="contactNumber" name="contactNumber" [(ngModel)]="requestData.contactNumber" placeholder="Enter your contact number" required>
+    </div>
+
+    <div class="button-group">
+      <button type="submit" [disabled]="!helpForm.form.valid">Send</button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,636 @@
+<style>
+    .file-upload {
+        position: relative;
+        overflow: hidden;
+        display: inline-block;
+    }
+    .img-rounded {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+</style>
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="d-flex justify-content-between">
+                <div class="col-md-11">
+                  <h4>Company Profile</h4>
+                  <span>Update your company logo and details here</span>
+                </div>
+
+
+                <div class="px-100 col-md-1">
+                  <button class="btn btn-primary" (click)="sendTwoFactorOtp()">Edit</button>
+                </div>
+              </div>
+            </div>
+            <form [formGroup]="formData">
+              <div class="row">
+
+                <div class="py-12">
+                  <h3 class="text-center">Company Name</h3>
+                  <h5 class="text-center" formControlName="companyName">{{company.companyName}}</h5>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <hr />
+                  </div>
+                  <div class="col-6">
+                    <h5>Company Logo</h5>
+                    <br />
+                  </div>
+                  <style>
+                    .control-section {
+                      margin-bottom: 110px;
+                    }
+                  </style>
+
+                  <div class="col-lg-6 control-section e-img-editor-sample">
+                    <div class="e-profile e-hide d-flex align-items-center">
+                      <div class="e-custom-wrapper">
+
+                        <canvas id="img-canvas"></canvas>
+                        <img class="img-rounded image" alt="img"
+                             id="demo-img"
+                             src="{{setimag}}"
+                             style="display: none;"
+                             (load)="imageLoaded()" />
+                        <input type="file" id="img-upload" (change)="imageChanged($event)"
+                               style="display: none;" accept="image/*" />
+                        <span id="custom-edit" class="e-custom-edit" (click)="canvasClicked()">
+                          <span class="e-btn-icon e-icons e-edit" style="line-height: 32px;  margin: 8px;"></span>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="e-img-editor-sample" id="profile-dialog">
+                      <ejs-dialog [position]="position" #Dialog [buttons]="dlgButtons" [visible]="visible"
+                                  [header]="header" [showCloseIcon]="showCloseIcon" [target]="target"
+                                  [width]="width" [height]="height" (open)="dialogOpen()" (close)="dialogClose()">
+
+                        <ng-template #content>
+                          {{width+','+height}}
+                          <ejs-imageeditor #ImageEditor [toolbar]="toolbarItems" (created)="created()" (fileOpened)="fileOpened()">
+                            <!-- Add crossorigin attribute here -->
+
+                          </ejs-imageeditor>
+                        </ng-template>
+                      </ejs-dialog>
+                    </div>
+
+                  </div>
+
+
+                </div>
+                <div class="row">
+                  <div class="col-md-12 py-3">
+                  </div>
+                  <div class="col-6">
+                    <h5>Industry Type</h5>
+                  </div>
+                  <div class="col-6 ">
+                    <div class="">
+                      <select [(ngModel)]="company.industryTypeId" class="form-select" [attr.disabled]="!editmode?'':null"
+                              placeholder="" name="industry type" title="industry type"
+                              id="industry type" [ngClass]="{'is-valid': formData.get('industryTypeId').valid && formData.get('industryTypeId').touched,
+                                'is-invalid' :formData.get('industryTypeId').invalid && formData.get('industryTypeId').touched}" formControlName="industryTypeId"
+                              value="Glenn Fisher" [disabled]="isDisabled">
+                        <label class="text-danger"
+                               *ngIf="formData.get('industryTypeId').invalid && formData.get('industryTypeId').touched">
+                          Please select industry type
+                        </label>
+
+                        <option [ngValue]="undefined" hidden>Select Industry type</option>
+
+                        <option *ngFor="let item of industryType" [value]="item.id">
+                          {{ item.name }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-12 py-3">
+                    <hr />
+                  </div>
+                  <div class="col-6">
+                    <h5>Number of Employees</h5>
+                  </div>
+                  <div class="col-6">
+                    <div class="input-group">
+                      <input appOnlydigits class="form-control" title="numberofEmployees"
+                             [(ngModel)]="company.numberofEmployees" id="numberofEmployees" placeholder="" [attr.disabled]="!editmode?'':null"
+                             name="numberofEmployees" min="1" type="number"
+                             [ngClass]="{'is-valid': formData.get('numberofEmployees').valid && formData.get('numberofEmployees').touched,
+                                 'is-invalid' :formData.get('numberofEmployees').invalid && formData.get('numberofEmployees').touched}" formControlName="numberofEmployees"
+                             value="Glenn Fisher" [disabled]="isDisabled" />
+                      <label class="text-danger"
+                             *ngIf="formData.get('numberofEmployees').invalid && formData.get('numberofEmployees').touched">
+                        Number of Employee required
+                      </label>
+                    </div>
+                  </div>
+
+
+                  <div class="col-md-12 py-3">
+                    <hr />
+                  </div>
+
+
+                  <div class="col-md-12 py-3">
+                    <hr />
+                  </div>
+                  <div class="col-6">
+                    <h5>Website URL</h5>
+                  </div>
+                  <div class="col-6">
+
+                    <input type="text" class="form-control" [attr.disabled]="!editmode?'':null" [(ngModel)]="company.websiteUrl" id="url"
+                           placeholder="" name="url" formControlName="url" title="url"
+                           [ngClass]="{'is-valid': formData.get('url').valid && formData.get('url').touched,'is-invalid' :formData.get('url').invalid && formData.get('url').touched}" />
+                    <label class="text-danger"
+                           *ngIf="formData.get('url').invalid && formData.get('url').touched">
+                      Please enter valid url.
+                    </label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12 py-3">
+                    <hr />
+                  </div>
+                  <div class="col-6">
+                    <h5>Contact Information</h5>
+                  </div>
+                  <div class="col-6">
+                    <input type="email" required class="form-control" formControlName="emailaddress" [attr.disabled]="!editmode?'':null"
+                           [ngClass]="{'is-valid': formData.get('emailaddress').valid && formData.get('emailaddress').touched,'is-invalid' :formData.get('emailaddress').invalid && formData.get('emailaddress').touched}"
+                           [(ngModel)]="company.email" id="email address" placeholder="Email Address" />
+                    <label class="text-danger"
+                           *ngIf="formData.get('emailaddress').invalid && formData.get('emailaddress').touched">
+                      Please enter valid email.
+                    </label>
+                    &nbsp;
+                    <input type="text" class="form-control" [(ngModel)]="company.phoneNumber" [attr.disabled]="!editmode?'':null"
+                           formControlName="phoneNumber" id="phoneNumber"
+                           placeholder="Mobile Number"
+                           [ngClass]="{'is-valid': formData.get('phoneNumber').valid && formData.get('phoneNumber').touched,'is-invalid' :formData.get('phoneNumber').invalid && formData.get('phoneNumber').touched}"
+                           name="phoneNumber" maxlength="14" />
+                    <label class="text-danger"
+                           *ngIf="formData.get('phoneNumber').hasError('pattern') && formData.get('phoneNumber').touched">
+                      Please enter a valid phone number in the format (###) ###-####
+                    </label>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-12 py-3">
+                    <hr />
+                  </div>
+                  <div class="col-6">
+                    <h5>Tax Registration Number (optional)</h5>
+                  </div>
+                  <div class="col-6">
+                    <input type="text" class="form-control" id="taxRegistrationNumber" [ngModelOptions]="{standalone: true}" [attr.disabled]="!editmode?'':null"
+                           [(ngModel)]="company.taxRegistrationNumber" placeholder="" title="taxRegistrationNumber"
+                           name="taxRegistrationNumber" />
+                  </div>
+                  <div class="col-md-12 py-3">
+                    <hr />
+                  </div>
+                  <div class="col-6">
+                    <h5>Office Address</h5>
+                  </div>
+                  <div class="col-12">                   
+                    <!--Google Map Start-->
+                  <form #clientForm="ngForm"></form>
+                  <!-- <form #mapFOrm="ngForm"></form> -->
+                  <div class="p-3 mt-3 card">
+                    <div class="row w-100">                      
+                      <div class="col-6">
+                        <div #map style="width:100%;height:100%;display:none"></div>
+                      </div>
+                    </div>
+                    <div class="row mt-3 w-100">
+                      <div class="col-6">
+                        <hr class="my-1" />
+                        <div class="row">
+                          <div class="col-12 mb-3">
+                            <label class="form-label" for="saddress1">Address</label>                          
+                            <input #mapSearchService required #serviceAdd="ngModel" type="text" class="form-control" name="saddress1" 
+                                   [ngModelOptions]="{standalone: true}" placeholder="Address" [(ngModel)]="client.serviceAddress" />
+                            <label class="form-label" class="d-flex align-items-center text-danger mt-1 mb-0"
+                                   *ngIf="clientForm.submitted && serviceAdd.errors">
+                              Address is required
+                            </label>
+                          </div>
+                          <div class="col-12 mb-3">
+                            <label class="form-label" for="baddress1">City</label>
+                            <input [ngModelOptions]="{standalone: true}" [disabled]="true" type="text" class="form-control" name="serviceCity" placeholder="City"
+                                   [(ngModel)]="client.serviceCity" />
+                          </div>
+                          <div class="col-12 mb-3">
+                            <label class="form-label" for="baddress1">State</label>
+                            <input [ngModelOptions]="{standalone: true}" [disabled]="true" type="text" class="form-control" name="serviceState" placeholder="State"
+                                   [(ngModel)]="client.serviceState" />
+                          </div>
+                          <div class="col-12 mb-3">
+                            <label class="form-label" for="baddress1">Country</label>
+                            <input [ngModelOptions]="{standalone: true}" [disabled]="true" type="text" class="form-control" name="serviceCountry" placeholder="Country"
+                                   [(ngModel)]="client.serviceCountry" />
+                          </div>
+                          <div class="col-12 mb-3">
+                            <label class="form-label" for="spostCode">Zipcode</label>
+                            <input [ngModelOptions]="{standalone: true}" [disabled]="true" type="text" class="form-control" name="spostCode" placeholder="Postcode"
+                                   [(ngModel)]="client.serviceAddressZipcodeId" />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-6">
+                        <div #map2 style="width:100%;height:100%"></div>
+                      </div>
+                    </div>
+                    <div class="col-12 p-0 mt-3 w-100">
+                    </div>
+                  </div>
+                  <br />
+                </div>
+                </div>
+
+                 
+                <div class="row">
+                  <div class="col-md-12 py-3">
+                    <hr />
+                  </div>
+                  <div class="col-6">
+                    <h5>Currency Type</h5>
+                  </div>
+                  <div class="col-6">
+                    <div class="">
+                      <select id="currency" class="form-control input_drpdwn" placeholder="" title="Currencytype"
+                              [ngModelOptions]="{standalone: true}" [(ngModel)]="company.currency"
+                              name="Currency type" id="Currency type" [attr.disabled]="!editmode?'':null" >
+                              
+                        <option [value]="c.currency"
+                                *ngFor="let c of currencyType">
+                          {{c.currency|uppercase}}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-12 py-3">
+                    <hr />
+                  </div>
+                  <!-- <div class="col-10">
+                    <h5>Bank Account Details <span>(optional)</span></h5>
+                  </div>
+                  <div class="col-2">
+                    <button type="button" [attr.disabled]="!editmode?'':null" (click)="openVerticalCenteredModal(AddBankAccountModal)"
+                            class="btn brand-color" data-toggle="modal" data-target="#bankModal">
+                      Add Bank Account
+                    </button>
+                  </div>
+                  <div class="row py-3">
+                    <div class="col-12">
+                      <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                          <thead>
+                            <tr>
+                              <th>#</th>
+                              <th class="pt-0">Account Holder Name</th>
+                              <th class="pt-0">Account Number</th>
+                              <th class="pt-0">Routing Number</th>
+                              <th class="pt-0">Bank Name</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let b of company.bankAccount;let i=index">
+                              <td>{{i+1}}</td>
+                              <td>{{b.accountHolderName}}</td>
+                              <td>{{b.accountNumber}}</td>
+                              <td>{{b.routingNumber}}</td>
+                              <td>{{b.bankName}}</td>
+                              <td class="action-buttons">
+                                <i class="e-btn-icon e-icons e-eye" title="View" (click)="viewBankAccountById(b.id, addBankAccountModal)"></i>&nbsp;
+
+                                <i class="e-btn-icon e-icons e-edit" title="Edit" *ngIf="editmode" (click)="SettingClick('edit', b)"></i>&nbsp;
+
+                                <i class="e-btn-icon e-icons e-trash" title="Delete"
+                                   (click)="SettingClick('delete',b)"></i>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-12 py-3">
+                    <hr />
+                  </div> -->
+                  <!-- <div class="col-10">
+                    <h5>Licenses & Certifications <span>(optional)</span></h5>
+                  </div>
+                  <div class="col-2" style="align-self:self-end">
+                    <button data-bs-toggle="tooltip" title="Add License & Certificate" type="button" class="btn brand-color"
+                            (click)="openVerticalCenteredModal(AddlicenceModal)" [attr.disabled]="!editmode?'':null">
+                      License / Certification
+                    </button>
+                  </div>
+                  <div class="row py-3">
+                    <div class="col-12">
+                      <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                          <thead>
+                            <tr>
+                              <th>#</th>
+                              <th class="pt-0">License Name</th>
+                              <th class="pt-0">License No</th>
+                              <th class="pt-0">Date of Expiry</th>
+                              <th class="pt-0">Name of Holder</th>
+                              <th class="pt-0">Issued By</th>
+                              <th class="pt-0">Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let obj of company.license; let i = index">
+                              <td>{{ i + 1 }}</td>
+                              <td>{{ obj.licenseType }}</td>
+                              <td>{{ obj.licenseNo }}</td>
+                              <td>{{ obj.expirationDate | date:'dd/MM/yyyy' }}</td>
+                              <td>{{ obj.name }}</td>
+                              <td>{{ obj.issuedByAuthority }}</td>
+                              <td class="action-buttons">
+                                <i class="e-btn-icon e-icons e-eye" title="View" (click)="viewLicById(obj.id, AddlicenceModal)"></i>&nbsp;
+                                <i class="e-btn-icon e-icons e-edit" title="Edit" (click)="SettingClick1('edit',obj)"></i>&nbsp;
+                                <i class="e-btn-icon e-icons e-trash" title="Delete" (click)="SettingClick1('delete', obj)"></i>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div> -->
+                </div>
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn brand-color" (click)="saveCompany()" data-dismiss="modal"
+                        aria-label="Close">
+                  Save
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #AddBankAccountModal let-modal>
+    <form autocomplete="off" [formGroup]="BankformData">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Add Bank Account</h5>
+            <button type="button" class="btn-close" (click)="modal.close('by: close icon')" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="mb-3">
+                        <label class="form-label">Account Holder Name </label>
+                        <input type="text" name="accountHolderName" formControlName="accountHolderName"
+                            class="form-control" placeholder="Enter Name">
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="mb-3">
+                        <label class="form-label">Account Number (12 digit)</label>
+                        <input type="text" name="accountNumber" formControlName="accountNumber"
+                            class="form-control" placeholder="Enter Account Number" maxlength="12">
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="mb-3">
+                        <label class="form-label">Routing Number</label>
+                        <input type="text" name="routingNumber" formControlName="routingNumber"
+                            class="form-control" placeholder="Enter Routing Number">
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="mb-3">
+                        <label class="form-label">Bank Name </label>
+                        <input type="text" name="bankName" formControlName="bankName" class="form-control"
+                            placeholder="Enter name">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn me-2 mb-2 mb-md-0"
+                  style="border-color: #EEF1F4;background-color: #EEF1F4;" (click)="modal.close('by: close button')">
+            Cancel
+          </button>
+          <button type="button" class="btn brand-color me-2 mb-2 mb-md-0" (click)="saveBankAccount()" [disabled]="BankformData.invalid">
+            Save changes
+          </button>
+
+        </div>
+    </form>
+</ng-template>
+
+<ng-template #AddlicenceModal let-modal>
+  <form name="licenseForm" action="javascript:{}" #form="ngForm" novalidate autocomplete="off" [formGroup]="LicformData">
+    <!-- <form [formGroup]="LicformData"> -->
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Add License & Certification</h5>
+            <button type="button" class="btn-close" (click)="modal.close('by: close icon')" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-sm-12">
+                  <div class="mb-3">
+                    <label class="form-label">Name of the License</label>
+                    <select [(ngModel)]="license.licenseType" name="licenseType" class="form-select" title="licenseType"
+                            placeholder="Enter name" formControlName="licenseType">
+                        <option [ngValue]="undefined" hidden>Select Type</option>
+                        <option *ngFor="let item of licenseList1" [ngValue]="item.nameofLicense">
+                            {{ item.nameofLicense }}
+                        </option>
+                    </select>
+                </div>
+                
+                </div>
+                <div class="row">
+                <div class="col-sm-6">
+                    <div class="mb-3">
+                        <label class="form-label">License No</label>
+                        <input type="text" [(ngModel)]="license.licenseNo" name="licenseNo" class="form-control" [ngClass]="{'is-valid': LicformData.get('licenseNo').valid && LicformData.get('licenseNo').touched,
+                            'is-invalid': LicformData.get('licenseNo').invalid && LicformData.get('licenseNo').touched}"
+                            placeholder="Enter License No" formControlName="licenseNo" >
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="mb-3">
+                        <label class="form-label">Full Name of Holder </label>
+                            <input formControlName="name" type="text" name="name" [ngClass]="{'is-valid': LicformData.get('name').valid && LicformData.get('name').touched,
+                            'is-invalid': LicformData.get('name').invalid && LicformData.get('name').touched}"
+                                [(ngModel)]="license.name" class="form-control" placeholder="Enter Full Name"
+                                >
+                            <label class="text-danger"
+                                *ngIf="LicformData.get('name').hasError('pattern') && LicformData.get('name').touched">
+                                Please enter alphabates only
+                            </label>
+                    </div>
+                </div>
+                </div>
+                    <div class="mb-3">
+                      <div class="row">
+                <div class="col-sm-6">
+                    <div class="mb-3">
+                        <label class="form-label">Issued By (authority)</label>
+                        <input type="text" formControlName="issuedByAuthority" name="issuedByAuthority" [ngClass]="{'is-valid': LicformData.get('issuedByAuthority').valid && LicformData.get('issuedByAuthority').touched,
+                            'is-invalid': LicformData.get('issuedByAuthority').invalid && LicformData.get('issuedByAuthority').touched}"
+                            [(ngModel)]="license.issuedByAuthority" class="form-control" placeholder="Enter Issued By (authority)">
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                <div class="mb-3">
+                  <label class="form-label">Social Security Number (SSN)</label>
+                  <input formControlName="socialSecurityNumber" type="text" name="socialSecurityNumber" [ngClass]="{'is-valid': LicformData.get('socialSecurityNumber').valid && LicformData.get('socialSecurityNumber').touched,
+                  'is-invalid': LicformData.get('socialSecurityNumber').invalid && LicformData.get('ssn').touched}"
+                      [(ngModel)]="license.socialSecurityNumber" class="form-control" placeholder="Enter SSN"
+                      (input)="formatSSN($event)">
+                  <label class="text-danger"
+                      *ngIf="LicformData.get('socialSecurityNumber').hasError('pattern') && LicformData.get('socialSecurityNumber').touched">
+                      Please enter a valid social security number in the format ###-##-####
+                  </label>
+              </div>
+              </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="mb-3">
+                    <label class="form-label">License Issue Date </label>
+                    <input type="date" id="datepicker1" format='MM-dd-yyyy' formControlName="issuedDate" title="datepicker1"
+                                    [(ngModel)]="license.issuedDate" class="form-control">
+                    <label class="text-danger"
+                           *ngIf="LicformData.get('issuedDate').hasError('pattern') && LicformData.get('federalNum').touched">
+                      Please enter a valid federal id number in the format ##-#######
+                    </label>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="mb-3">
+                      <label class="form-label">Date of Expiry</label>
+                      <input
+                      type="date"
+                      id="datepicker"
+                      formControlName="expirationDate"
+                      class="form-control"
+                      title="datepicker"
+                      [(ngModel)]="license.expirationDate"
+                      [attr.min]="todayDate"
+                    >
+                  </div>
+                </div>
+                   
+                </div>
+                </div>
+                <div class="card mt-3 p-3">
+                    <div class="row">
+                        <label class="w-100 mb-2 " for="documents">Attachments</label>
+                        <div class=" grid-margin stretch-card">
+                            <div class="card-body">
+                                <div class="dropzone" [dropzone]="config" (success)="onUploadSuccess($event)"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4 mb-3" *ngFor="let image of license.attachments; let i = index">
+                    <div class="mt-3 card" (click)="downloadFile(image.documentItem, image.fileName)">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div class="d-flex flex-row align-items-center">
+                                    <div class="icon">
+                                        <i class="link-icon" data-feather="file" appFeatherIcon></i>
+                                        <!-- <img src="assets/images/flags/Document.jpeg" style="max-width: 100%;" alt="Document Image">  -->
+                                    </div>
+                                    <div class="ms-2 c-details">
+                                        <div class="d-flex flex-column">
+                                            <h4 class="mb-0" style="word-break: break-all;">{{image.fileName}}</h4>
+                                            <!-- <span class="d-sm-none d-md-block">{{image1.}}</span>  -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn me-2 mb-2 mb-md-0"
+                style="border-color: #EEF1F4;background-color: #EEF1F4;" (click)="modal.close('by: close button')">
+                Cancel
+            </button>
+
+            <button type="button" class="btn brand-color me-2 mb-2 mb-md-0" (click)="addLicense()">Add License</button>
+        </div>
+    </form>
+</ng-template>
+
+<ng-template #SkillModal let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Skills</h5>
+        <button type="button" class="btn-close" (click)="modal.close('by: close icon')" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+        <form name="form" action="javascript:{}" #form="ngForm" novalidate autocomplete="off">
+            <div class="row">
+                <div class="col-md-12">
+                    <ng-select [items]="departments" [multiple]=true [closeOnSelect]="false" [searchable]="false"
+                        name="test" bindLabel="skillName" placeholder="Select people" [(ngModel)]="selecteddepartments">
+                    </ng-select>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+    </div>
+</ng-template>
+
+
+<!--Otp Dialog-->
+<ng-template #otpModal let-modal>
+  <div class="modal-dialog ">
+    <div class="modal-content">
+<div class="modal-header text-center">
+  <h5 class="modal-title  " id="otppopup">Verify OTP</h5>
+    <button type="button" class="btn-close" (click)="modal.close('by: close icon')" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+  <form>
+    <div class="row">
+      <div class="col-md-12">
+        <h4 class="mb-3 text-center">Please Enter the OTP</h4>
+        <div class="otp-input-container mt-2" [formGroup]="otpInput">
+          <div class="otp-box-wrapper">
+          <input type="text" title='txt1' maxlength="1" (keydown)="moveToNext($event, otp2)" (keypress)="restrictToDigits($event)" class="form-control otp-input" formControlName="otp1" #otp1 (paste)="handlePaste($event)">
+          <input type="text" title='txt2' maxlength="1" (keydown)="moveToNext($event, otp3)" (keypress)="restrictToDigits($event)" class="form-control otp-input" formControlName="otp2" #otp2>
+          <input type="text" title='txt3' maxlength="1" (keydown)="moveToNext($event, otp4)" (keypress)="restrictToDigits($event)" class="form-control otp-input" formControlName="otp3" #otp3>
+          <input type="text" title='txt4' maxlength="1" (keydown)="moveToNext($event, otp5)" (keypress)="restrictToDigits($event)" class="form-control otp-input" formControlName="otp4" #otp4>
+          <input type="text" title='txt5' maxlength="1" (keydown)="moveToNext($event, otp6)" (keypress)="restrictToDigits($event)" class="form-control otp-input" formControlName="otp5" #otp5>
+          <input type="text" title='txt6' maxlength="1" (keydown)="moveToNext($event, null)" (keypress)="restrictToDigits($event)" class="form-control otp-input" formControlName="otp6" #otp6>
+        </div>
+      </div>
+      <div class="d-flex justify-content-center">
+        <button (click)="VerifyProfileChangeOtp()" class="btn btn-primary mt-3">Verify</button>
+      </div>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+</div>
+</div>
+</div>
+</ng-template>

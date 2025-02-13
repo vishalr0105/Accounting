@@ -1,0 +1,370 @@
+<div class="img-wapper">
+  <img
+    src="https://aassurecomply.com/wp-content/uploads/2024/12/dark-logo-4.svg"
+    alt="Logo"
+    width="170px"
+    height="100%"
+    class="d-inline-block align-text-top"
+  />
+</div>
+<div class="row h-100 g-0">
+  <div class="d-none d-lg-block col-lg-7">
+    <div class="slider-light">
+      <carousel>
+        <slide>
+          <div
+            class="position-relative h-100 d-flex justify-content-center align-items-center"
+            style="
+              background-image: url('https://aassurecomply.com/wp-content/uploads/2024/12/Heading-3.png');
+              /* background-image: url('assets/images/satelliteimagery.png'); */
+              background-position: right;
+              background-repeat: no-repeat;
+              background-size: cover;
+              height: 100vh !important;
+            "
+          >
+            <div
+              class="carousel-caption d-flex flex-column align-items-center justify-content-center"
+            >
+            <h5 class="text-uppercase fw-bold mb-3">
+              Transform Your Invoicing Process with Ease
+
+            </h5>
+            <p class="mb-4">
+              Experience seamless, automated e-invoicing that boosts efficiency and ensures compliance globally
+            </p>
+            </div>
+          </div>
+        </slide>
+      </carousel>
+    </div>
+  </div>
+  <div class="d-flex bg-white justify-content-center align-items-centercol-md-12 col-lg-5">
+    <div class="form-container mt-5">
+      <h2 class="text-center mb-4">Create New Account</h2>
+      <h5 class="mb-5">
+        <div class="text-center">Create your account or <a routerLink="/login">Login</a></div>
+      </h5>
+      <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+        <div class="row">
+          <div class="col-6">
+            <div class="form-group">
+              <label for="firstName">First name</label>
+              <input id="firstName" formControlName="firstName" type="text" class="form-control" />
+              <div *ngIf="userForm.get('firstName')?.invalid && userForm.get('firstName')?.touched">
+                <small class="text-danger">first name is required and must be at most 100 characters.</small>
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+              <label for="lastName">last name</label>
+              <input id="lastName" formControlName="lastName" type="text" class="form-control" />
+              <div *ngIf="userForm.get('lastName')?.invalid && userForm.get('lastName')?.touched">
+                <small class="text-danger">last name is required and must be at most 100 characters.</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-6">
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input id="email" formControlName="email" type="email" class="form-control" />
+              <div *ngIf="userForm.get('email')?.invalid && userForm.get('email')?.touched">
+                <small class="text-danger">A valid email is required.</small>
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input id="password" formControlName="password" type="password" class="form-control" />
+              <div *ngIf="userForm.get('password')?.invalid && userForm.get('password')?.touched">
+                <small class="text-danger">Password is required and must be at least 8 characters.</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-6">
+            <div class="form-group">
+              <label for="confirmPassword">Confirm Password</label>
+              <input id="confirmPassword" formControlName="confirmPassword" type="password" class="form-control" />
+              <div *ngIf="userForm.errors?.passwordsMismatch && userForm.get('confirmPassword')?.touched">
+                <small class="text-danger">Passwords do not match.</small>
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+              <label for="role">Role</label>
+              <select id="role" formControlName="role" class="form-control">
+                <option value="">Select a role</option>
+                <option value="superadmin">Superadmin</option>
+                <option value="tenantadmin">Tenantadmin</option>
+                <option value="user">User</option>
+              </select>
+              <div *ngIf="userForm.get('role')?.invalid && userForm.get('role')?.touched">
+                <small class="text-danger">Role is required.</small>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Industry</label>
+            <select class="form-select" formControlName="industry">
+              <option *ngFor="let industry of industries" [value]="industry.id">
+                {{ industry.industryName }}
+              </option>
+            </select>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Job Title (Optional)</label>
+            <select class="form-select" formControlName="jobTitle">
+              <option *ngFor="let jobs of jobTitles" [value]="jobs.id">
+                {{ jobs.jobName }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <div class="mb-3">
+              <label class="form-label">Phone Number (Optional)</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="phoneNumber"
+              />
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn  sign-in-btn" [disabled]="userForm.invalid">Submit</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- <div class="d-flex bg-white justify-content-center align-items-center col-md-12 col-lg-7"
+       *ngIf="!_signupSuccessfull">
+    <div class="mx-auto app-login-box col-sm-12 col-md-10 col-lg-5">
+      <h3 class="mb-3">
+        Let's Get Started
+      </h3>
+      <h5 class="mb-5">
+        <div>Create your account or <a routerLink="/login">Login</a></div>
+      </h5>
+
+      <div class="divider"></div>
+      <div>
+        <div style="display:flex;flex-direction:row;height:30px;align-items:center">
+          <div class="stepProgress">1</div>
+          <progress id="file" [value]="progressValue" max="100" style="width:100%"> 32% </progress>
+          <div *ngIf="progressValue==100" class="stepProgress">2</div>
+        </div>
+        <form [formGroup]="RegistrationForm" autocomplete="off">
+
+          <div *ngIf="progressValue==50">
+            <h4 style="text-align:center">Company Profile</h4>
+            <div class="mb-3 e-float-input e-input-group">
+              <input formControlName="companyName" class="e-input" required>
+              <span class="e-float-line"></span>
+              <label class="e-float-text">Company Name</label>
+            </div>
+            <div *ngIf="RegistrationForm?.controls['companyName']?.errors?.required &&
+                       (RegistrationForm?.controls['companyName'].touched || RegistrationForm?.controls['companyName'].dirty)"
+                 class="validationError">
+              <span *ngIf="RegistrationForm?.controls['companyName'].errors?.required" class="text-danger mt-1 validationError">Please enter your company Name</span>
+            </div>
+
+            <div class="mb-3">
+              <select class="form-control input_drpdwn" formControlName="industryType">
+                <option value="">Industry Type</option>
+                <ng-container *ngIf="industries">
+                  <ng-container *ngFor="let i of sortIndustriesAlphabetically(industries)">
+                    <option [value]="i.id">{{i.name}}</option>
+                  </ng-container>
+                </ng-container>
+              </select>
+              <span *ngIf="RegistrationForm?.controls['industryType'].errors?.required && RegistrationForm?.controls['industryType'].touched" style="color:red;font-size:xx-small">Please select an industry type</span>
+            </div>
+
+
+
+            <div class="mb-3">
+              <select class="form-control" formControlName="noOfEmployee" placeholder="Company Size">
+                <option value="">Number of Field Technicians</option>
+                <option value="1">1</option>
+                <option value="2">2 to 10</option>
+                <option value="3">11 to 40</option>
+                <option value="4">40+</option>
+
+              </select>
+              <span *ngIf="RegistrationForm?.controls['noOfEmployee'].errors?.required
+                    && RegistrationForm?.controls['noOfEmployee'].touched"
+                    style="color:red;font-size:xx-small">Please Select the number of technicians in your company</span>
+              <span *ngIf="RegistrationForm?.controls['noOfEmployee'].errors?.pattern
+                    && RegistrationForm?.controls['noOfEmployee'].touched"
+                    style="color:red;font-size:xx-small">invalid company size</span>
+            </div>
+            <div class="mb-3">
+              <input class="form-control" formControlName="website" placeholder="Website" />
+            </div>
+            <textarea #mapSearchService required type="text" class="form-control" formControlName="address"
+                   placeholder="Address"></textarea>
+            <span *ngIf="RegistrationForm?.controls['address'].errors?.required
+                    && RegistrationForm?.controls['address'].touched"
+                  style="color:red;font-size:xx-small">Please enter your business address</span>
+            <div style="display:flex;flex-direction:row;justify-content:right;margin-top: 30px;">
+              <div class="btn btn-block  left sign-in-btn" (click)="Step()">
+                <span>Continue</span>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="progressValue==100">
+            <h4 style="text-align:center">Create Your Profile</h4>
+            <div class="mb-3 e-float-input e-input-group" >
+              <input class="e-input" formControlName="firstName" required>
+              <span class="e-float-line"></span>
+              <label class="e-float-text">First Name</label>
+            </div>
+            <span *ngIf="RegistrationForm?.controls['firstName'].errors?.required
+                        && RegistrationForm?.controls['firstName'].touched" style="color:red;font-size:xx-small; display: block;">Please enter First Name</span>
+            <div class="mb-3 e-float-input e-input-group">
+              <input class="e-input" placeholder="Last Name" formControlName="lastName" required>
+              <span class="e-float-line"></span>
+              <label class="e-float-text">Last Name</label>
+            </div>
+            <span *ngIf="RegistrationForm?.controls['lastName'].errors?.required
+                    && RegistrationForm?.controls['lastName'].touched" style="color:red;font-size:xx-small">Please enter Last Name</span>
+        <div class="mb-3 e-float-input e-input-group">
+          <input formControlName="email" class="e-input">
+          <span class="e-float-line"></span>
+          <label class="e-float-text">Work Email ID</label>
+        </div>
+          <div *ngIf="RegistrationForm?.controls['email']?.errors?.required && (RegistrationForm?.controls['email'].dirty || RegistrationForm?.controls['email'].touched)"
+               class="validationError" style="display: block;">
+            <span class="text-danger mt-1 validationError">Please enter an email address</span>
+          </div>
+
+          <div *ngIf="RegistrationForm?.controls['email']?.errors?.email &&
+                 (RegistrationForm?.controls['email'].dirty || RegistrationForm?.controls['email'].touched)"
+               class="validationError" style="display: block;">
+            <span class="text-danger mt-1 validationError">Invalid Email Id!</span>
+          </div>
+
+            <div class="mb-3 e-float-input e-input-group">
+              <input type="password" formControlName="password" class="e-input" autocomplete="off"
+                     pattern="(?=^.{8,100}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+}{:;?/>.<,])(?!.*\s).*$">
+                     <span class="e-float-line"></span>
+                     <label class="e-float-text">Password</label>
+                    </div>
+              <div *ngIf="RegistrationForm?.controls['password'].errors?.required &&
+                   (RegistrationForm?.controls['password'].dirty || RegistrationForm?.controls['password'].touched)">
+                <div *ngIf="RegistrationForm?.controls['password'].errors?.required">
+                  <span class="text-danger mt-1 validationError">Please enter Password</span>
+                </div>
+
+              </div>
+              <div *ngIf="RegistrationForm?.controls['password'].hasError('minlength')">
+                <span class="text-danger mt-1 validationError">
+                  Password needs to have minimum of 8 characters,
+                </span>
+              </div>
+              <div *ngIf="RegistrationForm?.controls['password'].hasError('pattern')">
+                <span class="text-danger mt-1 validationError">
+                  Password needs to have  1 capital letter, 1
+                  number and 1 Special Character!
+                </span>
+              </div>
+
+            <div class="row">
+              <div class="col" style="display: flex; justify-content: flex-start;">
+                <button type="button" class="btn btn-primary btn-lg" (click)="goBackToStepOne()">
+                  <i class="mdi mdi-arrow-left"></i> Back
+                </button>
+              </div>
+              <div class="col" style="display: flex; justify-content: flex-end;">
+                <button type="submit" class="btn btn-primary btn-lg" (click)="register()" fdprocessedid="s3ylxq">
+                  Sign up <i class="mdi mdi-arrow-right"></i>
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </form>
+        <div id="dynamicLine"></div>
+        <p style="margin-top: 5px;">By creating an account, you agree to the <a routerLink="/Tnc">Terms of Service</a> and <a
+          routerLink="/Tnc/privacypolicy">Privacy Policy</a>.</p>
+        <div class="row" style="background-color: white; padding: 15px;display:none">
+          <div class="col-lg-4">
+            <div class="text-center">
+              <button type="submit" class="btn btn-lg btn-block custom-button" (click)="signInWithFB()"
+                      fdprocessedid="s3ylxq" style="width: 100%;">
+                <i class="mdi mdi-facebook" style="color:blue;"></i>
+              </button>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="text-center">
+              <asl-google-signin-button class="btn btn-lg btn-block custom-button"></asl-google-signin-button>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="text-center">
+            </div>
+          </div>
+        </div>
+
+        <div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="d-flex bg-white justify-content-center align-items-center col-md-12 col-lg-7"
+       *ngIf="_signupSuccessfull">
+    <div class="row" style="padding:0;" *ngIf="_signupSuccessfull">
+      <div class="col-12 d-none d-md-flex d-flex align-items-center justify-content-center">
+        <div class="p-3 text-center">
+          <svg style="max-height:100%; max-width: 100%;" fill="#000000" height="100px" width="100px" version="1.1"
+               xmlns="http://www.w3.org/2000/svg" viewBox="0 0 350 350" xmlns:xlink="http://www.w3.org/1999/xlink"
+               enable-background="new 0 0 350 350">
+            <path d="M5,350h340V0H5V350z M25,330v-62.212h300V330H25z M179.509,247.494H60.491L120,171.253L179.509,247.494z   M176.443,211.061l33.683-32.323l74.654,69.05h-79.67L176.443,211.061z M325,96.574c-6.384,2.269-13.085,3.426-20,3.426  c-33.084,0-60-26.916-60-60c0-6.911,1.156-13.612,3.422-20H325V96.574z M25,20h202.516C225.845,26.479,225,33.166,225,40  c0,44.112,35.888,80,80,80c6.837,0,13.523-0.846,20-2.518v130.306h-10.767l-104.359-96.526l-45.801,43.951L120,138.748  l-85.109,109.04H25V20z" />
+          </svg>
+        </div>
+      </div>
+      <div class="col-12" style="padding: 10px 20px;">
+        <ng-container>
+          <br />
+          <br />
+          <div class="row">
+            <div class=" col-12  col-md-3">&nbsp;</div>
+            <div class="col-12 col-md-6">
+              <h5 class="success_head">Verify your email</h5>
+              <p class="success_p">Account activation link has been sent to the email:</p>
+              <p class="success_email" style="font-weight:bold">{{_user.email}}</p>
+              <p class="success_email">Click the verification link to setup your Etaprise workspace.</p>
+
+
+              <br /><br /><br />
+              <p class="success_p_small">
+                Can't find the email? Check your spam folder, or <br /> <a (click)="goRegistration()" style="font-weight: bold;color:black">
+                  re-enter your email and
+                  try again.
+                </a>
+              </p>
+
+            </div>
+            <div class="ol-12  col-md-3">&nbsp;</div>
+          </div>
+
+        </ng-container>
+      </div>
+    </div>
+  </div> -->
+</div>

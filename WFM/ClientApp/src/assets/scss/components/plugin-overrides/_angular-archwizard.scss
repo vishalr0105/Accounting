@@ -1,0 +1,24 @@
+// Plugin: angular-archwizard
+// github: https://github.com/madoar/angular-archwizard
+
+$themeclr:#852CFF;
+
+aw-wizard-navigation-bar ul.steps-indicator li a .label {
+  color: $text-muted;
+}
+
+aw-wizard-navigation-bar.horizontal.small ul.steps-indicator li .step-indicator {
+  background-color: $border-color;
+}
+
+aw-wizard-navigation-bar.horizontal.small ul.steps-indicator li.current .step-indicator {
+  background-color: $themeclr;
+}
+
+aw-wizard-navigation-bar.horizontal.small ul.steps-indicator li.done .step-indicator {
+  background-color: $success;
+}
+
+aw-wizard-navigation-bar.horizontal.small ul.steps-indicator li:not(:last-child):after {
+  background-color: $border-color;
+}

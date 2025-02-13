@@ -1,0 +1,58 @@
+<div class="container">
+  <div class="row">
+    <div class="col-3">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-baseline">
+            <h6 class="mb-0">
+              Totals Orders Count<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"
+                fill="none" ngbTooltip="Work Orders Stastics">
+                <mask id="mask0_2763_27302" style="mask-type: alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="16"
+                  height="16">
+                  <rect width="16" height="16" fill="#D9D9D9" />
+                </mask>
+                <g mask="url(#mask0_2763_27302)">
+                  <path
+                    d="M7.96732 11.9999C8.20065 11.9999 8.39798 11.9193 8.55932 11.7579C8.72021 11.597 8.80065 11.3999 8.80065 11.1666C8.80065 10.9333 8.72021 10.7361 8.55932 10.5753C8.39798 10.4139 8.20065 10.3333 7.96732 10.3333C7.73398 10.3333 7.53665 10.4139 7.37532 10.5753C7.21443 10.7361 7.13398 10.9333 7.13398 11.1666C7.13398 11.3999 7.21443 11.597 7.37532 11.7579C7.53665 11.9193 7.73398 11.9999 7.96732 11.9999ZM7.36732 9.43325H8.60065C8.60065 9.06658 8.64243 8.7777 8.72598 8.56659C8.8091 8.35547 9.04509 8.06659 9.43398 7.69992C9.72287 7.41103 9.95065 7.13592 10.1173 6.87459C10.284 6.6137 10.3673 6.29992 10.3673 5.93325C10.3673 5.31103 10.1395 4.83325 9.68398 4.49992C9.22843 4.16659 8.68954 3.99992 8.06732 3.99992C7.43398 3.99992 6.92021 4.16659 6.52598 4.49992C6.13132 4.83325 5.85621 5.23325 5.70065 5.69992L6.80065 6.13325C6.85621 5.93325 6.98132 5.71659 7.17598 5.48325C7.37021 5.24992 7.66732 5.13325 8.06732 5.13325C8.42287 5.13325 8.68954 5.23036 8.86732 5.42458C9.04509 5.61925 9.13398 5.83325 9.13398 6.06659C9.13398 6.28881 9.06732 6.49703 8.93398 6.69125C8.80065 6.88592 8.63398 7.06659 8.43398 7.23325C7.9451 7.66658 7.6451 7.99436 7.53398 8.21658C7.42287 8.43881 7.36732 8.84436 7.36732 9.43325ZM8.00065 14.6666C7.07843 14.6666 6.21176 14.4915 5.40065 14.1413C4.58954 13.7915 3.88398 13.3166 3.28398 12.7166C2.68398 12.1166 2.2091 11.411 1.85932 10.5999C1.5091 9.78881 1.33398 8.92214 1.33398 7.99992C1.33398 7.0777 1.5091 6.21103 1.85932 5.39992C2.2091 4.58881 2.68398 3.88325 3.28398 3.28325C3.88398 2.68325 4.58954 2.20814 5.40065 1.85792C6.21176 1.50814 7.07843 1.33325 8.00065 1.33325C8.92287 1.33325 9.78954 1.50814 10.6006 1.85792C11.4118 2.20814 12.1173 2.68325 12.7173 3.28325C13.3173 3.88325 13.7922 4.58881 14.142 5.39992C14.4922 6.21103 14.6673 7.0777 14.6673 7.99992C14.6673 8.92214 14.4922 9.78881 14.142 10.5999C13.7922 11.411 13.3173 12.1166 12.7173 12.7166C12.1173 13.3166 11.4118 13.7915 10.6006 14.1413C9.78954 14.4915 8.92287 14.6666 8.00065 14.6666Z"
+                    fill="#C4C7C7" />
+                </g>
+              </svg>
+            </h6>
+            <div class="mb-2">
+              <h1 class="mb-2">{{ totalOrders }}</h1>
+            </div>
+          </div>
+          <div class="row">
+            <div class="d-flex justify-content-between py-4">
+              <div>
+                <div class="btn-group mb-3 mb-md-0" role="group" aria-label="Basic example">
+                  <button type="button" class="btn btn-outline-primary">
+                    1D
+                  </button>
+                  <button type="button" class="btn btn-outline-primary">
+                    1W
+                  </button>
+                  <button type="button" class="btn btn-outline-primary">
+                    1M
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="w-100 d-flex flex-column align-items-center justify-content-center">
+    <h5>Tenant Specific Order Count Table</h5>
+    <hr class="my-3 w-100" />
+  </div>
+  <ejs-grid #grid [dataSource]="orders" [allowPaging]="true" [pageSettings]="pageSettings"
+    (actionBegin)="onActionBegin($event)" [toolbar]="toolbarOptions" [allowFiltering]="false">
+    <e-columns>
+      <e-column field="tenantId" headerText="Id" width="150"></e-column>
+      <e-column field="tenantName" headerText="Name" width="150"></e-column>
+      <e-column field="orderCount" headerText="Total Order Count" width="150"></e-column>
+    </e-columns>
+  </ejs-grid>
+</div>

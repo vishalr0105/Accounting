@@ -1,0 +1,105 @@
+<!-- <div class="spinner-wrapper full-screen" *ngIf="isLoading">
+  <div class="spinner"></div>
+</div>
+<div class="row w-100 mx-0 auth-page">
+  <div class="col-md-8 col-xl-6 mx-auto">
+    <div class="card">
+      <div class="row">
+        <div class="col-md-4 pe-md-0">
+          <div class="auth-side-wrapper"
+            style="background-image: url(&quot;https://www.nobleui.com/angular/template/demo1/assets/images/photos/img6.jpg&quot;);">
+          </div>
+        </div>
+        <div class="col-md-8 ps-md-0">
+          <div class="auth-form-wrapper px-4 py-5"><span class="nobleui-logo d-block mb-2" href="#">Welcome
+              Etaprise!</span>
+            <h5 class="text-muted fw-normal mb-4">Log into your account with email.</h5>
+            <form name="loginForm" action="javascript:{}" #userForm="ngForm" novalidate autocomplete="off">
+              <div class="mb-3">
+                <label class="form-label" for="email"> Email Address</label>
+                <input type="email" [(ngModel)]="userLogin.userName" ngModel name="requried"
+                  pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$" #requried="ngModel" required
+                  class="form-control textborder" id="exampleInputEmail1" placeholder="Work Email ID">
+                <div *ngIf="requried.errors && (requried.dirty || requried.touched)" style="font-size: smaller;">
+                  <div [hidden]="!requried.errors.required">
+                    <span class="text-danger mt-1">Email required!</span>
+                  </div>
+                  <div [hidden]="!requried.errors.pattern">
+                    <span style="color: red;"> Invalid Email Id!</span>
+                  </div>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="email"> Password</label>
+                <input type="password" class="form-control textborder" [(ngModel)]="userLogin.password" ngModel
+                  name="password" required #password="ngModel"
+                  pattern="(?=^.{8,100}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+}{:;?/>.<,])(?!.*\s).*$"
+                  id="exampleInputPassword1" autocomplete="current-password" placeholder="Password">
+                <div *ngIf="password.errors && (password.dirty || password.touched)" style="font-size: smaller;">
+                  <div [hidden]="!password.errors.required">
+                    <span class="text-danger mt-1">Password required!</span>
+                  </div>
+                  <div [hidden]="!password.errors.pattern">
+                    <span class="text-danger mt-1"> Password needs to have minimum of 8 characters, 1 capital letter, 1
+                      number and 1 Special Character! </span>
+                  </div>
+                </div>
+              </div>
+
+              <div><button type="submit" [disabled]="userForm.invalid" class="btn btn-secondary btn-lg btn-block"
+                  (click)="onLoggedin($event)" fdprocessedid="s3ylxq">Login</button></div>
+                  <span class="d-block mt-3 text-muted">Don’t have an account yet? <a style="color: black;"  href="/auth/pricing"><b>Create An Account</b></a></span>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+
+<body>
+    <div class="row h-100 g-0">
+      <div class="d-none d-lg-block col-lg-5">
+        <div class="slider-light">
+          <carousel>
+            <slide>
+              <div class="position-relative h-100 d-flex justify-content-center align-items-center">
+                <img src="assets/images/existingOrganization.PNG" class="fixed-size-image img-fluid">
+              </div>
+            </slide>
+          </carousel>
+        </div>
+      </div>
+
+      <div class="d-flex bg-white justify-content-center align-items-center col-md-12 col-lg-7">
+          <div class="mx-auto app-login-box col-sm-12 col-md-10 col-lg-7">
+            <h2 class="mb-3">
+              <div>Join by invitation</div>
+            </h2>
+            
+            <p>Check your inbox (and spam folder) for a jibble invite from your Manager.</p>
+            <p>If your manager hasn't invited your yet, please contact and provide themk your email or phone number to invite you.</p>
+            
+            <div id="dynamicLine"></div>
+
+                <p style="text-align: center;">Already have an account ? <a href="">Login here</a></p> 
+          </div>
+      </div>
+
+    </div>
+  <!-- Include Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <!-- Add your other script tags here -->
+</body>
+
+</html>

@@ -1,0 +1,356 @@
+<div class="col-md-12 grid-margin stretch-card">
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-12 grid-margin">
+          <div class="col-md-12">
+            <h2 style="color: #0d6efd;">My Profile</h2>
+            <!--The content below is only a placeholder and can be replaced.-->
+            <div>
+              <!-- <input type="file" (change)="fileChangeEvent($event)" /> -->
+              <!-- <image-cropper [ngStyle]="{width: '300px'}" [imageChangedEvent]="imageChangedEvent"
+                [maintainAspectRatio]="true" format="png" (imageCropped)="imageCropped($event)"
+                (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()" (loadImageFailed)="loadImageFailed()"
+                [roundCropper]="true"></image-cropper> -->
+              <!-- <img [src]="croppedImage" [ngStyle]="{width: '300px', borderRadius: '50%'}" /> -->
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="d-flex align-items-center">
+              <!-- Profile Photo Upload -->
+              <div class="flex-shrink-0 pe-5">
+                <div class="file-upload">
+                  <input type="file" title="file" (change)="fileChangeEvent($event)" accept=".png, .jpg" except="image/*" />
+                  <img class="img-rounded image" src="../../assets/images/defultImg.jpg" title="croppedimg" />
+                  <img class="img-rounded image" [src]="croppedImage" title="croppedimg" />
+                </div>
+              </div>
+              <!-- Details Section -->
+              <div class="col-6 py-5">
+                <h5>{{ profileeditmodelform.companyName }}</h5>
+              </div>
+              <!-- Edit Button Section -->
+              <div class="col-12" style="text-align: right">
+                <h5>
+                  <button class="btn brand-color float-end my-2 mr-2"
+                    (click)="openVerticalCenteredModal(EditProfileModel)">
+                    <i class="feather icon-edit-2"></i> Edit
+                  </button>
+                </h5>
+              </div>
+            </div>
+            <!-- Additional Form Fields -->
+            <div class="row">
+              <div class="col-12">
+                <!-- Form Fields Example -->
+                <form>
+                  <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">First Name</label>
+                    <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="" [value]="company.firstName"disabled>
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleFormControlTextarea1" class="form-label">Last Name</label>
+                    <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="" [value]="company.lastName" disabled>
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">Role</label>
+                    <input type="text"
+                           class="form-control"
+                           id="exampleFormControlInput1"
+                           placeholder=""
+                           [value]="profileeditmodelform.designation"
+                           name="designation" disabled
+                    >
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="exampleFormControlTextarea1" class="form-label">Account Created Date</label>
+                    <input type="text"class="form-control" id="exampleFormControlInput1"  placeholder=""[value]="formatDate(company.createdAt)"
+                     disabled >
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <h1>Account security</h1>
+          </div>
+          <form [formGroup]="formAccountSecurity">
+          <div class="row">
+            <div class="col-6 py-4">
+              <h5>Password has been set</h5>
+              <span>Choose a strong unique password that’s at least 8 characters
+                long</span>
+            </div>
+            <div class="col-6 py-4">
+              <button type="button" class="btn brand-color" data-toggle="modal" data-target="#bankModal"
+                (click)="openVerticalCenteredModal(resetpassword)">
+                Set Password
+              </button>
+            </div>
+
+            <div class="col-6 py-1">
+              <h5>Two Step Verification Options</h5>
+              <span>Add an extra layer of security to block unauthorized access and
+                protect your account</span>
+            </div>
+            <div class="col-6 py-1">
+              <div class="container">
+                <div class="form-check form-switch">
+                  <!-- id="verify" -->
+                  <input class="form-check-input" type="checkbox"
+                  id="chkttwoFactorAuth" title="chkttwoFactorAuth"
+                  [checked]="formAccountSecurity.controls['twoFactorAuth'].value"
+                  (change)="updateCheckboxes(1)"
+                  formControlName="twoFactorAuth" role="switch"  style="margin-left: 35px" />
+                  <label class="form-check-label" for="flexSwitchCheckChecked"></label>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-8">
+              <hr />
+            </div>
+          </div>
+
+          <div class="row" *ngIf="formAccountSecurity.controls['twoFactorAuth'].value==true">
+            <div class="col-6 py-2">
+              <h5>
+                <!-- Authenticator app code -->
+                One Time Password (OTP) using Text Message
+                <ejs-tooltip id='tooltip' content='An One Time Password text message would be sent to your registered mobile number'>
+                <i class="mdi mdi-help-circle"></i> (Recommended)
+              </ejs-tooltip>
+              </h5>
+              <!-- <span>An One Time Password text message would be sent to your registered mobile number</span> -->
+            </div>
+            <div class="col-6 py-2">
+              <div class="container">
+                <div class="form-check form-switch">
+                  <!-- id="authenticator" -->
+                  <input class="form-check-input"
+                  id="chktxtMsgSms" title="chktxtMsgSms"
+                  [checked]="formAccountSecurity.controls['txtMsgSms'].value"
+                  (change)="updateCheckboxes(2)"
+                  formControlName="txtMsgSms" type="checkbox" role="switch"
+                    style="margin-left: 35px" />
+                  <label class="form-check-label" for="flexSwitchCheckChecked"></label>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-6 py-2">
+              <h5>Text Message Using Email
+                <ejs-tooltip id='tooltip2' content='An One Time Password (OTP) would be sent to your registered Email ID'>
+                <i class="mdi mdi-help-circle"></i>
+              </ejs-tooltip>
+              </h5>
+              <!-- <span></span> -->
+            </div>
+            <div class="col-6 py-2">
+              <div class="container">
+                <div class="form-check form-switch">
+                  <!-- id="mobile" -->
+                  <input class="form-check-input" type="checkbox"
+                  id="chktxtMsgEmail" title="chktxtMsgEmail"
+                  (change)="updateCheckboxes(3)"
+                  [checked]="formAccountSecurity.controls['txtMsgEmail'].value"
+                  formControlName="txtMsgEmail" role="switch"  style="margin-left: 35px" />
+                  <label class="form-check-label" for="flexSwitchCheckChecked"></label>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-6 py-2">
+              <h5>Text Message Using Email & SMS
+                <ejs-tooltip id='tooltip3' content='An One Time Passord ( OTP) would be sent to both your registered Email & Mobile'>
+                <i class="mdi mdi-help-circle"></i>
+              </ejs-tooltip>
+              </h5>
+              <!-- <span>An One Time Passord ( OTP) would be sent to both your registered Email & Mobile</span> -->
+            </div>
+            <div class="col-6 py-2">
+              <div class="container">
+                <div class="form-check form-switch">
+                  <!-- id="textmeassage" -->
+                  <input class="form-check-input" title="chktxtMsgEmailAndSms"
+                  (change)="updateCheckboxes(4)"
+                  id="chktxtMsgEmailAndSms"
+                  type="checkbox" formControlName="txtMsgEmailAndSms"
+                   role="switch" [checked]='formAccountSecurity.controls["txtMsgEmailAndSms"].value'
+                    style="margin-left: 35px" />
+                  <label class="form-check-label" for="flexSwitchCheckChecked"></label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 py-2 "></div>
+            <div class="col-6 py-2 ">
+              <div class="d-flex justify-content-between align-items-start">
+                <button type="button" class="btn brand-color" (click)="updateAccountSecurity()">
+                  Save Changes
+                </button>
+              </div>
+            </div>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #EditProfileModel let-modal>
+  <form name="form" #form="ngForm" novalidate autocomplete="off" class="edit-profile-form">
+    <div class="modal-header">
+      <h5 class="modal-title">Edit Profile</h5>
+      <button type="button" class="btn-close" (click)="modal.dismiss('by: close icon')" aria-label="Close"></button>
+    </div>
+
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-md-12 pt-2">
+          <div class="mb-3">
+            <label class="form-label">Full Name :<span style="color: red">*</span></label>
+            <input type="text" name="fullName" [(ngModel)]="profileeditmodelform.fullName" required class="form-control"
+              placeholder="Enter full name" />
+          </div>
+        </div>
+
+        <div class="col-md-12">
+          <div class="mb-3">
+            <label class="form-label">Company :<span style="color: red">*</span></label>
+            <input type="text" name="companyName" [(ngModel)]="profileeditmodelform.companyName"
+                   disabled
+                   required class="form-control"
+                   placeholder="Enter company" />
+            <small class="text-muted">For making changes in Company Name, please contact Support</small>
+          </div>
+        </div>
+
+        <div class="col-md-12">
+          <div class="mb-3">
+            <label class="form-label">Mobile Number : <span style="color: red">*</span></label>
+            <input type="tel" name="phoneNumber" [(ngModel)]="profileeditmodelform.phoneNumber"
+                   required class="form-control" (input)="formatPhoneNumber($event)"
+                    placeholder="(###) ###-####" maxlength="14">
+            <div *ngIf="profileeditmodelform?.phoneNumber?.length > 0 && !isValidPhoneNumber(profileeditmodelform?.phoneNumber)" class="text-danger">
+              Please enter a valid phone number.
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-12">
+          <div class="mb-3">
+            <label class="form-label">Role :<span style="color: red">*</span></label>
+            <input type="text" name="designation" [(ngModel)]="profileeditmodelform.designation" required
+              class="form-control" placeholder="Enter Designation" />
+          </div>
+        </div>
+
+        <div class="col-md-12">
+          <div class="mb-3">
+            <label class="form-label">Email :<span style="color: red">*</span></label>
+            <input type="email" name="email" [(ngModel)]="profileeditmodelform.email" required
+              class="form-control" placeholder="Enter Email"
+              pattern="[A-Za-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" />
+            <div *ngIf="form?.controls?.email?.invalid && (form.controls.email.dirty || form.controls.email.touched)" class="text-danger">
+              <div *ngIf="form.controls.email.errors.required">
+                Email is required.
+              </div>
+              <div *ngIf="form.controls.email.errors.pattern">
+                Please enter a valid email address.
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-light me-2 mb-2 mb-md-0" (click)="resetProfile(); modal.dismiss('by: close button')">
+        Cancel
+      </button>
+      <button type="button" class="btn brand-color" (click)="saveprofile(); modal.close('by: close icon')" [disabled]="isUpdateButtonDisabled(form)">
+        Update
+      </button>
+    </div>
+  </form>
+</ng-template>
+
+<ng-template #resetpassword let-modal>
+  <form [formGroup]="passwordForm" novalidate autocomplete="off"
+    class="edit-profile-form col-12">
+    <div class="modal-header">
+      <h5 class="modal-title">Reset Password</h5>
+      <button type="button" class="btn-close" (click)="modal.close('by: close icon')" aria-label="Close"></button>
+    </div>
+
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="mb-3">
+            <label class="form-label">Please enter your current password <span style="color: red">*</span></label>
+            <input type="password" name="fullName" formControlName="oldpassword" required class="form-control" placeholder="Current Password" />
+            <div *ngIf="passwordForm.get('oldpassword').hasError('required') && passwordForm.get('oldpassword').dirty"
+              style="color:red">
+              old Password is required.
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-12">
+          <div class="mb-3">
+            <label for="newPassword">New Password <span style="color: red">*</span></label>
+            <input type="password" required class="form-control"
+              formControlName="newPassword" placeholder="Please enter New Password " />
+            <div *ngIf="passwordForm.get('newPassword').hasError('required') && passwordForm.get('newPassword').dirty"
+              style="color:red">
+              Password is required.
+            </div>
+            <div *ngIf="passwordForm.get('newPassword').hasError('minlength') && passwordForm.get('newPassword').dirty"
+              style="color:red">
+              Password must have at least 8 characters.
+            </div>
+            <div *ngIf="passwordForm.get('newPassword').hasError('pattern') && passwordForm.get('newPassword').dirty"
+              style="color:red">
+              Password must contain at least 1 capital letter, 1 number, and 1 special character.
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-12">
+          <div class="mb-3">
+            <label for="confirmPassword">Confirm Password<span style="color: red">*</span></label>
+            <input type="password" required class="form-control" formControlName="confirmPassword"
+              placeholder="Confirm new password" />
+            <div
+              *ngIf="passwordForm.hasError('mismatch') && (passwordForm.get('newPassword').dirty || passwordForm.get('confirmPassword').dirty)"
+              style="color:red">
+              Password do not match.
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-12" *ngIf="showOtpBox">
+          <div class="mb-3">
+            <label for="confirmPassword">OTP<span style="color: red">*</span></label>
+            <input required class="form-control" formControlName="resetPwdCode"
+              placeholder="OTP" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-light me-2 mb-2 mb-md-0" (click)="modal.close('by: close button')">
+        Cancel
+      </button>
+      <button type="button" class="btn brand-color" (click)="savepassword()" (click)="modal.close('by: close icon')"
+        [disabled]="form.invalid">
+        Update
+      </button>
+    </div>
+  </form>
+</ng-template>

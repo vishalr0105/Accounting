@@ -1,0 +1,75 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# compiled output
+/dist
+/tmp
+/out-tsc
+# Only exists if Bazel was run
+/bazel-out
+/src/app/technicianportal
+/src/app/customerportal
+/src/app/subcontractoradminportal
+/src/app/superadminportal
+/src/app/views/pages/vehicle
+/src/app/views/pages/vehicle-geofence
+/src/app/views/pages/vehicle-live-location
+/src/app/views/pages/sub-contractor
+/src/app/views/pages/knowledge-base
+/src/app/views/pages/leave page
+/src/app/views/pages/individualLicenseCertificate
+/src/app/views/pages/individualLicensesubdiscipline
+/src/app/views/modules/appointments
+/src/app/views/modules/expenses
+/src/app/views/modules/holiday-master
+/src/app/views/modules/integration
+/src/app/views/modules/projects
+/src/app/views/modules/remote-assistant
+/src/app/views/modules/triage
+/src/app/views/modules/dispatcher-boards
+/src/app/views/modules/diagnostic-questions
+/src/app/views/modules/companyfinance
+#/src/assets
+#/src/app/views/services
+/src/app/views/modules/inventory-management/rma
+/src/app/views/modules/inventory-management/part-reques
+/src/app/views/modules/inventory-management/part-request-list
+/.vs*
+/WfM/cred
+
+# dependencies
+/node_modules
+
+# profiling files
+chrome-profiler-events*.json
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
+
+# misc
+/.angular/cache
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+/typings
+
+# System Files
+.DS_Store
+Thumbs.db

@@ -1,0 +1,42 @@
+<div  class="row mt-3 ">
+  <ng-container *ngIf="files.length > 0">
+    <div class="col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2" *ngFor="let file of files; let i = index">
+      <div *ngIf="imgExtensions.includes(file.extension)" class="row">
+        <div class="col-12 mb-1 position-relative ">
+          <img  height="100px" width="100%" [src]="file.blob" alt="{{ file.name }}">
+          <div >
+            <i  style="font-size: 30px; border-radius: 50% ; padding: 10px ; background-color: rgba(202, 202, 202, 0.984);"  class="mdi  mdi-delete position-absolute deleteBtn text-danger" (click)="onFileRemove(file.name,i)"></i>
+          </div>
+        </div>
+        <div class="col-12 mb-1">
+          <p class="p-1 text-center">{{file.name}}</p>
+        </div>
+        <div class="text-center mb-2">
+          <!-- <button type="button" (click)="onFileRemove(file.name,i)" class="btn-danger btn">Delete</button> -->
+        </div>
+      </div>
+      <div *ngIf="file.extension == 'pdf'" class="row">
+        <div class="col-12 mb-1 position-relative ">
+          <img  height="100px" width="100%" src="../../../../../assets/images/pdfImg.png" alt="{{ file.name }}">
+          <div >
+            <i  style="font-size: 30px; border-radius: 50% ; padding: 10px ; background-color: rgba(202, 202, 202, 0.984);"  class="mdi  mdi-delete position-absolute deleteBtn text-danger" (click)="onFileRemove(file.name,i)"></i>
+          </div>
+        </div>
+        <div class="col-12 mb-1">
+          <p class="p-1 text-center">{{file.name}}</p>
+        </div>
+        <div class="text-center mb-2">
+          <!-- <button type="button" (click)="onFileRemove(file.name,i)" class="btn-danger btn">Delete</button> -->
+        </div>
+      </div>
+    </div>
+  </ng-container>
+    <div class="col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
+        <div class="d-flex  Img border-1 border-secondary">
+          <div class="h-100 w-100 justify-content-center text-center lign-items-center">
+            <label id="addImg" class="border-2 p-2 border-danger border-secondary" for="upload-photo"> <i data-feather="file-plus" style="height: 100px; width: 100px;" appFeatherIcon></i></label>
+            <input type="file" multiple (input)="addAttachment($event)" name="photo" id="upload-photo" />
+          </div>
+        </div>
+    </div>
+</div>

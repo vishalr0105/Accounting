@@ -1,0 +1,48 @@
+
+<div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
+    <div>
+      <h4 class="mb-3 mb-md-0">Manage Roles</h4>
+    </div>
+    <div class="d-flex align-items-center flex-wrap text-nowrap">
+      <!-- <div class="input-group wd-200 me-2 mb-2 mb-md-0">
+        <button class="btn btn-outline-primary btn-icon calendar" type="button" (click)="d.toggle()">
+          <i data-feather="calendar" appFeatherIcon></i>
+        </button>
+        <input class="form-control border-primary bg-transparent" placeholder="yyyy-mm-dd"
+            name="dp" [(ngModel)]="currentDate" ngbDatepicker #d="ngbDatepicker">
+      </div>
+      <button type="button" class="btn btn-outline-primary btn-icon-text me-2 mb-2 mb-md-0">
+        <i class="btn-icon-prepend" data-feather="printer" appFeatherIcon></i>
+        Print
+      </button> -->
+     
+      <button type="button" class="btn btn-primary" [routerLink]="['/admin/role-and-permission','add']">
+        <i class="btn-icon-prepend"></i>
+        Add Role
+      </button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <!-- <h6 class="card-title">Basic Table</h6> -->
+          <!-- <button style="float: right;" class="primary" [routerLink]="['/clientandsuppliers','add']">New
+            Client</button> -->
+          <ejs-grid [dataSource]='allNewRoles' [toolbar]='toolbarOptions' 
+          (rowDataBound)='rowDataBound($event)'
+          (commandClick)="SettingClick($event)" [allowPaging]='true' [allowSorting]='true'>
+            <e-columns>        
+              <e-column field='name' headerText='Role Name'></e-column>        
+              <e-column field='description' headerText='Role Description' ></e-column>       
+              <!-- <e-column field='createdBy' headerText='Created By' ></e-column>        -->
+              <e-column field='createdAt' type='date' [format]="format" headerText='Created Date' ></e-column>       
+              <e-column headerText="Action" [commands]="commands">
+              </e-column>
+            </e-columns>        
+          </ejs-grid>
+        </div>
+      </div>
+    </div> 
+  </div>

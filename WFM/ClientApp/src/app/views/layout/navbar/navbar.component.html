@@ -1,0 +1,156 @@
+
+<div class="subscriptionbanner" *ngIf="hidesubscriptionbanner==false && (daydiff>-0 && daydiff<3)">
+
+  <span *ngIf="showExpiringBanner">Subscription is expiring in {{daydiff + 'day(s)'}} Upgrade plan before {{subscriptionExpiryDate|date:'dd/MM/yyyy'}}</span>
+  <span *ngIf="showExpiredBanner">Subscription is expired on {{subscriptionExpiryDate|date:'dd/MM/yyyy'}}</span>
+  <a style="color:white!important"  routerLink="/admin/subscription">Upgrade plan</a>
+  <i data-feather class="e-icons e-close" style="cursor:pointer" (click)="fnhideSubscriptionBanner()"></i>
+</div>
+<nav class="navbar" (keydown)="keyDown($event)">
+  <a href="" class="sidebar-toggler"  (click)="toggleSidebar($event)">
+    <i class="feather icon-menu"></i>
+  </a>
+  <div class="navbar-content">
+    <!-- <form class="search-form" [formGroup]="searchform">
+      <div class="input-group">
+        <div class="input-group-text">
+          <i class="feather icon-search"></i>
+        </div>
+        <input type="text" autocomplete="off" formControlName="searchquery" class="form-control" id="navbarForm" placeholder="Search here...">
+      </div>
+    </form> -->
+    <ul class="navbar-nav">
+      <li class="nav-item nav-notifications" ngbDropdown>
+        <a class="nav-link" ngbDropdownToggle id="notificationDropdown">
+          <i class="link-icon feather icon-bell"></i>
+          <div class="indicator">
+            <div *ngIf="dashBoard.NotificationList?.length>0" class="circle"></div>
+          </div>
+        </a>
+        <div ngbDropdownMenu class="px-0" aria-labelledby="notificationDropdown">
+          <div class="px-3 py-2 d-flex align-items-center justify-content-between border-bottom">
+            <p>{{dashBoard.NotificationList?.length}} New Notifications</p>
+            <a *ngIf="dashBoard.NotificationList?.length>0" (click)="removeNewNotifications()" class="text-muted" style="margin-left: 10px!important;">Clear all</a>
+          </div>
+          <div class="p-1" *ngIf="dashBoard.NotificationList">
+            <div *ngFor="let item of dashBoard.NotificationList|slice:0:6">
+              <a href="javascript:void(0)" (click)="false" class="dropdown-item d-flex align-items-center py-2">
+                <div class="wd-30 ht-30 d-flex align-items-center justify-content-center bg-primary rounded-circle me-3">
+                  <!-- <i class="feather icon-gift icon-sm text-white"></i> -->
+                   <img [src]="item.notificationIcon" style="width:80px;height:80px">
+                </div>
+                <div class="flex-grow-1 me-2">
+                  <p><a (click)="dashBoard.gotoListing(item)"> {{item.notifications}}</a></p>
+                  <p class="tx-12 text-muted">{{item.timeDifference}}</p>
+                </div>
+              </a>
+            </div>
+          </div>
+          <div class="px-3 py-2 d-flex align-items-center justify-content-center border-top" *ngIf="!showAll">
+            <span (click)="gotonotification()">View all</span>
+          </div>
+          <!-- <div class="px-3 py-2 d-flex align-items-center justify-content-center border-top" *ngIf="showAll">
+            <a href="javascript:void(0)" (click)="showAll=false">View less</a>
+          </div> -->
+        </div>
+      </li>
+      <li class="nav-item nav-profile" ngbDropdown>
+        <a class="nav-link d-flex flex-column align-items-center" ngbDropdownToggle id="profileDropdown">
+          <img class="wd-30 ht-30 rounded-circle" *ngIf="profileImg==''" src="../../../../assets/images/defultImg.jpg" alt="profile">
+          <!-- <img class="wd-30 ht-30 rounded-circle" *ngIf="profileImg==''" src="../../assets/images/defultImg.jpg" alt="profile"> -->
+          <img class="wd-30 ht-30 rounded-circle" *ngIf="profileImg!=''" [src]="profileImg" alt="profile">
+          <p class="fs-6 ">{{emailId}}</p>
+          <!-- <img class="wd-30 ht-30 rounded-circle" [src]="getImage" alt="profile"> -->
+          <!-- <img src="../../../../../assets/UserIcon.jpg"
+               alt="image" class="img-sm rounded-circle"
+               style="width:23px;height:23px"> -->
+        </a>
+        <div ngbDropdownMenu class="px-0" aria-labelledby="profileDropdown">
+          <div class="d-flex flex-column align-items-center border-bottom px-5 py-3">
+            <div class="mb-3">
+              <img class="wd-80 ht-80 rounded-circle" [src]="profileImg" alt="">
+              <!-- <img class="wd-80 ht-80 rounded-circle" [src]="getImage" alt=""> -->
+            </div>
+            <div class="text-center">
+              <p class="tx-16 fw-bolder">{{userName}}</p>
+              <!-- <p class="tx-12 text-muted">amiahburton@gmail.com</p> -->
+            </div>
+          </div>
+          <ul class="list-unstyled p-1">
+            <li class="dropdown-item py-2" *ngIf="this.authService.hasRoles(['Admin'])">
+              <a routerLink="general/user-settings" class="d-flex text-body ms-0">
+                <i class="feather icon-user me-2 icon-md"></i>
+                <span>Admin Settings</span>
+              </a>
+            </li>
+            <li class="dropdown-item py-2" *ngIf="this.authService.hasRoles(['User'])">
+              <a routerLink="general/user-settings" class="d-flex text-body ms-0">
+                <i class="feather icon-user me-2 icon-md"></i>
+                <span>User Settings</span>
+              </a>
+            </li>
+            <li class="dropdown-item py-2" *ngIf="this.authService.hasRoles(['User'])">
+              <a routerLink="general/account-settings" class="d-flex text-body ms-0">
+                <i class="feather icon-user me-2 icon-md"></i>
+                <span>Account Settings </span>
+              </a>
+            </li>
+            <li class="dropdown-item py-2" *ngIf="this.authService.hasRoles(['User'])">
+              <a routerLink="general/eula" class="d-flex text-body ms-0">
+                <i class="feather icon-user me-2 icon-md"></i>
+                <span>EULA</span>
+              </a>
+            </li>
+            <li class="dropdown-item py-2" *ngIf="this.authService.hasRoles(['User'])">
+              <a routerLink="general/credit-management" class="d-flex text-body ms-0">
+                <i class="feather icon-user me-2 icon-md"></i>
+                <span>Credit management </span>
+              </a>
+            </li>
+            <li *ngIf="objCurUser && objCurUser.userType!='Customer'" class="dropdown-item py-2">
+              <a routerLink="/admin/subscription" class="d-flex text-body ms-0">
+                <i class="feather icon-plus-circle me-2 icon-md"></i>
+                <span>Subscription</span>
+              </a>
+            </li>
+            <!-- <li class="dropdown-item py-2">
+              <a href="" (click)="false" class="d-flex text-body ms-0">
+                <i class="feather icon-edit me-2 icon-md"></i>
+                <span>Edit Profile</span>
+              </a>
+            </li>
+            <li class="dropdown-item py-2">
+              <a href="" (click)="false" class="d-flex text-body ms-0">
+                <i class="feather icon-repeat me-2 icon-md"></i>
+                <span>Switch User</span>
+              </a>
+            </li> -->
+            <li class="dropdown-item py-2">
+              <a href="" (click)="onLogout($event)" class="d-flex text-body ms-0">
+                <i class="feather icon-log-out me-2 icon-md"></i>
+                <span>Log Out</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<ul class="searchlist_ul" *ngIf="searchform.controls['searchquery'].value">
+  <li class="searchList_Li" *ngFor="let r of data| globalsearch:searchform.controls['searchquery'].value;let i=index">
+    <div [routerLink]="r.link">
+      <h4>{{r.heading}}</h4>
+      <span style="color:black">{{r.description}}</span>
+    </div>
+    </li>
+</ul>
+<div *ngIf="remoteAssistantChatservice.showjoinMeetingDialog" class="joinMeetingDialogWrapper">
+    <h5 style="text-align: center;color:white">New Remote Assistant Meeting Initialized</h5>
+    <div class="joinMeetingBtnWrapper">
+    <button class="btn btn-secondary" (click)="remoteAssistantChatservice.showjoinMeetingDialog=false">Cancel</button>
+    <a [href]="remoteAssistantChatservice.start_url" target="_blank" class="btn btn-primary" >Join</a>
+  </div>
+
+</div>

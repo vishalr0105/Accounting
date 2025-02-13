@@ -1,0 +1,28 @@
+<div class="container">
+  <div class="row">
+    <div class="col-6">
+      <div class="w-100 d-flex flex-column align-items-center justify-content-center">
+        <h5>Tenant Table</h5>
+        <hr class="my-3 w-100">
+      </div>
+      <ejs-grid #grid [dataSource]="tenants" [allowPaging]="true" [pageSettings]="pageSettings"
+        (actionBegin)="onActionBegin($event)" [toolbar]="toolbarOptions" [allowFiltering]="false">
+        <e-columns>
+          <e-column field="tenantId" headerText="Id" width="150"></e-column>
+          <e-column field="name" headerText="Name" width="150"></e-column>
+          <e-column field="domain" headerText="Domain" width="150"></e-column>
+          <e-column field="creditThreshold" headerText="Credit Threshold" width="150"></e-column>
+          <e-column field="creditUsage" headerText="Credit Usage" width="150"></e-column>
+          <e-column field="billingCycle" headerText="Billing Cycle" width="150"></e-column>
+          <e-column field="contactEmail" headerText="Email" width="150"></e-column>
+          <e-column field="contactPhone" headerText="Phone" width="150"></e-column>
+          <!-- <e-column field="createdAt" headerText="Created" width="150">
+          <ng-template #template let-data>
+            <span>{{ data.createdAt | date: 'yyyy-MM-dd HH:mm' }}</span>
+          </ng-template>
+        </e-column> -->
+        </e-columns>
+      </ejs-grid>
+    </div>
+  </div>
+</div>

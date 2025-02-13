@@ -1,0 +1,59 @@
+<div class="container mx-auto mt-10">
+  <h1 class="text-2xl font-bold mb-6">Credit management</h1>
+
+  <div class="available-credits mb-8">
+    <h2 class="text-lg font-semibold">AVAILABLE CREDITS</h2>
+    <p class="text-gray-500 mb-4">No available credits.</p>
+    <button ejs-button class="e-primary">Purchase credits</button>
+    <button ejs-button cssClass="e-primary" class="ms-2" (click)="openDialog()">Select balance date</button>
+  </div>
+
+  <ejs-tab>
+    <e-tabitems>
+      <e-tabitem [header]='transactionTabHeader'>
+        <ng-template #content>
+          <ejs-grid [dataSource]="transactionHistoryData" [allowPaging]="true" [allowFiltering]="false" [height]="300">
+            <e-columns>
+              <e-column field='date' headerText='Date' width='150' type='date' format='MMM dd, yyyy, hh:mm a'></e-column>
+              <e-column field='type' headerText='Type' width='150'></e-column>
+              <e-column field='description' headerText='Description' width='250'></e-column>
+              <e-column field='createdBy' headerText='Created by' width='150'></e-column>
+              <e-column field='credits' headerText='Credits' width='100' textAlign='Right'></e-column>
+              <e-column field='tags' headerText='Tags' width='150'></e-column>
+            </e-columns>
+          </ejs-grid>
+        </ng-template>
+      </e-tabitem>
+
+      <e-tabitem [header]='allocationTabHeader'>
+        <ng-template #content>
+          <div class="flex flex-col items-center justify-center h-64">
+            <ejs-grid [dataSource]="[]" [allowPaging]="true" [height]="300">
+              <ng-template #gridEmptyTemplate>
+                <div class="text-center">
+                  <p class="text-2xl text-gray-400">No credit allocation</p>
+                  <p class="text-gray-500">
+                    Purchase credits to fully access the offering.
+                  </p>
+                </div>
+              </ng-template>
+            </ejs-grid>
+          </div>
+        </ng-template>
+      </e-tabitem>
+    </e-tabitems>
+  </ejs-tab>
+
+  <!-- Syncfusion Dialog -->
+<ejs-dialog #balanceDialog [visible]="false" [width]="'400px'" [header]="'Show the balance on a specific date'"
+[buttons]="dialogButtons" [closeOnEscape]="true" [showCloseIcon]="true">
+<div>
+<p>View your available account balance as of 00:00 UTC on a selected date.</p>
+<ejs-datepicker [(ngModel)]="selectedDate" placeholder="Select Date"></ejs-datepicker>
+<p class="mt-4">
+  Your account balance as of {{ selectedDate | date: 'MMMM d, yyyy, 00:00 UTC' }}:
+  <strong>{{ balance }} credits</strong>
+</p>
+</div>
+</ejs-dialog>
+</div>

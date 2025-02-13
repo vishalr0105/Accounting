@@ -1,0 +1,265 @@
+<div class="container mt-4">
+  <h2 *ngIf="this.authService.hasRoles(['Admin'])">Admin Settings</h2>
+  <h2 *ngIf="this.authService.hasRoles(['User'])">User Settings</h2>
+
+  <!-- Bootstrap Nav Tabs -->
+  <ul class="nav nav-tabs" id="settingsTabs">
+    <li class="nav-item">
+      <a class="nav-link active" data-bs-toggle="tab" href="#personalDetails"
+        >Personal Details</a
+      >
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-bs-toggle="tab" href="#notifications"
+        >Notifications</a
+      >
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-bs-toggle="tab" href="#email">Email</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-bs-toggle="tab" href="#password">Password</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-bs-toggle="tab" href="#workspace">Workspace</a>
+    </li>
+  </ul>
+
+  <!-- Tab Content -->
+  <div class="tab-content mt-3">
+    <!-- Personal Details -->
+    <div class="tab-pane fade show active" id="personalDetails">
+      <form [formGroup]="userForm" (ngSubmit)="updateDetails()">
+        <div class="mb-3">
+          <label class="form-label">User ID</label>
+          <input type="text" class="form-control" formControlName="id" />
+        </div>
+        <div class="mb-3">
+          <label class="form-label">User profile</label>
+          <div class="flex-shrink-0 pe-5 img-contaner">
+            <div class="file-upload" *ngIf="show">
+              <input #fileInput type="file" title="file" (change)="fileChangeEvent($event)" accept=".png, .jpg" except="image/*" />
+              <img class="img-rounded image" *ngIf="croppedImage==''" src="../../../../../../../../WFM/wwwroot/profileimages/1_Vishal.png" title="croppedimg" />
+              <!-- <img class="img-rounded image" *ngIf="croppedImage==''" src="../../assets/images/defultImg.jpg" title="croppedimg" /> -->
+              <img class="img-rounded image"*ngIf="croppedImage!=''" [src]="croppedImage" title="croppedimg" />
+            </div>
+            <button type="button" title="croppedimg" (click)="openFileSelector()">Upload Img</button>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">First Name</label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="firstName"
+            />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Last Name</label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="lastName"
+            />
+          </div>
+        </div>
+
+        <!-- <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Industry</label>
+            <select class="form-select" formControlName="industry">
+              <option *ngFor="let industry of industries" [value]="industry.id">
+                {{ industry.industryName }}
+              </option>
+            </select>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Job Title (Optional)</label>
+            <select class="form-select" formControlName="jobTitle">
+              <option *ngFor="let jobs of jobTitles" [value]="jobs.id">
+                {{ jobs.jobName }}
+              </option>
+            </select>
+          </div>
+        </div> -->
+
+        <div class="mb-3">
+          <label class="form-label">Phone Number (Optional)</label>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="phoneNumber"
+          />
+        </div>
+
+        <!-- <div class="form-check mb-3">
+          <input
+            type="checkbox"
+            class="form-check-input"
+            formControlName="consent"
+          />
+          <label class="form-check-label">
+            I agree to receive news, product updates, and event emails from
+            UP42. I can withdraw my consent at any time.
+          </label>
+        </div> -->
+
+        <button type="submit" class="btn btn-primary">
+          Update Personal Details
+        </button>
+      </form>
+    </div>
+
+    <!-- Notifications Tab -->
+    <div class="tab-pane fade" id="notifications">
+      <ejs-grid
+        #grid
+        [dataSource]="notificationSettings"
+        [allowPaging]="true"
+        [toolbar]="toolbarOptions"
+        height="300px"
+      >
+        <e-columns>
+          <e-column
+            field="workspaceName"
+            headerText="Workspace Name"
+            width="150"
+          ></e-column>
+          <e-column
+            field="email"
+            headerText="User Email"
+            width="200"
+          ></e-column>
+          <e-column headerText="Notification" width="120" textAlign="Center">
+            <ng-template #template let-data>
+              <label class="switch">
+                <input
+                  type="checkbox"
+                  [checked]="data.isNotificationEnabled"
+                  (change)="toggleNotification(data)"
+                />
+                <span class="slider round"></span>
+              </label>
+            </ng-template>
+          </e-column>
+        </e-columns>
+      </ejs-grid>
+    </div>
+
+    <!-- Email Tab -->
+    <div class="tab-pane fade" id="email">
+      <!-- Current Email -->
+      <div class="current-email">
+        <strong>Current Email:</strong> <span>{{ currentEmail }}</span>
+      </div>
+
+      <hr />
+      <!-- Horizontal Line -->
+
+      <!-- Email Update Form -->
+      <form [formGroup]="emailForm" (ngSubmit)="updateEmail()">
+        <!-- New Email -->
+        <div class="form-group">
+          <label>New Email</label>
+          <input
+            type="email"
+            class="form-control"
+            formControlName="newEmail"
+            required
+          />
+          <div *ngIf="emailForm.get('newEmail')?.invalid && emailForm.get('newEmail')?.touched" class="text-danger">
+            <small *ngIf="emailForm.get('newEmail')?.errors?.['required']">Email is required.</small>
+            <small *ngIf="emailForm.get('newEmail')?.errors?.['email']">Enter a valid email.</small>
+          </div>
+        </div>
+
+        <!-- Current Password -->
+        <div class="form-group">
+          <label>Current Password</label>
+          <input
+            type="password"
+            class="form-control"
+            formControlName="currentPassword"
+            required
+          />
+          <div *ngIf="emailForm.get('currentPassword')?.invalid && emailForm.get('currentPassword')?.touched" class="text-danger">
+            <small *ngIf="emailForm.get('currentPassword')?.errors?.['required']">Password is required.</small>
+            <small *ngIf="emailForm.get('currentPassword')?.errors?.['minlength']">Password must be at least 6 characters long.</small>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" (click)="updateEmail()">Update Email</button>
+      </form>
+    </div>
+
+    <!-- Password -->
+    <!-- Password Tab -->
+    <div class="tab-pane fade" id="password">
+      <!-- Current Password -->
+
+      <form action="" [formGroup]="passwordForm" (ngSubmit)="updatePassword()">
+        <div class="form-group">
+          <label>Current Password</label>
+          <input
+            type="password"
+            class="form-control"
+            formControlName="currentPassword"
+            required
+          />
+        </div>
+
+        <hr />
+        <!-- Horizontal Line -->
+
+        <!-- New Password -->
+        <div class="form-group">
+          <label>New Password</label>
+          <input
+            type="password"
+            class="form-control"
+            formControlName="newPassword"
+            required
+          />
+        </div>
+
+        <!-- Update Button -->
+        <button type="submit" class="btn btn-primary">Update Password</button>
+      </form>
+    </div>
+
+    <!-- Workspace Tab -->
+    <div class="tab-pane fade" id="workspace">
+      <form action="" [formGroup]="workspaceForm">
+        <!-- Workspace ID (Disabled) -->
+        <div class="form-group">
+          <label>Workspace ID</label>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="workspaceId"
+          />
+        </div>
+
+        <!-- Workspace Name with Character Counter -->
+        <div class="form-group">
+          <label>Workspace Name</label>
+          <div class="input-container">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="workspaceName"
+              maxlength="40"
+              (input)="updateCharacterCount()"
+            />
+            <span class="char-counter">{{ workspaceNameLength }}/40</span>
+          </div>
+        </div>
+
+        <!-- Update Button -->
+        <button type="submit" class="btn btn-primary">Update workspace</button>
+      </form>
+    </div>
+  </div>
+</div>

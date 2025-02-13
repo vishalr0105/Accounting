@@ -1,0 +1,87 @@
+<!-- <p>individual-license-subtype works!</p> -->
+
+<div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
+    <div>
+        <h4 class="mb-3 mb-md-0">Manage Individual License Subtype</h4>
+    </div>
+    <div class="d-flex align-items-center flex-wrap text-nowrap">
+        <button type="button" class="btn btn-primary btn-icon-text me-2 mb-2 mb-md-0" id="addbtn"
+            (click)="openAddSkillModal(verticalCenteredModal)">
+            <i class="btn-icon-prepend" data-feather="plus" appFeatherIcon></i>
+            Add new Subtype
+        </button>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <ejs-grid [dataSource]='allIndividualLicenseSubtype' (commandClick)="SettingClick($event)" [allowPaging]='true'
+                    [allowSorting]='true'>
+                    <e-columns>
+                        <e-column field='subdisciplineID' headerText='Subdiscipline Name'>
+                            <ng-template #template let-data>
+                              {{ checkleavetype(data.subdisciplineID) }}
+                            </ng-template>
+                          </e-column>
+                        <e-column field='subtype' headerText='Subtype Name'></e-column>
+                        <e-column field='createdAt' headerText='Created Date' type='date' [format]="format"></e-column>
+                        <e-column headerText="Action" [commands]="commands"></e-column>
+                    </e-columns>
+                </ejs-grid>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #verticalCenteredModal let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add New Individual License Subtype</h5>
+        <button type="button" class="btn-close" (click)="modal.close('by: close icon')" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+        <form name="form" action="javascript:{}" #form="ngForm" novalidate autocomplete="off">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="mb-3">
+                        <label class="form-label">Select Subdiscipline <span style="color: red;">*</span></label>
+                        <select class="form-select" name="subdisciplineID" #subdisciplineID="ngModel" [disabled]="isDisabled"
+                            id="exampleFormControlSelect1" [(ngModel)]="IndividualLicenseSubtypeRecord.subdisciplineID">
+                            <!-- <option selected disabled>Select your subdiscipline</option> -->
+                            <option *ngFor="let data of allIndividualLicensesubdiscipline" [value]="data.id">{{data.subdiscipline}}</option>
+                        </select>
+                        <div *ngIf="requried.errors && (requried.dirty || requried.touched)"
+                            style="font-size: smaller;">
+                            <div [hidden]="!requried.errors.required">
+                                <span class="text-danger mt-1">License required!</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="mb-3">
+                        <label class="form-label">Name of Subtype <span style="color: red;">*</span></label>
+                        <input type="text" ngModel [(ngModel)]="IndividualLicenseSubtypeRecord.subtype" name="requried" [disabled]="isDisabled"
+                            #requried="ngModel" required class="form-control" placeholder="Enter name">
+                        <div *ngIf="requried.errors && (requried.dirty || requried.touched)"
+                            style="font-size: smaller;">
+                            <div [hidden]="!requried.errors.required">
+                                <span class="text-danger mt-1">subtype required!</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn me-2 mb-2 mb-md-0" style="border-color: #EEF1F4;background-color: #EEF1F4;"
+            (click)="modal.close('by: close button')">
+            Cancel
+        </button>
+        <button type="button" class="btn brand-color" [disabled]="form.invalid || isDisabled" (click)="save()">Save Changes</button>
+    </div>
+</ng-template>
+

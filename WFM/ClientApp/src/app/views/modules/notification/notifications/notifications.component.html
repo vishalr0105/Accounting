@@ -1,0 +1,58 @@
+<ejs-tab id="element">
+  <e-tabitems style="width:500px">
+    <e-tabitem class="col-md-12">
+      <ng-template #headerText>
+        <div> <h4>Notifications</h4> </div>
+      </ng-template>
+      <ng-template #content style="margin-top:100px!important;">
+        <div class="notificationWrapper"
+        *ngFor="let n of NotificationsList" (click)="dashBoard.gotoListing(n)">
+        <div style="display: flex;font-size:15px;">
+          <img [src]="n.notificationIcon" style="width:30px;height:30px;">
+          <span style="margin-left:10px" *ngIf="n.notifications=='Workorder Assigned To Technician'"> Work Order Assigned To Technician</span>
+          <span style="margin-left:10px"  *ngIf="n.notifications!='Workorder Assigned To Technician' && n.notifications!='Invoice&Payments'"> {{n.notifications}}</span>
+          <span style="margin-left:10px"  *ngIf="n.notifications=='Invoice&Payments'">Invoice & Payments</span>
+
+        </div>
+
+        <span style="display:flex;flex-direction:row;justify-content:space-evenly ;min-width: 100px !important;">
+          <i class="feather icon-calendar"></i>
+        {{n.timeDifference}}
+      </span>
+                  </div>
+      </ng-template>
+    </e-tabitem>
+    <e-tabitem>
+      <ng-template #headerText>
+        <div><h4>Settings</h4> </div>
+      </ng-template>
+      <ng-template #content>
+        <div *ngFor="let s of notificationSetting" style="display: flex; flex-direction: row; border-bottom: 1px solid #074ce7; box-shadow: 1px 3px #074ce7; align-items: center ">
+          <ul id="category">
+            <li>
+              <input type="checkbox" [(checked)]=s.subscribed (change)="enableDisableByCategory(s)" />
+              <label style="font-size:16px;">
+                {{s.notificationCategory}}
+              </label>
+            <ul>
+              <li *ngFor="let t of s.notificationTypes">
+                <div style="display:flex;flex-direction:row">
+                  <input type="checkbox" [(checked)]="t.subscribed" (change)="enableDisableCategoryByType(t)" />
+                  <label style="font-size:16px;margin-left:.3%">{{t.notification_Type}}</label>
+                </div>
+              </li>
+            </ul>
+            </li>
+          </ul>
+          <!--<input type="checkbox" [checked]="s.subscribed" />
+          <label>{{s.notificationType}}</label>-->
+        </div>
+        <div style="display:flex;flex-direction:row;justify-content:flex-end">
+          <button (click)="updateChanges()" class="btn btn-primary">Save Changes</button>
+        </div>
+
+      </ng-template>
+    </e-tabitem>
+
+  </e-tabitems>
+</ejs-tab>

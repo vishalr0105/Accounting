@@ -1,0 +1,35 @@
+.card {
+    border: 1px solid lightgrey;
+}
+
+h6 {
+
+    color: var(--Neutral-20, #2E3132);
+    /* Web/H6/MED */
+    font-family: Inter;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 24px;
+    /* 133.333% */
+    letter-spacing: -0.36px;
+}
+
+.text-success {
+    background-color: #EEFFDC;
+    border-radius: 10px;
+    color: #3C6A1C !important;
+
+}
+
+.text-danger {
+    background-color: #FFF8F6;
+    border-radius: 10px;
+    color: #B40D04 !important;
+
+}
+
+.card-body {
+
+    padding: 12px !important;
+}

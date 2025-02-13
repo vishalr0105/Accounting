@@ -1,0 +1,55 @@
+@import '../login/login.component.scss';
+body{
+    overflow-x:hidden;
+}
+.fixed-size-image {
+  width: 100%;
+  // min-height: 700px;
+  // max-height: 750px;
+  height: auto;
+  // object-fit: cover;
+}
+
+#dynamicLine {
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border: none;
+  height: 1px;
+  background-color: black;
+}
+
+.app-logo {
+  height: 80px;
+  background: url('http://49.13.17.113:6063/assets/images/login_img.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+
+.bg-plum-plate {
+  background: url("http://49.13.17.113:6063/assets/images/login_img.png");
+  background-position: center;
+  background-size: cover;
+}
+.validationError {
+  font-size: smaller;
+  color:red;
+}
+.stepProgress{
+    color:white;
+    background-color:blue;
+    border-radius:50%;
+    padding:2.5%;
+    text-align:center;
+    z-index:999;
+}
+h4{padding:1%;margin:1%;font-weight:600}
+progress{max-height:2px!important;}
+// -------
+.form-container{
+  // width: 350px;
+}
+.sign-in-btn{
+  background:#2978a0 !important
+}

@@ -1,0 +1,11 @@
+<h4>Help Center</h4>
+<br />
+<ng-template #container class='e-dlg-overlay'>
+</ng-template>
+<ejs-dialog id='dialog' *ngIf="isVideoOpen" #ejDialog isModal='true'  (overlayClick)="onOverlayClick()"
+            [target]='targetElement' width='500px' height="250px">
+  <iframe style="width:100%;height:210px" [src]='videolink' title="YouTube video player"
+          frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen></iframe>
+
+</ejs-dialog>

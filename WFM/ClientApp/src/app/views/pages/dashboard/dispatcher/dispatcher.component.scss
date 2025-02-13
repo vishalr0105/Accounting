@@ -1,0 +1,70 @@
+.text-success {
+    background-color: #EEFFDC;
+    border-radius: 10px;
+    color: #3C6A1C !important;
+}
+
+.text-danger {
+    background-color: #FFF8F6;
+    border-radius: 10px;
+    color: #B40D04 !important;
+
+}
+
+.card {
+    border: 1px solid lightgrey;
+}
+
+h6 {
+
+    color: var(--Neutral-20, #2E3132);
+
+    font-family: Inter;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 24px;
+    /* 133.333% */
+    letter-spacing: -0.36px;
+}
+
+.card-body {
+
+    padding: 12px !important;
+}
+
+.active {
+    background-color: #3B6AFF;
+    color: white;
+}
+.circle{
+    min-width:10px;
+    min-height:10px;
+    width:10px;
+    height:10px;
+    border-radius: 50%;
+}
+.Open{
+    @extend .circle;
+    background-color:blue;
+}
+.AssignToTechnician{
+    @extend .circle;
+    background-color:orange;
+}
+.WoAccepted{
+    @extend .circle;
+    background-color:yellow;
+}
+.TravelToSite{
+    @extend .circle;
+    background-color:grey;
+}
+.JobStarted{
+    @extend .circle;
+    background-color:lightgreen;
+}
+.JobCompleted {
+    @extend .circle;
+    background-color:green;
+}

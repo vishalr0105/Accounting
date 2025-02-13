@@ -1,0 +1,21 @@
+.card {
+    border: 1px solid lightgrey;
+}
+
+.text-success {
+    background-color: #EEFFDC;
+    border-radius: 10px;
+    color: #3C6A1C !important;
+}
+
+.text-danger {
+    background-color: #FFF8F6;
+    border-radius: 10px;
+    color: #B40D04 !important;
+}
+
+.card-body {
+    padding: 12px !important;
+}
+
+ .active{background-color: #12674A!important;color:white!important;cursor: pointer;}

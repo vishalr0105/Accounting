@@ -1,0 +1,200 @@
+<div class="row ">
+  <div class="col-md-12 ">
+    <div class="card ">
+      <div class="card-body ">
+        <div class="row">
+          <div class="col-12 grid-margin">
+            <div class="col-md-12 ">
+              <h1>All Subscription Plans</h1>
+
+              <span>Manage your plans and upgrade anytime</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex align-items-center">
+
+          <label class="form-check-label me-2" for="billingToggle">Billed Monthly</label>&nbsp;&nbsp;
+
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="billingToggle" (change)="toggleBilling()">
+          </div>
+
+          <label class="form-check-label ms-2" for="billingToggle">Billed Annually</label>
+
+        </div>
+
+        <div class="container mt-4">
+          <div class="row">
+            <div class="col-md-4 stretch-card grid-margin grid-margin-md-0" *ngFor="let item of planList;  let i = index">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class=" mt-3 mb-4">{{item.item.external_name}}</h4>
+                  <span>
+                    <i *ngIf="item.item.external_name =='Starter'" id="Starter" class="mdi mdi-account-multiple">
+                      1
+                      User
+                    </i>
+                    <i *ngIf="item.item.external_name =='Grow'" class="mdi mdi-account-multiple"> 1-5 User</i>
+                    <i *ngIf="item.item.external_name =='Maximize'" class="mdi mdi-account-multiple"> Enterprises</i>
+                  </span><br>
+                  <span>
+                  <i *ngIf="item.item.external_name =='Starter'">Boost efficiency and make your business run smoother</i>
+                  <i *ngIf="item.item.external_name =='Grow'">Simplify your work, grow your business: Advanced tools for success
+                    </i>
+                  <i *ngIf="item.item.external_name =='Maximize'">Premier packages tailored for both established enterprises and expanding businesses.</i>
+                  </span>
+                  <span>
+                    <div class="my-2">
+                      <h5 class="mt-4" *ngIf="isMonthlyBilling">
+                        <i *ngIf="item.item.external_name =='Starter'" id="Starter">$62 Per Month</i>
+                        <i *ngIf="item.item.external_name =='Grow'">$47 Per Month</i>
+                        <i *ngIf="item.item.external_name === 'Maximize'">
+                          <a href="#" (click)="openVerticalCenteredModal(contact_us); $event.preventDefault()">Contact Us</a>
+                        </i>                        
+                        
+                      </h5>
+                      <h5 class="mt-4" *ngIf="!isMonthlyBilling">
+                        <i *ngIf="item.item.external_name =='Starter'" id="Starter">$51 Per Year</i>
+                        <i *ngIf="item.item.external_name =='Grow'">$39 Per Year</i>
+                        <i *ngIf="item.item.external_name === 'Maximize'">
+                          <a href="#" (click)="openVerticalCenteredModal(contact_us); $event.preventDefault()">Contact Us</a>
+                        </i>                        
+                      </h5>
+                    </div>
+                    <span *ngIf="item.item.external_name =='Grow'" class="d-flex ">
+                    </span>
+                  </span>
+             
+                  <div class="d-grid">
+                    <ng-container>
+                      <div class="btn mt-4 btn-primary">
+                        <a id="redirectId" (click)="handleButtonClick(item.item)" style="color: white;">
+                          <ng-container *ngIf="isCurrentPlan(item.item.id + '-' + MonthlyorYearly)">
+                            Current Plan
+                          </ng-container>
+                          <ng-container *ngIf="!isCurrentPlan(item.item.id + '-' + MonthlyorYearly) && i < currentIndex">
+                            Upgrade
+                          </ng-container>
+                          <ng-container *ngIf="!isCurrentPlan(item.item.id + '-' + MonthlyorYearly) && i > currentIndex">
+                            Subscribe
+                          </ng-container>
+                        </a>
+                      </div>
+                    </ng-container>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+       
+      </div>
+    </div>
+  </div>
+</div>
+<h1 class="header_text mt-3 mb-3">Compare the plans</h1>
+<div class="table_container">
+  <ejs-grid [dataSource]='data' height='auto' width="auto" class="custom-grid" (rowDataBound)='rowDataBound($event)'>
+    <e-columns>
+      <e-column field='NoHeaderData' headerText=''  width=250>
+        <ng-template #headerTemplate let-column>
+          <div class="no-header"></div>
+        </ng-template>
+        <ng-template #template let-data  >
+          <div style="font-size: 16px;">{{data.NoHeaderData}}</div>
+        </ng-template>
+      </e-column>
+      <e-column field='Starter' headerText='Starter' width=150 headerTextAlign='Center'>
+        <ng-template #headerTemplate let-column>
+          <div class="header-starter">{{ column.headerText }}</div>
+        </ng-template>
+        <ng-template #template let-data>
+          <div *ngIf="!data.Starter.indexOf(1)" style="text-align: center;font-size: 16px;">{{data.Starter}}</div>
+          <div class="img-container">
+            <img *ngIf="data.Starter === 'tick'" src="../assets/checked.png" alt="Tick" />
+            <img *ngIf="data.Starter === 'remove'" src="assets/remove.png" alt="Remove" />
+          </div>
+        </ng-template>
+      </e-column>
+      <e-column field='Grow' headerText='Grow' width=150 headerTextAlign='Center'>
+        <ng-template #headerTemplate let-column>
+          <span class="tag">POPULAR</span>
+          <div class="header-grow">{{ column.headerText }}</div>
+        </ng-template>
+        <ng-template #template let-data>
+          <div *ngIf="!data.Grow.indexOf(1)" style="text-align: center; font-size: 16px;">{{data.Grow}}</div>
+          <div class="img-container">
+            <img *ngIf="data.Grow === 'tick'" src="../assets/checked.png" alt="Tick" />
+            <img *ngIf="data.Grow === 'remove'" src="assets/remove.png" alt="Remove" />
+          </div>
+        </ng-template>
+      </e-column>
+      <e-column field='Maximize' headerText='Maximize' width=150 headerTextAlign='Center'>
+        <ng-template #headerTemplate let-column>
+          <div class="header-maximize">{{ column.headerText }}</div>
+        </ng-template>
+        <ng-template #template let-data>
+          <div *ngIf="data.Maximize === 'Enterprises'" style="text-align: center;font-size: 16px;">{{data.Maximize}}</div>
+          <div class="img-container">
+            <img *ngIf="data.Maximize === 'tick'" src="../assets/checked.png" alt="Tick" />
+            <img *ngIf="data.Maximize === 'remove'" src="assets/remove.png" alt="Remove" />
+          </div>
+        </ng-template>
+      </e-column>
+    </e-columns>
+  </ejs-grid>
+  </div>
+  <p class="mt-3">Note:*Login Email ID must be same as Chargebee Application Email ID </p>
+
+  <ng-template #contact_us let-modal>
+    <div class="modal-dialog modal-lg w-100 px-3">
+      <div class="modal-content">
+        <form name="contactForm" #form="ngForm" novalidate autocomplete="off" class="edit-profile-form col-12">
+          <div class="modal-header">
+            <h4 class="modal-title">Contact Us</h4>
+            <button type="button" class="btn-close" (click)="modal.dismiss('Close')" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group mt-2">
+              <label for="numTechnicians">Number of Field Technicians</label>
+              <input type="text" id="numTechnicians" name="numTechnicians" [(ngModel)]="numTechnicians" class="form-control" required>
+            </div>
+            <div class="form-group mt-2">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" [(ngModel)]="email" class="form-control" required>
+            </div>
+            <div class="form-group mt-2">
+              <label for="contact">Mobile Number</label>
+              <input type="tel" id="contact" name="contact" [(ngModel)]="contact" class="form-control" required>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary" (click)="submitForm()">Submit</button>
+            <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Close')">Close</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </ng-template>
+  
+  <ng-template #maximize_users let-modal>
+    <div class="modal-dialog modal-lg w-100 px-3">
+      <div class="modal-content">
+        <form name="contactForm" #form="ngForm" novalidate autocomplete="off" class="edit-profile-form col-12">
+          <div class="modal-body">
+            <div class="form-group mt-2">
+              <label for="accessKey">Please Enter Access Key</label>
+              <input type="text" id="accessKey" name="accessKey" [(ngModel)]="accessKey" class="form-control" required>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary" (click)="validateAccessKey()">Submit</button>
+            <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Close')">Close</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </ng-template>

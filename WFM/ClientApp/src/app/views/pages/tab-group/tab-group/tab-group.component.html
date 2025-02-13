@@ -1,0 +1,21 @@
+<section class="highlight">
+    <ul ngbNav #nav="ngbNav" [(activeId)]="defaultNavActiveId" class="nav-tabs">
+      <li [ngbNavItem]="1" >
+        <a ngbNavLink>HTML</a>
+
+      </li>
+      <li [ngbNavItem]="2" >
+        <a ngbNavLink>TS</a>
+
+      </li>
+      <li [ngbNavItem]="3" >
+        <a ngbNavLink>SCSS</a>
+
+      </li>
+      <li [ngbNavItem]="4" >
+        <a ngbNavLink>MODULE</a>
+
+      </li>
+    </ul>
+    <div [ngbNavOutlet]="nav"></div>
+  </section>

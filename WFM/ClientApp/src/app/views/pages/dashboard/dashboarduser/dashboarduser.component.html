@@ -1,0 +1,80 @@
+<div class="align-items-start my-3">
+  <!-- <h4 class="mb-3 mb-md-0">{{salutation}} {{currentuser}}</h4> -->
+</div>
+<div class="row">
+  <div >
+    <div class="row">
+      <div class="col-6">
+        <div class="card">
+          <div class="card-header">
+            Credit Usage
+          </div>
+          <div class="card-body">
+            <ejs-accumulationchart id="pie-chart" [legendSettings]="legendSettings">
+              <e-accumulation-series-collection>
+                <e-accumulation-series [dataSource]="pieData" xName="x" yName="y" [dataLabel]="dataLabel">
+                </e-accumulation-series>
+              </e-accumulation-series-collection>
+            </ejs-accumulationchart>
+          </div>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="card">
+          <div class="card-header">
+            Monthly Credits Usage
+          </div>
+          <div class="card-body">
+            <ejs-chart id="column-chart" [primaryXAxis]="primaryXAxis" [primaryYAxis]="primaryYAxis">
+              <e-series-collection>
+                <e-series [dataSource]="chartData" type="Column" xName="x" yName="y" name="Credits Used">
+                </e-series>
+              </e-series-collection>
+            </ejs-chart>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="container">
+        <h2 class="title">Explore Envision Beyond</h2>
+        <div class="card-container">
+          <div class="cards">
+            <div class="icon">
+              <img src="../../../../assets/Icons_googlefonts/company.svg" alt="Catalog Icon" />
+            </div>
+            <h3>Archive</h3>
+            <p class="description">Order archive data</p>
+            <p class="info">Search for available data from our data hosts</p>
+            <div class="d-flex justify-content-end">
+              <a routerLink="/user/catalog/optical" class="link">→</a>
+            </div>
+          </div>
+          <div class="cards">
+            <div class="icon">
+              <img src="../../../../assets/Icons_googlefonts/sale.svg" alt="Tasking Icon" />
+            </div>
+            <h3>Tasking</h3>
+            <p class="description">Task a satellite</p>
+            <p class="info">Get new imagery of a designated area for a given time range</p>
+            <div class="d-flex justify-content-end">
+              <a routerLink="/user/tasking/task" class="link disabled">→</a>
+            </div>
+          </div>
+          <div class="cards">
+            <div class="icon">
+              <img src="../../../../assets/Icons_googlefonts/WorkOrder.svg" alt="Data Management Icon" />
+            </div>
+            <h3>Order management</h3>
+            <p class="description">Manage your orders</p>
+            <p class="info">Store, access, and organize your data in one place</p>
+            <div class="d-flex justify-content-end">
+              <a routerLink="/user/work-order" class="link">→</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

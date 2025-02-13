@@ -1,0 +1,19 @@
+<div class="row mt-3" *ngIf="tableData">
+  <div class="col-md-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h6 class="card-title">Contacts</h6>
+        <ejs-grid [dataSource]='tableData' [allowPaging]='true' [allowSorting]='true'>
+          <e-columns>
+            <e-column field='Full Name' headerText='Full Name' textAlign='Center' width='80'></e-column>
+            <e-column field='company' headerText='Company' textAlign='Center' width='120'></e-column>
+            <e-column field='status' headerText='Status' textAlign='Center' width='120'></e-column>
+            <e-column field='Designation' headerText='Designation' textAlign='Center' width='120'></e-column>
+            <e-column field='Email' headerText='Email' textAlign='Center' width='150'></e-column>
+            <e-column field='Mobile No' headerText='Mobile No' textAlign='Center' width='120'></e-column>
+          </e-columns>
+        </ejs-grid>
+      </div>
+    </div>
+  </div>
+</div>

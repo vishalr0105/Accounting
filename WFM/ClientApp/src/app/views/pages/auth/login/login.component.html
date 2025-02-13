@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+  </head>
+
+  <body style="overflow-x: hidden">
+    <div class="spinner-wrapper full-screen" *ngIf="isLoading">
+      <div class="spinner"></div>
+    </div>
+    <div class="img-wapper">
+      <img
+        src="https://aassurecomply.com/wp-content/uploads/2024/12/dark-logo-4.svg"
+        alt="Logo"
+        width="200px"
+        height="100%"
+        class="d-inline-block align-text-top"
+      />
+    </div>
+    <div class="row h-100 g-0">
+      <div class="d-none d-lg-block col-lg-7">
+        <div class="slider-light">
+          <carousel>
+            <slide>
+              <div
+                class="position-relative h-100 d-flex justify-content-center align-items-center"
+                style="
+                  background-image: url('https://aassurecomply.com/wp-content/uploads/2024/12/Heading-3.png');
+                  /* background-image: url('assets/images/satelliteimagery.png'); */
+                  background-position: right;
+                  background-repeat: no-repeat;
+                  background-size: cover;
+                  height: 100vh !important;
+                "
+              >
+                <div
+                  class="carousel-caption d-flex flex-column align-items-center justify-content-center"
+                >
+                <h5 class="text-uppercase fw-bold mb-3">
+                  Transform Your Invoicing Process with Ease
+
+                </h5>
+                <p class="mb-4">
+                  Experience seamless, automated e-invoicing that boosts efficiency and ensures compliance globally
+                </p>
+                </div>
+              </div>
+            </slide>
+          </carousel>
+        </div>
+      </div>
+
+      <div
+        class="d-flex bg-white justify-content-center align-items-center col-md-12 col-lg-5"
+      >
+        <div class="" style="width: 55%">
+          <h2 class="mb-3">
+            <div>Login</div>
+          </h2>
+          <h5 class="mb-5">
+            <div>
+              Login your account or
+              <a routerLink="/company/register">Create Account</a>
+            </div>
+          </h5>
+
+          <div class="divider"></div>
+          <div>
+            <form [formGroup]="loginform" autocomplete="off">
+              <div class="mb-3 e-float-input e-input-group">
+                <input
+                  type="email"
+                  formControlName="userName"
+                  pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$"
+                  required
+                  class="e-input"
+                  id="exampleInputEmail1"
+                />
+                <span class="e-float-line"></span>
+                <label class="e-float-text">Work Email ID </label>
+                <div
+                  *ngIf="
+                    loginform.controls['userName'].errors && isLoading == true
+                  "
+                  style="font-size: smaller"
+                >
+                  <div
+                    [hidden]="
+                      !loginform.controls['userName'].hasError('required')
+                    "
+                  >
+                    <span class="text-danger mt-1">Email required!</span>
+                  </div>
+                  <div
+                    [hidden]="
+                      !loginform.controls['userName'].hasError('pattern')
+                    "
+                  >
+                    <span style="color: red"> Invalid Email Id!</span>
+                  </div>
+                </div>
+              </div>
+              <div class="mb-3 e-float-input e-input-group">
+                <input
+                  type="password"
+                  class="e-input"
+                  formControlName="password"
+                  pattern="(?=^.{8,100}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+}{:;?/>.<,])(?!.*\s).*$"
+                  id="exampleInputPassword1"
+                  autocomplete="current-password"
+                />
+                <span class="e-float-line"></span>
+                <label class="e-float-text">Password</label>
+                <div
+                  *ngIf="
+                    loginform.controls['password'].errors && isLoading == true
+                  "
+                  style="font-size: smaller"
+                >
+                  <div
+                    [hidden]="
+                      !loginform.controls['password'].hasError('required')
+                    "
+                  >
+                    <span class="text-danger mt-1">Password required!</span>
+                  </div>
+                  <div
+                    [hidden]="
+                      !loginform.controls['password'].hasError('pattern')
+                    "
+                  >
+                    <span class="text-danger mt-1">
+                      Password needs to have minimum of 8 characters, 1 capital
+                      letter, 1 number and 1 Special Character!
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <!--OTP-->
+              <div
+                *ngIf="showOtpbox == true"
+                class="mb-3 e-float-input e-input-group"
+              >
+                <input
+                  type="text"
+                  class="e-input"
+                  placeholder="Enter OTP"
+                  formControlName="otp"
+                />
+                <span class="e-float-line"></span>
+                <label class="e-float-text"
+                  >Enter One Time Password (OTP)</label
+                >
+              </div>
+              <div>
+                <button
+                  type="submit"
+                  [disabled]="loginform.invalid"
+                  class="btn brand-color btn-lg login-btn"
+                  (click)="onLoggedin($event)"
+                  fdprocessedid="s3ylxq"
+                >
+                  {{ showOtpbox == false ? "Login" : "Verify Otp" }}
+                  <i class="mdi mdi-arrow-right"></i>
+                </button>
+              </div>
+              <!-- Render the Button -->
+
+              <div style="margin-top: 10px">
+                <a routerLink="/forgetpwd">Forgot Password </a>
+              </div>
+            </form>
+
+            <div id="dynamicLine"></div>
+
+            <!--<div class="row" style="background-color: white; padding: 15px;">
+            <div class="col-lg-4">
+              <div class="text-center">
+                <button type="submit" class="btn btn-light btn-lg btn-block custom-button" (click)="signInWithFB()"
+                  fdprocessedid="s3ylxq" style="width: 100%;">
+                  <i class="mdi mdi-facebook" style="color:blue;"></i>
+                </button>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="text-center">
+                <asl-google-signin-button
+                  class="btn btn-light btn-lg btn-block custom-button"></asl-google-signin-button>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="text-center">
+                <button type="submit" [disabled]="userForm.invalid" class="btn btn-light btn-lg btn-block custom-button"
+                  (click)="onLoggedin($event)" fdprocessedid="s3ylxq" style="width: 100%;">
+                  <i class="mdi mdi-apple"></i>
+                </button>
+              </div>
+            </div>
+          </div>-->
+            <p style="margin-top: 5px">
+              By creating an account, you agree to the
+              <a
+                href="https://etaprise.com/wp-content/uploads/2024/06/Etaprise-FSM-Terms-of-Service.pdf"
+                target="_new"
+                >Terms of Service</a
+              >
+              and
+              <a routerLink="/Tnc/privacypolicy">Privacy Policy</a>.
+            </p>
+            <!--<div>
+            <button type="button" [routerLink]="['/existingOrganization']" class="btn btn-secondary btn-lg btn-block"
+              fdprocessedid="s3ylxq">Join an existing organization
+            </button>
+          </div>-->
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  </body>
+  <script>
+    window.fbAsyncInit = function () {
+      FB.init({
+        appId: "737540788341261",
+        cookie: true,
+        xfbml: true,
+        version: "{api-version}",
+      });
+
+      FB.AppEvents.logPageView();
+    };
+
+    (function (d, s, id) {
+      var js,
+        fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) {
+        return;
+      }
+      js = d.createElement(s);
+      js.id = id;
+      js.src = "https://connect.facebook.net/en_US/sdk.js";
+      fjs.parentNode.insertBefore(js, fjs);
+    })(document, "script", "facebook-jssdk");
+  </script>
+</html>

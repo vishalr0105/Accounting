@@ -1,0 +1,83 @@
+<!-- <p>skill works!</p> -->
+
+<div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
+    <div>
+        <h4 class="mb-3 mb-md-0">Manage Industry Type</h4>
+    </div>
+    <div class="d-flex align-items-center flex-wrap text-nowrap">
+        <button type="button" class="btn btn-primary btn-icon-text me-2 mb-2 mb-md-0" 
+            (click)="openAddSkillModal(verticalCenteredModal)">
+            <i class="btn-icon-prepend" data-feather="plus" appFeatherIcon></i>
+            Add new Industry Type
+        </button>
+        <button type="button" style="display: none;" class="btn btn-primary btn-icon-text me-2 mb-2 mb-md-0" id="addbtn"
+        (click)="openAddSkillModalForGetbyId(verticalCenteredModal)">
+        <i class="btn-icon-prepend" data-feather="plus" appFeatherIcon></i>
+        Add new Industry Type
+    </button>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <ejs-grid [dataSource]='lits' (commandClick)="SettingClick($event)" [allowPaging]='true'
+                    [allowSorting]='true'>
+                    <e-columns>
+                        <e-column field='name' headerText='Name'></e-column>
+                        <e-column field='createdAt' headerText='Created Date' type='date' [format]="format"></e-column>
+                        <e-column headerText="Action" [commands]="commands"></e-column>
+                    </e-columns>
+                </ejs-grid>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #verticalCenteredModal let-modal>
+    <form [formGroup]="industryTypeForm" (ngSubmit)="save()">
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">{{lablename}}</h5>
+        <button type="button" class="btn-close" (click)="modal.close('by: close icon')" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+        
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="mb-3">
+                        <label class="form-label">Name <span style="color: red;">*</span></label>
+                        <input type="text" [(ngModel)]="industryType.name" formControlName="name"  [ngClass]="{'is-valid': industryTypeForm.get('name').valid && industryTypeForm.get('name').touched,
+                        'is-invalid': industryTypeForm.get('name').invalid && industryTypeForm.get('name').touched}" name="requried" [disabled]="isDisabled"
+                             required class="form-control" placeholder="Enter name">
+                        <!-- <div *ngIf="requried.errors && (requried.dirty || requried.touched)"
+                            style="font-size: smaller;">
+                            <div [hidden]="!requried.errors.required">
+                                <span class="text-danger mt-1">Name required!</span>
+                            </div>
+                        </div> -->
+                        <label class="text-danger"
+                        *ngIf="industryTypeForm.get('name').invalid && industryTypeForm.get('name').touched">
+                        Name is required
+                     </label>
+                    <div *ngIf="industryTypeForm.get('name').hasError('pattern') && industryTypeForm.get('name').touched"
+                          class="text-danger">
+                      <div >
+                        <span class="text-danger mt-1">Numbers and special character are not allowed.</span>
+                      </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn me-2 mb-2 mb-md-0" style="border-color: #EEF1F4;background-color: #EEF1F4;"
+            (click)="modal.close('by: close button')">
+            Cancel
+        </button>
+
+        <button type="submit" class="btn brand-color" *ngIf="!isDisabled" [disabled]="isDisabled" >Add industry</button>
+    </div>
+</form>
+</ng-template>

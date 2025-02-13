@@ -1,0 +1,148 @@
+<nav class="sidebar">
+  <div class="sidebar-header">
+
+    <!--- Logo -->
+    <a routerLink="/admin/dashboard" class=" sidebar-brand nobleui-logo">
+      <img src="https://aassurecomply.com/wp-content/uploads/2024/12/dark-logo-4.svg"  height="100%" title="logo" alt="logo">
+    </a>
+
+    <!-- <a routerLink="/" class="sidebar-brand nobleui-logo">
+      <img src="assets/images/logo.png" alt="logo">
+    </a> -->
+
+    <!--- Toggler -->
+    <div class="sidebar-toggler not-active" #sidebarToggler (click)="toggleSidebar($event)">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+  </div>
+  <div class="sidebar-body" (mouseenter)="operSidebarFolded()" (mouseleave)="closeSidebarFolded()" [perfectScrollbar]>
+    <div class="accordion" id="accordionExample" style="border:none!important">
+      <div class="accordion-item" *ngFor="let m of menuItems" [id]="m.id" style="cursor:pointer!important;border-color:transparent!important">
+        <ng-container *ngIf="m.label!='Dashboard'">
+          <h2 class="accordion-header">
+            <button class="accordion-button sidebar-accordian-btn " style="cursor: pointer !important " type="button" data-bs-toggle="collapse"
+                    [attr.data-bs-target]="'#'+m.label" aria-expanded="true" aria-controls="collapseOne">
+              <img  [src]="m.icon" class="filter-white" />
+              <span *ngIf="hidelabel">{{ transformLabel(m.label) }}</span>
+            </button>
+          </h2>
+          <div [id]="m.label" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+            <div class="accordion-header">
+
+              <div>
+                <div *ngFor="let item of m.subItems;let i=index;" [routerLink]="item.link"
+                     class="nav-item nav-category mt-0 mb-0" style="font-size: 15px; cursor:pointer!important;color:white!important;margin-left:0px!important;padding: 20px;border-bottom: 1px solid #6d8591;">
+
+                   <img [src]="item.icon" class="filter-white" />
+                  <span *ngIf="hidelabel">{{item.label=='CustomerService'?'Customer Service':item.label}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container  *ngIf="m.label=='Dashboard'">
+          <h2 class="accordion-header dashboard" >
+            <button routerLink="dashboard" class="accordion-button sidebar-accordian-btn" style="cursor: pointer !important " type="button"
+                    >
+              <img  [src]="m.icon" class="filter-white" />
+              <span *ngIf="hidelabel">{{ transformLabel(m.label) }}</span>
+            </button>
+          </h2>
+        </ng-container>
+      </div>
+
+
+      <!--<div class="accordion-item">
+    <h2 class="accordion-header" id="header2">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse"
+              data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseOne">
+        Accordion Item #1
+      </button>
+    </h2>
+    <div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+      <div class="accordion-body">
+        This is the first item's accordion body. It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. You can modify any of this with custom CSS or overriding our default variables.
+      </div>
+    </div>
+  </div>-->
+      <!--<div class="accordion-item">
+    <h2 class="accordion-header" id="headingTwo">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo"
+              aria-expanded="true" aria-controls="collapseTwo">
+        Accordion Item #1
+      </button>
+    </h2>
+    <div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+      <div class="accordion-body">
+        This is the first item's accordion body. It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. You can modify any of this with custom CSS or overriding our default variables.
+      </div>
+    </div>
+  </div>-->
+      <!-- Add more accordion items here -->
+    </div>
+
+    <!--
+  <!--- Sidemenu start -->
+    <!--<ul class="sidebar-nav metismenu" id="sidebar-menu" #sidebarMenu>
+  <li routerLink="/admin/RemoteAssist">Remote Assistant</li>-->
+    <!--<ng-container *ngFor="let item of modules">
+  <li class="nav-item nav-category mt-4 mb-4" style="font-size: 15px; margin: 2%;">
+    {{ item.name }}</li>
+  <ng-container *ngFor="let obj of item.features">
+    <li class="nav-item" *ngIf="!item.isTitle" style="height:35px; margin: 1%;  padding: 3% 0% 3% 0%;">
+      <a class="nav-link nav-link-ref" [routerLink]="obj.url" *ngIf="!hasItems(item)"
+        [attr.data-parent]="item.parentId" style="cursor:pointer">-->
+    <!--<i class="link-icon" data-feather="users" appFeatherIcon ></i>-->
+    <!--<img [src]="obj.icon" style="width:20px;height:20px;" />
+            <span class="link-title"> {{ obj.name }}</span>
+            <span class="badge bg-{{item.badge.variant}}" *ngIf="item.badge">{{item.badge.text}}</span>
+          </a>
+        </li>
+      </ng-container>
+    </ng-container>
+  </ul>-->
+
+
+    <!--- Sidemenu end -->
+
+  </div>
+</nav>
+<nav class="settings-sidebar">
+  <div class="sidebar-body">
+    <!-- <a href="" class="settings-sidebar-toggler" (click)="toggleSettingsSidebar($event)">
+      <i class="icon feather icon-settings"></i>
+    </a> -->
+    <h6 class="text-muted mb-2">Sidebar:</h6>
+    <div class="mb-3 pb-3 border-bottom">
+      <div class="form-check form-check-inline">
+        <label class="form-check-label">
+          <input type="radio" class="form-check-input" name="sidebarThemeSettings"
+            (change)="onSidebarThemeChange($event)" id="sidebarLight" value="sidebar-light" checked>
+          <i class="input-frame"></i>
+          Light
+        </label>
+      </div>
+      <div class="form-check form-check-inline">
+        <label class="form-check-label">
+          <input type="radio" class="form-check-input" name="sidebarThemeSettings"
+            (change)="onSidebarThemeChange($event)" id="sidebarDark" value="sidebar-dark">
+          <i class="input-frame"></i>
+          Dark
+        </label>
+      </div>
+    </div>
+    <div class="theme-wrapper">
+      <h6 class="text-muted mb-2">Light Theme:</h6>
+      <a class="theme-item active" href="https://www.nobleui.com/angular/template/demo1/">
+        <img src="assets/images/screenshots/light.jpg" alt="light theme">
+      </a>
+      <h6 class="text-muted mb-2">Dark Theme:</h6>
+      <a class="theme-item" href="https://www.nobleui.com/angular/template/demo2/">
+        <img src="assets/images/screenshots/dark.jpg" alt="dark theme">
+      </a>
+    </div>
+  </div>
+</nav>

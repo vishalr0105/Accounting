@@ -1,0 +1,17 @@
+<div>
+  <ejs-chart id="chart-container" [primaryXAxis]='primaryXAxis'[primaryYAxis]='primaryYAxis' [title]='title'>
+    <e-series-collection>
+        <e-series [dataSource]='chartData' type='StackingBar' xName='x' yName='y' name='Apple'></e-series>
+        <e-series [dataSource]='chartData' type='StackingBar' xName='x' yName='y1' name='Orange'></e-series>
+        <e-series [dataSource]='chartData' type='StackingBar' xName='x' yName='y2' name='Wastage'></e-series>
+    </e-series-collection>
+</ejs-chart>
+</div>
+<div>
+  <ejs-accumulationchart id="container" width='92%' [legendSettings]="legendSettings" [title]="title" [enableAnimation]= 'enableAnimation'>
+    <e-accumulation-series-collection>
+        <e-accumulation-series name='Browser' [dataSource]='pieData' xName='x' yName='y' [startAngle]="startAngle" [endAngle]="endAngle" innerRadius="60%" borderRadius='8'>
+        </e-accumulation-series>
+    </e-accumulation-series-collection>
+</ejs-accumulationchart>
+</div>

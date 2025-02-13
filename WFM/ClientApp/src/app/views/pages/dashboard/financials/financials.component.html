@@ -1,0 +1,53 @@
+<div class="row">
+    <div class="col-12 col-xl-12">
+        <div class="row flex-grow-1">
+            <div class=" grid-margin stretch-card col-md-12 col-lg-6 col-xl-5">
+                <div class="card">
+                    <div class="card-body">
+                        <span class="d-flex justify-content-between m-3">
+                            <h6>Cash Runway/Burn Rate</h6>
+                            <div>
+                                <img src="../../../../../assets/images/Icon.png" alt=""
+                                ngbTooltip="Cash Runway/Burn Rate Stastics">
+                              </div>
+                        </span>
+                        <div>
+                            <ejs-chart style='display:block; height: 300px;' [chartArea]='chartArea' align='center'
+                                id='financialChart5' [primaryXAxis]='primaryXAxis' [primaryYAxis]='primaryYAxis'
+                                [tooltip]='tooltip'>
+                                <e-series-collection>
+                                    <e-series [dataSource]='cashrunwayGraphData?.cashrunway' type='SplineArea' xName='xAxis' yName='yAxis'
+                                        opacity="0.3" width='2.5' fill="#4E21BA"></e-series>
+                                </e-series-collection>
+                            </ejs-chart>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class=" grid-margin stretch-card col-md-12 col-lg-6 col-xl-7">
+                <div class="card">
+                    <div class="card-body">
+                        <span class="d-flex justify-content-between m-3">
+                            <h6>Customer Churn Rate</h6>
+                            <div>
+                                <img src="../../../../../assets/images/Icon.png" alt=""
+                                ngbTooltip="Customer Churn Rate Stastics">
+                              </div>
+                        </span>
+                        <div>
+                            <ejs-chart style='display:block; height: 300px;' [chartArea]='chartArea' align='center'
+                                id='financialChart6' [primaryXAxis]='primaryXAxis' [primaryYAxis]='primaryYAxis'
+                                [tooltip]='tooltip'>
+                                <e-series-collection>
+                                    <e-series [dataSource]='CustomerChurnGraphData?.customerChurnGraph ' type='Line' xName='xAxis'
+                                    yName='yAxis'
+                                        fill="blue" opacity="0.3" width=2 [marker]="marker"> </e-series>
+                                </e-series-collection>
+                            </ejs-chart>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

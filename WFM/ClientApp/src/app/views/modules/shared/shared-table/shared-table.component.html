@@ -1,0 +1,21 @@
+
+
+<div class="col-md-12 grid-margin stretch-card">
+  <div class="card">
+    <div class="card-body">
+      <ejs-grid [allowResizing]='true' #grid [toolbar]="toolbarOptions" 
+                [editSettings]='editSettings' (beforeBatchDelete)="beforeBatchDelete($event)" 
+                (toolbarClick)="toolbarClick($event)" (commandClick)="SettingClick($event)" 
+                [allowExcelExport]="true" [allowPaging]="true" [selectionSettings]="selectionOptions"
+                [dataSource]='tableData' [allowSorting]='true'>
+        <e-columns>
+          <e-column width="80px" type='checkbox' ></e-column>
+          <e-column width="200px" *ngFor="let item of fieldsAndHeaders" [field]='item.field' [headerText]='item.header'
+           textAlign='center'>
+          </e-column>
+          <e-column width="180px" headerText="Action" textAlign='center'[commands]="commands"></e-column>
+        </e-columns>
+      </ejs-grid>
+    </div>
+  </div>
+</div>

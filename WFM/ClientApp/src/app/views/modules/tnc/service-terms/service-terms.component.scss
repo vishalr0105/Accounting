@@ -1,0 +1,12 @@
+@import '../../../pages/auth/login/login.component.scss';
+ul{list-style-type: decimal;}
+p{
+    font-size: small;text-align: justify;
+}
+.backArrow{
+    font-size:40px;position: absolute;z-index: 9999;left:42%;top:-20px;cursor: pointer;
+}
+h4{margin-top:10px!important;margin-bottom:10px!important}
+ul>li{
+    text-align: justify;
+}

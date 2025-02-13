@@ -1,0 +1,66 @@
+<div class="contact-us-container">
+    <h1 class="title">Talk to Us</h1>
+    <p class="description">
+      We'd love to hear from you! Here are some ways to get in touch with us:
+    </p>
+
+    <div class="contact-info">
+      <div class="info-item">
+        <i class="icon fas fa-envelope"></i>
+        <div class="info-details">
+          <h2>Email</h2>
+          <p><a href="info@nvisionbeyond.com">info@nvisionbeyond.com</a></p>
+        </div>
+      </div>
+
+      <div class="info-item">
+        <i class="icon fas fa-phone"></i>
+        <div class="info-details">
+          <h2>Phone</h2>
+          <p><a href="tel:+1234567890">+65 6631 8411</a></p>
+        </div>
+      </div>
+
+      <div class="info-item">
+        <i class="icon fas fa-map-marker-alt"></i>
+        <div class="info-details">
+          <h2>Address</h2>
+          <p>S3 Ground Floor, 520 Collins Street Suite # 1191 Melbourne, VIC 3000 Australia</p>
+        </div>
+      </div>
+    </div>
+     <!-- Floating Support Button -->
+  <div class="floating-container">
+    <button class="floating-button" (click)="togglePopup()">
+      <i class="fas fa-comments"></i>
+    </button>
+
+    <!-- Popup Support Form -->
+    <div class="popup-form" *ngIf="isPopupVisible">
+      <form (ngSubmit)="submitForm()">
+        <h3>Support Form</h3>
+
+        <label for="name">Name:</label>
+        <input type="text" id="name" [(ngModel)]="formData.name" name="name" required />
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" [(ngModel)]="formData.email" name="email" required />
+
+        <label for="message">How can we help you?</label>
+        <textarea id="message" [(ngModel)]="formData.message" name="message" required></textarea>
+
+        <label for="attachment">Attachment:</label>
+        <input type="file" id="attachment" (change)="onFileSelected($event)" />
+
+        <div class="row">
+          <div class="col-6">
+            <button type="submit" class="w-100">Submit</button>
+          </div>
+          <div class="col-6">
+            <button type="button" class="close-btn w-100" (click)="togglePopup()">Close</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  </div>
