@@ -1,4 +1,4 @@
-<div>
+<!-- <div>
   <ejs-chart id="chart-container" [primaryXAxis]='primaryXAxis'[primaryYAxis]='primaryYAxis' [title]='title'>
     <e-series-collection>
         <e-series [dataSource]='chartData' type='StackingBar' xName='x' yName='y' name='Apple'></e-series>
@@ -14,4 +14,139 @@
         </e-accumulation-series>
     </e-accumulation-series-collection>
 </ejs-accumulationchart>
+</div> -->
+<div class="container">
+  <div class="row">
+    <!-- left side -->
+    <div class="col-9">
+      <!-- MONEY IN -->
+      <div class="card p-3">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h6 class="fw-bold">Quick actions <i class="fas fa-info-circle"></i></h6>
+        </div>
+      
+        <div class="bg-light p-3 rounded">
+          <h6 class="text-muted">MONEY IN</h6>
+          <div class="row">
+            <div *ngFor="let action of actions" class="col-3 text-center p-2">
+              <div class="action-icon">
+                <i class="fas" [ngClass]="action.icon"></i>
+                <span class="badge bg-success">
+                  <i class="fas fa-plus"></i>
+                </span>
+              </div>
+              <p class="small mt-2">{{ action.label }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- tasking -->
+      <div class="card p-3 mt-2">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <h6 class="fw-bold">Tasks</h6>
+          <i class="fas fa-ellipsis-h text-muted"></i>
+        </div>
+      
+        <div *ngFor="let task of tasks" class="task-item d-flex justify-content-between align-items-center py-3">
+          <div>
+            <p class="fw-bold mb-0">{{ task.title }}</p>
+            <p *ngIf="task.subtitle" class="text-muted small mb-0">{{ task.subtitle }}</p>
+          </div>
+          <button class="btn btn-outline-success px-4">{{ task.action }}</button>
+        </div>
+      </div>
+      <!-- chart -->
+      <div class="card p-3">
+        <div class="d-flex justify-content-between align-items-center">
+          <h6 class="fw-bold">
+            INCOME OVER TIME 
+            <i class="fas fa-info-circle text-muted"></i>
+          </h6>
+          <span class="text-muted small">Data updated a few seconds ago</span>
+        </div>
+      
+        <div class="d-flex justify-content-between align-items-center my-2">
+          <div>
+            <p class="fw-bold h4 mb-0">${{ income.toFixed(2) }} <span class="text-muted small">This month</span></p>
+            <p class="text-success small">
+              <i class="fas fa-arrow-up"></i> ${{ difference.toFixed(2) }} more than Feb, 2024
+            </p>
+          </div>
+      
+          <div class="d-flex align-items-center">
+            <span class="text-muted me-2">Duration:</span>
+            <select class="form-select form-select-sm me-3" [(ngModel)]="selectedDuration">
+              <option *ngFor="let duration of durations" [value]="duration">{{ duration }}</option>
+            </select>
+      
+            <span class="text-muted me-2">Compare to previous year:</span>
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" [(ngModel)]="comparePreviousYear" (change)="toggleComparison()">
+            </div>
+          </div>
+        </div>
+      
+        <ejs-chart [primaryXAxis]="primaryXAxis" [primaryYAxis]="primaryYAxis">
+          <e-series-collection>
+            <e-series [dataSource]="chartData" type="Line" xName="week" yName="income"></e-series>
+          </e-series-collection>
+        </ejs-chart>
+      </div>
+      
+    </div>
+    <!-- right side -->
+    <div class="col-3 flex-col ">
+      <div class="card p-3">
+        <h6 class="text-muted">SETUP</h6>
+        <div class="progress mb-3">
+          <div class="progress-bar bg-success" role="progressbar" [style.width.%]="progress">
+            {{ progress }}% Done
+          </div>
+        </div>
+      
+        <ul class="list-unstyled">
+          <li *ngFor="let step of steps" class="d-flex align-items-center mb-2">
+            <span *ngIf="step.completed" class="text-success me-2">&#10004;</span>
+            <span *ngIf="!step.completed" class="text-secondary me-2">&#9899;</span>
+            <span class="flex-grow-1">{{ step.label }}</span>
+            <a *ngIf="!step.completed" href="#" class="text-success text-decoration-none">{{ step.action }}</a>
+          </li>
+        </ul>
+      </div>
+        <div class="card p-3 mt-2">
+          <div class="d-flex justify-content-between align-items-center">
+            <h6 class="fw-bold">OVERDUE INVOICES</h6>
+            <span class="text-muted small">As of today</span>
+          </div>
+        
+          <div class="mt-3">
+            <p class="mb-0 text-muted">Total</p>
+            <h4 class="fw-bold">${{ totalAmount.toFixed(2) }}</h4>
+            <p class="small text-muted">{{ overdueCount }} overdue</p>
+          </div>
+        
+          <hr />
+        
+          <div *ngFor="let invoice of invoices">
+            <div class="d-flex justify-content-between">
+              <div>
+                <strong>{{ invoice.company }}</strong>
+                <p class="small text-muted">Invoice {{ invoice.invoiceNumber }}</p>
+              </div>
+              <div class="text-end">
+                <strong>${{ invoice.amount.toFixed(2) }}</strong>
+                <p class="small text-muted">Due {{ invoice.dueDate }}</p>
+              </div>
+            </div>
+          </div>
+        
+          <div class="mt-3 d-flex justify-content-between align-items-center">
+            <a href="#" class="text-primary text-decoration-none">View all</a>
+            <i class="fas fa-ellipsis-h text-muted"></i>
+          </div>
+        </div>
+    </div>
+  </div>
 </div>
+
+

@@ -1,0 +1,30 @@
+.action-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: white;
+    border: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin: auto;
+  }
+  
+  .action-icon i {
+    font-size: 24px;
+    color: #28a745;
+  }
+  
+  .action-icon .badge {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    font-size: 12px;
+    border-radius: 50%;
+    min-width: unset !important;
+  }
+  .action-icon .badge i{
+    font-size: 14px;
+    color: #fff;
+  }

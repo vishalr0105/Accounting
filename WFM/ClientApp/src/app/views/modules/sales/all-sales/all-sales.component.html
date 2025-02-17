@@ -1,1 +1,26 @@
-<p>all-sales works!</p>
+<div class="card p-3">
+    <!-- Header Labels -->
+    <div class="row text-center mb-2">
+      <div *ngFor="let data of salesData" class="col">
+        <h6 class="fw-bold">{{ data.label }}</h6>
+        <p class="text-muted small">{{ data.subtext }}</p>
+      </div>
+    </div>
+  
+    <!-- Syncfusion Segmented Progress Bar -->
+    <div class="progress-container">
+      <ejs-progressbar 
+        *ngFor="let data of salesData" 
+        [type]="'Linear'" 
+        [value]="data.progress" 
+        [height]="'10px'" 
+        [trackThickness]="0"
+        [progressThickness]="10"
+        [isIndeterminate]="false"
+        [enableRtl]="false"
+        [animation]="{ enable: true, duration: 500 }"
+        [style]="{'background': data.color, 'margin-right': '2px'}">
+      </ejs-progressbar>
+    </div>
+  </div>
+  

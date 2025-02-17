@@ -9,7 +9,8 @@ import { EstimatesComponent } from './estimates/estimates.component';
 import { SalesOrdersComponent } from './sales-orders/sales-orders.component';
 import { RecurringSalesComponent } from './recurring-sales/recurring-sales.component';
 import { AccumulationChartModule, BarSeriesService, CategoryService, ChartModule, PieSeriesService, StackingBarSeriesService,AccumulationLegendService,AccumulationTooltipService, AccumulationAnnotationService,AccumulationDataLabelService} from '@syncfusion/ej2-angular-charts';
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ProgressBarModule } from '@syncfusion/ej2-angular-progressbar';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,10 @@ import { AccumulationChartModule, BarSeriesService, CategoryService, ChartModule
     CommonModule,
     SalesRoutingModule,
     ChartModule,
-    AccumulationChartModule
+    AccumulationChartModule,
+    ReactiveFormsModule,
+    FormsModule,
+    ProgressBarModule
   ],
   providers:[BarSeriesService, StackingBarSeriesService, CategoryService,PieSeriesService, AccumulationLegendService, AccumulationTooltipService, AccumulationDataLabelService,
     AccumulationAnnotationService]
