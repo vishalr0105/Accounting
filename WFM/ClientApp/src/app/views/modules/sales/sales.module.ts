@@ -8,9 +8,10 @@ import { InvoicesComponent } from './invoices/invoices.component';
 import { EstimatesComponent } from './estimates/estimates.component';
 import { SalesOrdersComponent } from './sales-orders/sales-orders.component';
 import { RecurringSalesComponent } from './recurring-sales/recurring-sales.component';
-import { AccumulationChartModule, BarSeriesService, CategoryService, ChartModule, PieSeriesService, StackingBarSeriesService,AccumulationLegendService,AccumulationTooltipService, AccumulationAnnotationService,AccumulationDataLabelService} from '@syncfusion/ej2-angular-charts';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ProgressBarModule } from '@syncfusion/ej2-angular-progressbar';
+import { SYNCFUSION_MODULES, SYNCFUSION_SERVICES } from 'src/app/shared-syncfusion/syncfusion-modules';
+import { SharedSyncfusionModule } from 'src/app/shared-syncfusion/shared-syncfusion.module';
+// import { DropDownButtonModule } from '@syncfusion/ej2-angular-splitbuttons';
 
 @NgModule({
   declarations: [
@@ -19,18 +20,20 @@ import { ProgressBarModule } from '@syncfusion/ej2-angular-progressbar';
     InvoicesComponent,
     EstimatesComponent,
     SalesOrdersComponent,
-    RecurringSalesComponent
+    RecurringSalesComponent,
+    
   ],
   imports: [
     CommonModule,
     SalesRoutingModule,
-    ChartModule,
-    AccumulationChartModule,
     ReactiveFormsModule,
     FormsModule,
-    ProgressBarModule
+    SharedSyncfusionModule,
+    // DropDownButtonModule,
+    ...SYNCFUSION_MODULES
   ],
-  providers:[BarSeriesService, StackingBarSeriesService, CategoryService,PieSeriesService, AccumulationLegendService, AccumulationTooltipService, AccumulationDataLabelService,
-    AccumulationAnnotationService]
+  providers:[
+    ...SYNCFUSION_SERVICES
+  ]
 })
 export class SalesModule { }

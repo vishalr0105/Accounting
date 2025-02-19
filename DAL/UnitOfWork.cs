@@ -17,9 +17,6 @@ namespace DAL.Repositories
         ICategoryRepository _category;
         INewRoleRepository _newRole;
         ICompanyReposirory _company;
-        ITeamMemberRepository _teamMember;
-        ITeamRepository _team;
-        ITeamAndTeamMembersRepository _TeamAndTeamMembers;
         IContactRepository _contact;
         IInvoiceRepository _invoiceRepository;
         IDashboardRepository _dashboardRepository;
@@ -77,17 +74,6 @@ namespace DAL.Repositories
             }
         }
 
-        public ITeamMemberRepository TeamMember
-        {
-            get
-            {
-                if (_teamMember == null)
-                    _teamMember = new TeamMemberRepository(_context);
-
-                return _teamMember;
-            }
-        }
-
         public IInvoiceRepository Invoices
         {
             get
@@ -99,27 +85,6 @@ namespace DAL.Repositories
             }
         }
 
-        public ITeamRepository Team
-        {
-            get
-            {
-                if (_team == null)
-                    _team = new TeamRepository(_context);
-
-                return _team;
-            }
-        }
-
-        public ITeamAndTeamMembersRepository TeamAndTeamMembers
-        {
-            get
-            {
-                if (_TeamAndTeamMembers == null)
-                    _TeamAndTeamMembers = new TeamAndTeamMembersRepository(_context);
-
-                return _TeamAndTeamMembers;
-            }
-        }
 
         public IContactRepository Contact
         {

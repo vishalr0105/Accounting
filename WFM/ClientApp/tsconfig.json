@@ -24,7 +24,7 @@
       "dom"
     ],
     "skipLibCheck": true,
-    "types": ["googlemaps","mocha","jasmin"]
+    "types": ["googlemaps","mocha","jasmine"]
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

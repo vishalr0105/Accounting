@@ -6,10 +6,7 @@
 using DAL.Core;
 using Microsoft.AspNetCore.Authorization;
 using WFM.Helpers;
-using System.Collections.Generic;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WFM.Authorization
 {
@@ -22,7 +19,6 @@ namespace WFM.Authorization
 
         public string OperationName { get; private set; }
     }
-
 
 
     public class ViewUserAuthorizationHandler : AuthorizationHandler<UserAccountAuthorizationRequirement, string>

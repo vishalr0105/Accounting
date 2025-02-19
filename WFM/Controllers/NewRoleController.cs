@@ -1,10 +1,7 @@
 ﻿using AutoMapper;
 using DAL;
 using DAL.Models;
-using IdentityServer4.AccessTokenValidation;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using WFM.ViewModels.Dtos;
 using WFM.Helpers;
 using DAL.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;

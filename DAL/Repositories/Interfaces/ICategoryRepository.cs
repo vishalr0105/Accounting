@@ -12,6 +12,5 @@ namespace DAL.Repositories.Interfaces
         void UpdateCategory(Category category);
         void DeleteCategory(Guid id);
         bool IsCategoryNameExist(string categoryName, Guid companyid);
-        //IEnumerable<GetCategoryListWithCount> GetAllCategoryWithCount(Guid? id);
     }
 }

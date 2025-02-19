@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Security.Permissions;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace DAL.Models
 {
@@ -17,6 +11,5 @@ namespace DAL.Models
         public string HelpTopic { get; set; }
         public string TopicSteps { get; set; }
         public bool IsDeleted { get; set; }
-
     }
 }

@@ -1,0 +1,17 @@
+<!-- segmented-progress-bar.component.html -->
+<div class="col-lg-12">
+    <div class="gridContainer">
+      <div *ngFor="let s of segments" class="gridItem">
+        <div [ngClass]="s.color" class="segment-box">
+          <p class="p-10 m-0">{{ s.displayTxt }}</p>
+          <h2 class="p-10">{{ s.count }}</h2>
+        </div>
+  
+        <div class="color-indicator"
+             [ngStyle]="{'background-color': getStatusColor(s.displayTxt)}"
+             (click)="filterTable(s.displayTxt)">
+        </div>
+      </div>
+    </div>
+  </div>
+  

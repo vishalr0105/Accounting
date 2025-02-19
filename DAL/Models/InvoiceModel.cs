@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
-using System.Security.Principal;
 
 namespace DAL.Models
 {
@@ -73,41 +72,11 @@ namespace DAL.Models
 		public float amountAfterDiscount { get; set; }
     }
 
-	public class CreditNoteDto
-	{
-		public CreditNote CreditNote { get; set; }
-        public string SalesPerson { get; set; }
-	}
-
-	public class InvoiceAttachments
-	{
-		public Guid invoiceId { get; set; }
-		public string folderName { get; set; }
-		public List<IFormFile> files { get; set; }
-	}
-
-	public class sendCreditNote
-	{
-		public string subject { get; set; }
-		public string body { get; set; }
-		public string reciepentEmail { get; set; }
-		public IFormFile creditNotePdf { get; set; }
-		public IFormFile creditNoteImage { get; set; }
-
-	}
-
 
 	public class InvoiceDto
 	{
 		public InvoiceModel invoiceData { get; set; }
 		public List<services> items { get; set; }
-	}
-
-	public class InvoiceReturnDto
-	{
-		public InvoiceModelDto invoiceData { get; set; }
-		public List<services> items { get; set; }
-
 	}
 
 	public class services

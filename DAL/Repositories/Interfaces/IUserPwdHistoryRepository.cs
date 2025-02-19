@@ -1,5 +1,4 @@
-﻿using DAL.DTOS;
-using DAL.Models;
+﻿using DAL.Models;
 using System;
 using System.Threading.Tasks;
 

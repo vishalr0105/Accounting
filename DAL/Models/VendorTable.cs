@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DAL.Models
 {
     public class VendorTable : BaseEntity
     {
-       
         public Guid? CompanyID { get; set; }
         public string ActivityStatus { get; set; }
         public string Name { get; set; }
@@ -22,8 +17,6 @@ namespace DAL.Models
         public string serviceCountry { get; set; }
         public string RegisterNumber { get; set; }
         public string ServiceAddressZipcodeId { get; set; }
-
-       
     }
 }
 

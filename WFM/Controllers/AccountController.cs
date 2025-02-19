@@ -66,6 +66,7 @@ namespace WFM.Controllers
             _roleManager = roleManager;
         }
 
+
         #region old etaprise methods may need afterwards
 
         [HttpGet]
@@ -273,6 +274,7 @@ namespace WFM.Controllers
 
         #endregion
 
+
         #region Geospatial Project Methods
 
         #region Register & Login 
@@ -402,6 +404,7 @@ namespace WFM.Controllers
         }
 
         #endregion
+
 
         #region Password 
 

@@ -1,0 +1,11 @@
+<label class="dropdown-label">{{ label }}</label>
+<ejs-dropdownlist
+  [dataSource]="items"
+  [fields]="{ text: 'text', value: 'value' }"
+  [placeholder]="placeholder"
+  [value]="selectedValue" 
+  [allowFiltering]="allowFiltering"
+  cssClass="custom-dropdown"
+  class="custom-dropdown"
+  (change)="onSelect($event)">
+</ejs-dropdownlist>

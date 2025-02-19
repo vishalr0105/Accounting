@@ -11,6 +11,5 @@ namespace DAL.Repositories.Interfaces
         Task DeleteRange(List<Guid> Ids);
         void DeleteContactList(List<Contact> contact);
         Task<List<Contact>> GetContactByClientId(Guid clientId);
-        //ResponseModel GetContactsByAccountId(Guid accountId);
     }
 }

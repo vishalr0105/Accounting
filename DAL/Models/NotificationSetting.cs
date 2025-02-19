@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Security.Permissions;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace DAL.Models
 {
@@ -15,8 +9,8 @@ namespace DAL.Models
         public int N_TypeId { get; set; }
         public string CompanyId { get; set; }
         public bool Subscribed { get; set; }
-
     }
+
     public class NotificationType
     {
         [Key]
@@ -25,8 +19,8 @@ namespace DAL.Models
         public string Notification_Type { get; set;}
         public bool Subscribed { get; set; }
         public string NotificationIcon { get; set; }
-
     }
+
     public class NotificationCategory
     {
         [Key]

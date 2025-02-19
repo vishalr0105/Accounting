@@ -38,12 +38,6 @@ namespace DAL.Repositories
         }
 
 
-        //public async Task<VendorTable> GetAccountById(Guid id, Guid? compId)
-        //{
-        //    var account = await _appContext.VendorTable.SingleOrDefaultAsync(x => x.Id == id && x.CompanyID == compId);
-        //    return account;
-        //}
-
         public void Delete(VendorTable contacts)
         {
             _appContext.VendorTable.Remove(contacts);
@@ -56,6 +50,5 @@ namespace DAL.Repositories
             _context.SaveChanges();
             return accountTable;
         }
-
     }
 }

@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DAL.Models
 {
@@ -51,6 +48,7 @@ namespace DAL.Models
         public bool CanDelete { get; set; }
         public List<Feature> Features { get; set; }
     }
+
     public enum FilePermission
     {
         Allow,

@@ -5,10 +5,7 @@
 
 using DAL.Core;
 using Microsoft.AspNetCore.Authorization;
-using System;
-using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace WFM.Authorization
 {
@@ -34,7 +31,6 @@ namespace WFM.Authorization
                     context.Succeed(requirement);
             }
 
-
             return Task.CompletedTask;
         }
 
@@ -54,7 +50,6 @@ namespace WFM.Authorization
             return roleAdded || roleRemoved;
         }
 
-
         private bool GetIsUserInAllAddedRoles(ClaimsPrincipal contextUser, string[] newRoles, string[] currentRoles)
         {
             if (newRoles == null)
@@ -62,7 +57,6 @@ namespace WFM.Authorization
 
             if (currentRoles == null)
                 currentRoles = new string[] { };
-
 
             var addedRoles = newRoles.Except(currentRoles);
 

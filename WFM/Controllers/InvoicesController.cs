@@ -2,7 +2,6 @@
 using DAL;
 using DAL.Core;
 using DAL.Models;
-using DAL.Models.TempModels;
 using DAL.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

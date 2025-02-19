@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DAL.Models
 {
@@ -27,6 +23,7 @@ namespace DAL.Models
         public string Country { get; set; }
         public int PostalCode { get; set; }
     }
+
     public enum InvoiceStatus
     {
         Draft = 0,
@@ -44,6 +41,7 @@ namespace DAL.Models
         OnHold = 12,
         PendingPayment = 13
     }
+
     public enum ePaymentMethod
     {
         Nothing = 0,

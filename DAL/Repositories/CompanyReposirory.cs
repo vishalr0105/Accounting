@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using DAL.Repositories.Interfaces;
-using DAL.Models.TempModels;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc;
 

@@ -16,9 +16,6 @@ namespace DAL.Repositories.Interfaces
         ICategoryRepository Category { get; }
         INewRoleRepository NewRole { get; }
         ICompanyReposirory Company { get; }
-        ITeamMemberRepository TeamMember { get; }
-        ITeamRepository Team { get; }
-        ITeamAndTeamMembersRepository TeamAndTeamMembers { get; }
         IContactRepository Contact { get; }
         IDashboardRepository Dashboard { get; }
         IInvoiceRepository Invoices { get; }

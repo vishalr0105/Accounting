@@ -1,0 +1,24 @@
+.dropdown-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #444;
+    margin-bottom: 4px;
+  }
+  
+  ::ng-deep .custom-dropdown{
+    // border: 1px solid black;
+      .e-input-group {
+        border: 1px solid #d1d5db !important;
+        border-radius: 6px;
+        padding: 6px 12px;
+        font-size: 14px;
+        font-weight: 500;
+        color: #333;
+        margin: 0;
+      }
+  } 
+  
+  ::ng-deep .custom-dropdown .e-ddl-icon::before {
+    color: #555;
+  }
+  

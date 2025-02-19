@@ -9,21 +9,6 @@ using System.ComponentModel.DataAnnotations;
 // git ignore testing
 namespace DAL.Core
 {
-    public enum Gender
-    {
-        None,
-        Female,
-        Male
-    }
-    public enum WoStatus
-    {
-        [Display(Name = "Open")]
-        Open = 1,
-        [Display(Name = "Work Order Accepted")]
-        WoAccepted = 3,
-        [Display(Name = "Travel to Site")]
-        TravelToSite = 4,
-    }
     public enum NotificaitonTypes
     {
         NewUserRegistration = 1,
@@ -53,13 +38,5 @@ namespace DAL.Core
         TeamMemberAdded = 42
 
     }
-    public enum  StockVoucherType{
-        NewItemAdded=1,
-        Purchase=2,
-        //PurchaseReturn=3,
-        Sales=4,
-        //SalesReturn=5,
-        Transfer=6,
-        Discard=7
-    }
+
 }

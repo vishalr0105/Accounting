@@ -35,8 +35,6 @@ namespace WFM.ViewModels
                 .ForMember(d => d.Roles, map => map.Ignore())
                 .ForMember(d => d.Id, map => map.Condition(src => src.Id != null));
 
-            CreateMap<ApplicationUser, TeamMemberDto>();
-
             CreateMap<ApplicationUser, UserPatchViewModel>()
                 .ReverseMap();
 
@@ -64,24 +62,13 @@ namespace WFM.ViewModels
 
             CreateMap<Category, CategoryDto>().ReverseMap();
             CreateMap<Company, CompanyDto>().ReverseMap();
-            CreateMap<TeamMember, TeamMemberDto>().ReverseMap();
 
             CreateMap<InvoiceModel, InvoiceModelDto>()
                 .ForMember(x => x.email, map => map.MapFrom(x => x.customer.CompanyEmailID))
                 .ForMember(x => x.Address, map => map.MapFrom(x => x.customer.ServiceAddress))
                 .ForMember(x => x.customerName, map => map.MapFrom(x => x.customer.AccountName));
     
-            CreateMap<Team, TeamDto>()
-                .ForMember(T => T.TeamMembers, map => map.MapFrom(T => T.TeamMemmbers.Select(T => T.ApplicationUser).ToList()));
-
-            CreateMap<Team, AddTeamDto>().ReverseMap();
             CreateMap<Company, CompanyDto>().ReverseMap();
-            CreateMap<TeamMember, TeamMemberDto>().ReverseMap();
-
-            CreateMap<Team, TeamDto>()
-                .ForMember(T => T.TeamMembers, map => map.MapFrom(T => T.TeamMemmbers.Select(T => T.ApplicationUser).ToList()));
-
-            CreateMap<Team, AddTeamDto>().ReverseMap();
             CreateMap<ApplicationUser, UserAuthDto>().ReverseMap();
 
             CreateMap<ContactsMasterTable, ContactsDto>()

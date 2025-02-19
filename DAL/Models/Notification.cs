@@ -11,6 +11,7 @@ namespace DAL.Models
         public Guid CompanyId { get; set; }
         public int NotificationTypeId { get; set; }
     }
+
     public class NotificationDto
     {
         public Guid Id { get; set; }

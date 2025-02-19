@@ -1,10 +1,6 @@
 ﻿using DAL.Models;
-//using DAL.TechnicianPortal.Models;
-using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DAL.Repositories.Interfaces
@@ -23,14 +19,6 @@ namespace DAL.Repositories.Interfaces
         Task<bool> DeleteInvoiceById(Guid id);
 
         Task<bool> DeleteInvoiceByUserId(string userId);
-
-        //public ActionResult<ResponseModel> AddInvoices(InvoiceModel invoiceTable);
-        //public ActionResult<ResponseModel> AddPayment(PaymentsModel payment);
-        //public ActionResult<ResponseModel> GetInvoices(DateTime? fromDate, DateTime? endDate, string? paymentStatus);
-        //public ActionResult<ResponseModel> GetInvoicesByCustId(Guid id, DateTime? fromDate, DateTime? endDate, string? paymentStatus);
-
-        //public ActionResult<ResponseModel> GetInvoicesByTechId(Guid id);
-       
 
     }
 }

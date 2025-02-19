@@ -1,0 +1,56 @@
+<ejs-grid #grid
+  [dataSource]="data" 
+  [allowSorting]="allowSorting" 
+  [allowPaging]="allowPaging"
+  [allowFiltering]="allowFiltering" 
+  [editSettings]="editSettings" 
+  [pageSettings]="pageSettings" 
+  [toolbar]="globalSearch ? toolbar : []"
+  [showColumnChooser]="true"
+  (rowSelected)="onRowSelected($event)">
+
+  <e-columns>
+    <!-- <e-column *ngIf="showCheckbox" type="checkbox" width="50"></e-column> -->
+    <!-- "Select All" Header Checkbox -->
+    <e-column *ngIf="showCheckbox" headerText="Select" width="100" textAlign="Center">
+      <ng-template #headerTemplate>
+        <ejs-checkbox [checked]="selectedIds.length === data.length" (change)="onSelectAll($event)"></ejs-checkbox>
+      </ng-template>
+      <ng-template #template let-data>
+        <ejs-checkbox [checked]="isChecked(data.id)" (change)="onCheckboxClick(data.id, $event)"></ejs-checkbox>
+      </ng-template>
+    </e-column>
+      <e-column  
+                *ngFor="let col of columns"
+                [field]="col.field" 
+                [headerText]="col.headerText" 
+                [width]="col.width" 
+                [textAlign]="col.textAlign" 
+                [allowFiltering]="false"
+                [filter]="columnFilters ? {} : null"
+                [visible]="col.visible !== false">
+      </e-column>
+    <!-- Render Action Column if enabled -->
+    <e-column *ngIf="showActionColumn" [headerText]="actionColumnTitle" [textAlign]="'Center'" [width]="200">
+      <ng-template #template let-data>
+        <!-- Render user-provided template or default buttons -->
+        <ng-container *ngIf="actionsTemplate; else defaultActions">
+          <ng-container *ngTemplateOutlet="actionsTemplate; context: { $implicit: data }"></ng-container>
+        </ng-container>
+        <ng-template #defaultActions>
+          <button *ngIf="updateRowId !== data.id" (click)="onAction('edit', data)">Edit</button>
+          <button *ngIf="updateRowId === data.id" (click)="onAction('update', data)">Update</button>
+          <button (click)="onAction('delete', data)">Delete</button>
+        </ng-template>
+      </ng-template>
+    </e-column>
+  </e-columns>
+</ejs-grid>
+<!-- Column Visibility Controls -->
+<!-- <div class="column-controls">
+  <label *ngFor="let col of columns">
+    <input type="checkbox" [checked]="isColumnChecked(col.field)"
+    (change)="toggleColumnVisibility(col.field)" />
+    {{ col.headerText }}
+  </label>
+</div> -->
