@@ -257,3 +257,6 @@ h4 {
     max-width: 1400px !important;
 }
 }
+div[style*="position: fixed"][style*="background: #EEF2FF"] {
+  display: none !important;
+}

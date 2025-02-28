@@ -19606,7 +19606,7 @@ body {
   top: 0;
   -webkit-transition: width 0.1s ease, margin 0.1s ease-out;
   transition: width 0.1s ease, margin 0.1s ease-out;
-  z-index: 999;
+  z-index: 997;
 }
 .sidebar .sidebar-header {
   background: #fff;
@@ -19617,7 +19617,7 @@ body {
   align-items: center;
   padding: 0 25px;
   border-left: 1px solid #EFF1F1;
-  z-index: 999;
+  z-index: 997;
   width: 240px;
   -webkit-transition: width 0.1s ease;
   transition: width 0.1s ease;
@@ -20009,7 +20009,7 @@ body {
 }
 @media (max-width: 991px) {
   .sidebar {
-    z-index: 999;
+    z-index: 997;
     margin-right: -240px;
     visibility: hidden;
   }

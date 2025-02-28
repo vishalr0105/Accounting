@@ -19,6 +19,7 @@ const route: Routes = [
       { path: 'allsubscribe', component: AllSubscription },
       { path: 'home/company-detail', component: CompanydetailComponent },
       {path:'sales',loadChildren:()=>import('../views/modules/sales/sales.module').then(m=>m.SalesModule)},
+      {path:'customer',loadChildren:()=>import('../views/modules/customers/customers.module').then(m=>m.CustomersModule)},
       {
         path: 'role-and-permission',
         loadChildren: () =>

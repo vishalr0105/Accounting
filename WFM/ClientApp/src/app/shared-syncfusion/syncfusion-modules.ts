@@ -1,7 +1,7 @@
 // Syncfusion Angular Modules
 import { ChartModule, AccumulationChartModule, LegendService, TooltipService, DataLabelService, LineSeriesService } from '@syncfusion/ej2-angular-charts';
 import { ProgressBarModule } from '@syncfusion/ej2-angular-progressbar';
-import { CommandColumnService, EditService, GridModule, GroupService, PageService, SearchService, SortService } from '@syncfusion/ej2-angular-grids';
+import { AggregateService, CommandColumnService, EditService, GridModule, GroupService, PageService, RowDDService, SearchService, SortService } from '@syncfusion/ej2-angular-grids';
 import { DialogModule, TooltipModule } from '@syncfusion/ej2-angular-popups';
 import { DatePickerModule } from '@syncfusion/ej2-angular-calendars';
 import { ButtonModule, CheckBoxModule } from '@syncfusion/ej2-angular-buttons';
@@ -14,7 +14,7 @@ import { DropDownListModule } from '@syncfusion/ej2-angular-dropdowns';
 
 // Syncfusion Chart Services
 import { BarSeriesService, StackingBarSeriesService, CategoryService } from '@syncfusion/ej2-angular-charts';
-import { PieSeriesService, AccumulationLegendService, AccumulationTooltipService, 
+import { PieSeriesService, AccumulationLegendService, AccumulationTooltipService,
          AccumulationDataLabelService, AccumulationAnnotationService } from '@syncfusion/ej2-angular-charts';
 
 
@@ -54,4 +54,6 @@ export const SYNCFUSION_SERVICES = [
   PageService,
   SortService,
   SearchService,
+  RowDDService,
+  AggregateService
 ];

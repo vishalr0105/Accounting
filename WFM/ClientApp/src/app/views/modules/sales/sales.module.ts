@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { SalesRoutingModule } from './sales-routing.module';
@@ -11,6 +11,8 @@ import { RecurringSalesComponent } from './recurring-sales/recurring-sales.compo
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SYNCFUSION_MODULES, SYNCFUSION_SERVICES } from 'src/app/shared-syncfusion/syncfusion-modules';
 import { SharedSyncfusionModule } from 'src/app/shared-syncfusion/shared-syncfusion.module';
+import { GridModule } from '@syncfusion/ej2-angular-grids';
+import { CreateProductFormComponent } from './create-product-form/create-product-form.component';
 // import { DropDownButtonModule } from '@syncfusion/ej2-angular-splitbuttons';
 
 @NgModule({
@@ -21,7 +23,7 @@ import { SharedSyncfusionModule } from 'src/app/shared-syncfusion/shared-syncfus
     EstimatesComponent,
     SalesOrdersComponent,
     RecurringSalesComponent,
-    
+    CreateProductFormComponent
   ],
   imports: [
     CommonModule,
@@ -29,11 +31,13 @@ import { SharedSyncfusionModule } from 'src/app/shared-syncfusion/shared-syncfus
     ReactiveFormsModule,
     FormsModule,
     SharedSyncfusionModule,
+    // GridModule ,
     // DropDownButtonModule,
     ...SYNCFUSION_MODULES
   ],
   providers:[
     ...SYNCFUSION_SERVICES
-  ]
+  ],
+  schemas:[CUSTOM_ELEMENTS_SCHEMA]
 })
 export class SalesModule { }

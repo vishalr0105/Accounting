@@ -6,6 +6,7 @@ import { EstimatesComponent } from './estimates/estimates.component';
 import { SalesOrdersComponent } from './sales-orders/sales-orders.component';
 import { RecurringSalesComponent } from './recurring-sales/recurring-sales.component';
 import { InvoicesComponent } from './invoices/invoices.component';
+import { CreateProductFormComponent } from './create-product-form/create-product-form.component';
 
 const routes: Routes = [
   {
@@ -31,7 +32,11 @@ const routes: Routes = [
   {
     path:'recurringsales',
     component:RecurringSalesComponent
-  }
+  },
+  {
+    path:'test',
+    component:CreateProductFormComponent
+  },
 ];
 
 @NgModule({

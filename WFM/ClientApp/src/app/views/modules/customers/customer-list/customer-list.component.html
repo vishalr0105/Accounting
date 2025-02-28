@@ -1,17 +1,6 @@
 <div class="invoice-container">
-  <!-- Toggle Buttons -->
-  <div class="toggle-container">
-    <button ejs-button cssClass="e-outline">All invoices</button>
-    <button ejs-button cssClass="e-outline e-success">Line of credit</button>
-  </div>
-
   <!-- Invoice Summary -->
   <div class="invoice-summary">
-    <div class="warning">
-      <span class="icon">⚠️</span>
-      <span class="text">Needs Attention</span>
-      <span class="amount">$22.07</span>
-    </div>
     <div class="d-flex justify-content-end">
       <app-segmented-progress-bar
         [segments]="segments"
@@ -22,28 +11,13 @@
   </div>
 
   <div class="d-flex gap-2 mb-2 align-items-end">
-    <app-dropdown-menu
-      [label]="'Date'"
-      [items]="dateRanges"
-      [defaultValue]="'last_12_months'"
-      placeholder="All transactions"
-      [allowFiltering]="false"
-      (itemSelected)="onDropdownSelection($event)"
-    >
-    </app-dropdown-menu>
-    <app-dropdown-menu
-      [label]="'Status'"
-      [items]="status"
-      [defaultValue]="'all'"
-      placeholder="All transactions"
-      [allowFiltering]="false"
-      (itemSelected)="onDropdownSelection($event)"
-    >
-    </app-dropdown-menu>
+    <button ejs-button cssClass="transaction-btn btn btn-success">
+      Customer Types
+    </button>
     <div class="d-flex align-items-center transaction-btn btn btn-success me-2 p-0 m-0 ms-auto" >
       <!-- Regular Button -->
       <button ejs-button cssClass="bg-transparent h-100 text-white border-end border-2 text-u text-capitalize">
-        Create Invoice
+        New Customer
       </button>
 
       <!-- Separate Menu Button -->

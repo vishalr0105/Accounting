@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { EditSettingsModel, PageSettingsModel, ToolbarItems } from '@syncfusion/ej2-angular-grids';
 import { MenuEventArgs, MenuItemModel } from '@syncfusion/ej2-angular-navigations';
 
@@ -8,7 +8,7 @@ import { MenuEventArgs, MenuItemModel } from '@syncfusion/ej2-angular-navigation
   styleUrls: ['./all-sales.component.scss']
 })
 export class AllSalesComponent {
-  toolbar: ToolbarItems[] = [ 'ColumnChooser'];
+  toolbar: ToolbarItems[] = [ 'Search','ColumnChooser'];
   columns = [
     { field: 'id', header: 'ID', type: 'number' ,visible: false},
     { field: 'name', header: 'Name', type: 'string' ,visible: true},
@@ -25,16 +25,35 @@ export class AllSalesComponent {
     { id: 6, name: 'Order 6', amount: 350, date: '2024-02-15' },
     { id: 7, name: 'Order 7', amount: 350, date: '2024-02-15' },
     { id: 8, name: 'Order 8', amount: 350, date: '2024-02-15' },
+    { id: 8, name: 'Order 8', amount: 350, date: '2024-02-15' },
+    { id: 8, name: 'Order 8', amount: 350, date: '2024-02-15' },
+    { id: 8, name: 'Order 8', amount: 350, date: '2024-02-15' },
+    { id: 8, name: 'Order 8', amount: 350, date: '2024-02-15' },
+    { id: 8, name: 'Order 8', amount: 350, date: '2024-02-15' },
+    { id: 8, name: 'Order 8', amount: 350, date: '2024-02-15' },
+    { id: 8, name: 'Order 8', amount: 350, date: '2024-02-15' },
+    { id: 8, name: 'Order 8', amount: 350, date: '2024-02-15' },
+    { id: 8, name: 'Order 8', amount: 350, date: '2024-02-15' },
+    { id: 8, name: 'Order 8', amount: 350, date: '2024-02-15' },
+    { id: 8, name: 'Order 8', amount: 350, date: '2024-02-15' },
+    { id: 8, name: 'Order 8', amount: 350, date: '2024-02-15' },
+    { id: 8, name: 'Order 8', amount: 350, date: '2024-02-15' },
+    { id: 8, name: 'Order 8', amount: 350, date: '2024-02-15' },
+    { id: 8, name: 'Order 8', amount: 350, date: '2024-02-15' },
   ];
+  constructor(private changeDetectorRef: ChangeDetectorRef) { }
   editSettings:EditSettingsModel = { allowEditing: false, allowAdding: false, allowDeleting: false, mode: 'Normal' };
   paginationSettings: PageSettingsModel = {
     pageSize: 10,
     pageCount: 5,
     currentPage: 1,
-    pageSizes: [5, 10, 20, 50]
+    pageSizes: [5, 10, 20, 50],
+    totalRecordsCount: 100,
   };
   public updateRowId: number | null = null;
   onCustomAction(action: string, rowData: any) {
+    event.stopPropagation(); // Prevent row selection
+    event.preventDefault();
     if (action === 'edit') {
       this.updateRowId = rowData.id; // Set current row to edit mode
       console.log('Editing:', rowData);
@@ -54,7 +73,10 @@ export class AllSalesComponent {
     // Perform action based on clicked menu item
     this.onCustomAction(clickedAction, rowData);
   }
-  getMenuItems(rowData: any): MenuItemModel[] {
+  menuItems: any[] = [];
+  getMenuItems(event:Event ,rowData: any): MenuItemModel[] {
+    event.stopPropagation(); // Prevent row selection
+    event.preventDefault();
     return [
       { text: 'View/Edit', id: 'edit' },
       { text: 'Duplicate', id: 'duplicate' },
@@ -166,4 +188,44 @@ export class AllSalesComponent {
       console.log('Selected IDs:', selectedIds);
     }
 
+    isTableSidebarOpen = false;
+    onRowSelected(rowData: any) {
+      this.isTableSidebarOpen = true;
+      console.log('Selected Row:', rowData);
+    }
+    closeSidebar() {
+      this.isTableSidebarOpen = false;
+    }
+
+    handlePageChange(event: { currentPage: number; pageSize: number }) {
+      console.log('Page Changed:', event);
+      const { currentPage, pageSize } = event;
+      
+      // Perform necessary actions, like fetching new data from API
+    }
+    sortField: string = '';
+    sortDirection: string = '';
+    filterField: string = '';
+    filterValue: string = '';
+     // 🔹 Handle Sorting Change
+     onSortingChange(event: { field: string, direction: string }) {
+      console.log("Sorting Data:", event);
+      // this.fetchData({ sortField: event.field, sortOrder: event.direction });
+    }
+    
+    onFilteringChange(event: { field: string, value: string, matchCase: boolean, operator: string }) {
+      console.log("Filtering Data:", event);
+      // this.fetchData({ filterField: event.field, filterValue: event.value, filterOperator: event.operator });
+    }
+    onSearchChanged(searchValue: string) {
+      console.log("🔹 Received Search Value in Parent:", searchValue);
+      this.salesData=[
+        { id: 1, name: 'Order 1', amount: 150, date: '2024-02-10' },
+    { id: 2, name: 'Order 2', amount: 250, date: '2024-02-12' },
+    { id: 3, name: 'Order 3', amount: 350, date: '2024-02-15' },
+      ]
+      this.changeDetectorRef.detectChanges();
+      // Now call API with searchValue for server-side filtering
+      // this.fetchFilteredData(searchValue);
+    }
 }

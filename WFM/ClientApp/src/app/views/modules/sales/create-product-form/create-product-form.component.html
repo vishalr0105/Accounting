@@ -1,0 +1,31 @@
+<ejs-grid #grid [dataSource]="data" allowPaging="true" allowSorting="true"
+          allowRowDragAndDrop="true" [editSettings]="editSettings" [toolbar]="toolbar"
+          (actionComplete)="actionComplete($event)">
+
+  <e-columns>
+    <e-column field="id" headerText="#" width="50" textAlign="Center" isPrimaryKey="true"></e-column>
+
+    <!-- ✅ Product Dropdown -->
+    <e-column field="productId" headerText="Product/Service" width="200"
+              [foreignKeyField]="'id'" [foreignKeyValue]="'name'" [dataSource]="productList">
+    </e-column>
+
+    <e-column field="description" headerText="Description" width="200"></e-column>
+    <e-column field="qty" headerText="Qty" width="100" editType="numericedit"></e-column>
+    <e-column field="rate" headerText="Rate" width="100" editType="numericedit"></e-column>
+    <e-column field="amount" headerText="Amount" width="120" format="C2" textAlign="Right"></e-column>
+  </e-columns>
+
+  <!-- ✅ Subtotal Calculation -->
+  <e-aggregates>
+    <e-aggregate>
+      <e-columns>
+        <e-column field="amount" type="Sum" format="C2">
+          <e-footerTemplate>
+            Subtotal: $ {{ calculateSum() }}
+          </e-footerTemplate>
+        </e-column>
+      </e-columns>
+    </e-aggregate>
+  </e-aggregates>
+</ejs-grid>

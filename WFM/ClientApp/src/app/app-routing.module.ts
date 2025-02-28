@@ -56,7 +56,7 @@ const routes: Routes = [
     data: { role: ['User'] },
   },
   { path: 'dashboard', component: ExternalAppComponent ,
-    canActivate: [AuthGuard],
+    // canActivate: [AuthGuard],
     // data: { role: ['User'] },
   },
   { path: 'paymentsuccess', component: ExternalAppComponent },

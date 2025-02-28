@@ -7,17 +7,19 @@
   [pageSettings]="pageSettings" 
   [toolbar]="globalSearch ? toolbar : []"
   [showColumnChooser]="true"
-  (rowSelected)="onRowSelected($event)">
+  (rowSelected)="onRowSelected($event)"
+  (actionComplete)="onActionComplete($event)"
+  (actionBegin)="onActionBegin($event)" >
 
   <e-columns>
     <!-- <e-column *ngIf="showCheckbox" type="checkbox" width="50"></e-column> -->
     <!-- "Select All" Header Checkbox -->
-    <e-column *ngIf="showCheckbox" headerText="Select" width="100" textAlign="Center">
+    <e-column *ngIf="showCheckbox" headerText="Select" width="100" textAlign="Start">
       <ng-template #headerTemplate>
         <ejs-checkbox [checked]="selectedIds.length === data.length" (change)="onSelectAll($event)"></ejs-checkbox>
       </ng-template>
       <ng-template #template let-data>
-        <ejs-checkbox [checked]="isChecked(data.id)" (change)="onCheckboxClick(data.id, $event)"></ejs-checkbox>
+        <ejs-checkbox [checked]="isChecked(data.id)" (click)="$event.preventDefault(); $event.stopPropagation();" (change)="onCheckboxClick(data.id, $event)"></ejs-checkbox>
       </ng-template>
     </e-column>
       <e-column  
@@ -38,9 +40,9 @@
           <ng-container *ngTemplateOutlet="actionsTemplate; context: { $implicit: data }"></ng-container>
         </ng-container>
         <ng-template #defaultActions>
-          <button *ngIf="updateRowId !== data.id" (click)="onAction('edit', data)">Edit</button>
-          <button *ngIf="updateRowId === data.id" (click)="onAction('update', data)">Update</button>
-          <button (click)="onAction('delete', data)">Delete</button>
+          <button *ngIf="updateRowId !== data.id" (click)="onAction($event,'edit', data)">Edit</button>
+          <button *ngIf="updateRowId === data.id" (click)="onAction($event,'update', data)">Update</button>
+          <button (click)="onAction($event,'delete', data)">Delete</button>
         </ng-template>
       </ng-template>
     </e-column>
