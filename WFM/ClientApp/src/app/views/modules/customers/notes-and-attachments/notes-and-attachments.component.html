@@ -1,0 +1,52 @@
+<div class="container mt-4">
+  <div class="accordion" id="notesAttachmentsAccordion">
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingNotes">
+        <button
+          class="accordion-button"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapseNotes"
+          aria-expanded="true"
+          aria-controls="collapseNotes">
+          Notes and Attachments
+        </button>
+      </h2>
+
+      <div
+        id="collapseNotes"
+        class="accordion-collapse collapse show"
+        aria-labelledby="headingNotes"
+        data-bs-parent="#notesAttachmentsAccordion">
+        <div class="accordion-body">
+          <form [formGroup]="formGroup" >
+
+            <!-- Notes -->
+            <div class="mb-3">
+              <label>Notes</label>
+              <textarea class="form-control" formControlName="notes" rows="3"></textarea>
+            </div>
+
+            <!-- Attachments -->
+            <div class="mb-3">
+              <label>Attachments</label>
+              <div class="attachment-box">
+                <input
+                  type="file"
+                  (change)="onFileSelect($event)"
+                  class="form-control-file"
+                  accept=".jpg,.jpeg,.png,.pdf,.doc,.docx,.xlsx,.csv,.txt" />
+                <small class="text-muted">Max file size: 20 MB</small>
+              </div>
+              <div *ngIf="selectedFile" class="mt-2">
+                <strong>Selected File:</strong> {{ selectedFile.name }}
+                <button type="button" class="btn btn-danger btn-sm ms-2" (click)="removeFile()">Remove</button>
+              </div>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

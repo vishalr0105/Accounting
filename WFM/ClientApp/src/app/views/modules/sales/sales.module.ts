@@ -13,6 +13,9 @@ import { SYNCFUSION_MODULES, SYNCFUSION_SERVICES } from 'src/app/shared-syncfusi
 import { SharedSyncfusionModule } from 'src/app/shared-syncfusion/shared-syncfusion.module';
 import { GridModule } from '@syncfusion/ej2-angular-grids';
 import { CreateProductFormComponent } from './create-product-form/create-product-form.component';
+import { EditPageComponent } from './edit-page/edit-page.component';
+import { EmailViewComponent } from './email-view/email-view.component';
+import { HttpClientModule } from '@angular/common/http';
 // import { DropDownButtonModule } from '@syncfusion/ej2-angular-splitbuttons';
 
 @NgModule({
@@ -23,7 +26,9 @@ import { CreateProductFormComponent } from './create-product-form/create-product
     EstimatesComponent,
     SalesOrdersComponent,
     RecurringSalesComponent,
-    CreateProductFormComponent
+    CreateProductFormComponent,
+    EditPageComponent,
+    EmailViewComponent
   ],
   imports: [
     CommonModule,
@@ -31,6 +36,7 @@ import { CreateProductFormComponent } from './create-product-form/create-product
     ReactiveFormsModule,
     FormsModule,
     SharedSyncfusionModule,
+    HttpClientModule,
     // GridModule ,
     // DropDownButtonModule,
     ...SYNCFUSION_MODULES

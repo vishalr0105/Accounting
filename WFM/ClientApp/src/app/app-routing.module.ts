@@ -9,6 +9,9 @@ import { AuthGuard } from './core/guard/auth.guard';
 import { ErrorPageComponent } from './views/pages/error-page/error-page.component';
 import { Utilities } from './views/services/utilities';
 import { ExternalAppComponent } from './views/pages/auth/external-app/external-app.component';
+import { CreateProductFormComponent } from './views/modules/sales/create-product-form/create-product-form.component';
+import { NewCustomerComponent } from './views/modules/customers/new-customer/new-customer.component';
+import { CreateFormComponent } from './views/modules/product-and-service/create-form/create-form.component';
 
 @Injectable()
 export class LowerCaseUrlSerializer extends DefaultUrlSerializer {
@@ -61,6 +64,15 @@ const routes: Routes = [
   },
   { path: 'paymentsuccess', component: ExternalAppComponent },
   { path: 'paymentfailed', component: ExternalAppComponent },
+  // { path: 'testing', component: CreateProductFormComponent },
+  { path: 'create-invoice', component: CreateProductFormComponent, data: { pageType: 'invoice' } },
+  { path: 'create-estimation', component: CreateProductFormComponent, data: { pageType: 'estimation' } },
+  { path: 'create-customer', component: NewCustomerComponent},
+  { path: 'create-customer/:id', component: NewCustomerComponent},
+  {
+    path: 'create-form',
+    component: CreateFormComponent
+  },
   {
     path: 'error',
     component: ErrorPageComponent,

@@ -1,0 +1,148 @@
+<div class="container mt-4">
+  <div class="accordion" id="customerAccordion">
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingOne">
+        <button
+          class="accordion-button"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapseOne"
+          aria-expanded="true"
+          aria-controls="collapseOne">
+          Name and Contact
+        </button>
+      </h2>
+
+      <div
+        id="collapseOne"
+        class="accordion-collapse collapse show"
+        aria-labelledby="headingOne"
+        data-bs-parent="#customerAccordion">
+        <div class="accordion-body">
+          <form [formGroup]="formGroup" >
+            <div class="alert alert-danger" *ngIf="formGroup.invalid">
+              Please fill all required fields
+            </div>
+
+            <!-- Name Fields -->
+            <div class="row">
+              <div class="col-md-2">
+                <label>Title</label>
+                <input type="text" class="form-control" formControlName="title" />
+              </div>
+              <div class="col-md-3">
+                <label>First Name</label>
+                <input type="text" class="form-control" formControlName="firstName" />
+              </div>
+              <div class="col-md-3">
+                <label>Middle Name</label>
+                <input type="text" class="form-control" formControlName="middleName" />
+              </div>
+              <div class="col-md-3">
+                <label>Last Name</label>
+                <input type="text" class="form-control" formControlName="lastName" />
+              </div>
+              <div class="col-md-1">
+                <label>Suffix</label>
+                <input type="text" class="form-control" formControlName="suffix" />
+              </div>
+            </div>
+
+            <!-- Company and Display Name -->
+            <div class="row mt-3">
+              <div class="col-md-6">
+                <label>Company Name</label>
+                <input type="text" class="form-control" formControlName="companyName" />
+              </div>
+              <div class="col-md-6">
+                <label>Customer Display Name *</label>
+                <input type="text" class="form-control" formControlName="customerDisplayName" required />
+              </div>
+            </div>
+
+            <!-- Contact Details -->
+            <div class="row mt-3">
+              <div class="col-md-6">
+                <label>Email</label>
+                <input type="email" class="form-control" formControlName="email" />
+              </div>
+              <div class="col-md-6">
+                <label>Phone Number</label>
+                <input type="text" class="form-control" formControlName="phoneNumber" />
+              </div>
+            </div>
+
+            <!-- Additional Details -->
+            <div class="row mt-3">
+              <div class="col-md-6">
+                <label>CC</label>
+                <input type="text" class="form-control" formControlName="cc" />
+              </div>
+              <div class="col-md-6">
+                <label>BCC</label>
+                <input type="text" class="form-control" formControlName="bcc" />
+              </div>
+            </div>
+
+            <div class="row mt-3">
+              <div class="col-md-6">
+                <label>Mobile Number</label>
+                <input type="text" class="form-control" formControlName="mobileNumber" />
+              </div>
+              <div class="col-md-6">
+                <label>Fax</label>
+                <input type="text" class="form-control" formControlName="fax" />
+              </div>
+            </div>
+
+            <div class="row mt-3">
+              <div class="col-md-6">
+                <label>Other</label>
+                <input type="text" class="form-control" formControlName="other" />
+              </div>
+              <div class="col-md-6">
+                <label>Website</label>
+                <input type="text" class="form-control" formControlName="website" />
+              </div>
+            </div>
+
+            <div class="row mt-3">
+              <div class="col-md-6">
+                <label>Name to Print on Checks</label>
+                <input type="text" class="form-control" formControlName="nameOnCheck" />
+              </div>
+            </div>
+
+            <!-- Sub Customer Checkbox -->
+            <div class="form-check mt-3">
+              <input type="checkbox" class="form-check-input" formControlName="isSubCustomer" />
+              <label class="form-check-label">Is a sub-customer</label>
+            </div>
+
+            <!-- Parent Customer Dropdown -->
+            <div class="row mt-3" *ngIf="formGroup.get('isSubCustomer').value">
+              <div class="col-md-6">
+                <label>Parent Customer</label>
+                <select class="form-control" formControlName="parentCustomer">
+                  <option value="">Select Parent</option>
+                  <option *ngFor="let customer of customers" [value]="customer">{{ customer }}</option>
+                </select>
+                <small class="text-danger" *ngIf="formGroup.get('parentCustomer').invalid">
+                  Enter a parent customer
+                </small>
+              </div>
+            </div>
+
+            <!-- Bill Parent Customer Checkbox -->
+            <div class="form-check mt-3" *ngIf="formGroup.get('parentCustomer').value && formGroup.get('isSubCustomer').value">
+              <input type="checkbox" class="form-check-input" formControlName="billParentCustomer" />
+              <label class="form-check-label">Bill parent customer</label>
+            </div>
+
+            <!-- Submit Button -->
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

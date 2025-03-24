@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { EditSettingsModel, PageSettingsModel, ToolbarItems } from '@syncfusion/ej2-angular-grids';
 import { MenuEventArgs, MenuItemModel } from '@syncfusion/ej2-angular-navigations';
+import { EstimatesService } from '../salesServices/estimates.service';
 
 @Component({
   selector: 'app-estimates',
@@ -9,9 +10,23 @@ import { MenuEventArgs, MenuItemModel } from '@syncfusion/ej2-angular-navigation
 })
 export class EstimatesComponent implements OnInit {
 
-  constructor() { }
+  constructor(private estimateService:EstimatesService) { }
 
   ngOnInit(): void {
+    this.loadEstimates()
+  }
+
+  loadEstimates() {
+    this.estimateService.getEstimates().subscribe({
+      next: (response) => {
+        console.log(response,'response');
+
+        // this.invoiceData=response
+      },
+      error: (error) => {
+        console.error('Error fetching customers:', error);
+      }
+    });
   }
 
   segments = [

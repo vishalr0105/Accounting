@@ -3,7 +3,6 @@ using DAL.Models;
 using DAL;
 using WFM.Helpers;
 using Microsoft.AspNetCore.Authorization;
-using DAL.Core.Interfaces;
 using AutoMapper;
 using DAL.Repositories.Interfaces;
 using IdentityServer4.AccessTokenValidation;
@@ -19,14 +18,11 @@ namespace WFM.Controllers
         private readonly IHostingEnvironment _environment;
         private readonly ApplicationDbContext _context;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IAccountManager _accountManager;
-        private readonly ILogger<Customer360Controller> _logger;
         private readonly IMapper _mapper;
         private readonly IEmailSender _emailSender;
 
         public VendorController(ApplicationDbContext context,
-            IUnitOfWork unitOfWork, IAccountManager accountManager,
-            ILogger<Customer360Controller> logger,
+            IUnitOfWork unitOfWork,
             IMapper mapper,
             IEmailSender emailSender,
             IHostingEnvironment environment
@@ -35,17 +31,8 @@ namespace WFM.Controllers
             _environment = environment;
             _context = context;
             _unitOfWork = unitOfWork;
-            _accountManager = accountManager;
-            _logger = logger;
             _mapper = mapper;
             _emailSender = emailSender;
-        }
-
-        [HttpGet("get-activitystatus")]
-        public async Task<IActionResult> GetActivities()
-        {
-            var statuses = await _unitOfWork.Customer360.GetActivities();
-            return Ok(statuses);
         }
 
         /// New Wireframe 

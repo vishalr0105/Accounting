@@ -157,31 +157,6 @@ namespace WFM.Controllers
         }
 
 
-        [HttpPost]
-        [Route("UpdateNotificationSetting")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult UpdateNotificationSetting(List<NotificationType> settings)
-        {
-            var companyid = _unitOfWork.Company.GetCompany(Utilities.GetCompanyId(this.User).Value).Result;
-            var notificationsettings = _unitOfWork.NotificationSettingRepository
-                                           .Find(x => x.CompanyId == companyid.Id.ToString()).ToList();
-            for (int i = 0; i < notificationsettings.Count - 1; i++)
-            {
-                if (i < settings.Count())
-                {
-                    notificationsettings[i].Subscribed = settings[i].Subscribed;
-                }
-            }
-            _unitOfWork.NotificationSettingRepository.UpdateRange(notificationsettings);
-            _unitOfWork.SaveChanges();
-
-            return Ok();
-        }
-
-
         [HttpGet]
         [Route("get_allcompany")]
         [ProducesResponseType(typeof(List<AllCompanyDto>), StatusCodes.Status200OK)]

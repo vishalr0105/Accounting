@@ -14,7 +14,6 @@ namespace DAL.Models
         public DateTime PaymentDate { get; set; }
         public ePaymentMethod PaymentMethod { get; set; }
         public InvoiceStatus InvoiceStatus { get; set; }
-        //public string PaypalId{ get; set; }s
         public decimal Amount { get; set; }
         public string FullName { get; set; }
         public string Address { get; set; }

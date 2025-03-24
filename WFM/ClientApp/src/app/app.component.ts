@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,16 +8,14 @@ import { AfterViewInit, Component, OnInit } from '@angular/core';
 })
 export class AppComponent implements OnInit,AfterViewInit {
   title = 'nobleui-angular';
- 
-  constructor(){
-   
-  }
-  ngAfterViewInit(): void {
-  
-  }
-  ngOnInit(): void {
+
+  constructor(private http: HttpClient){
 
   }
-  
+  ngAfterViewInit(): void {
+
+  }
+  ngOnInit(): void {
+  }
 }
 

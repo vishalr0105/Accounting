@@ -1,0 +1,88 @@
+<div class="container mt-4">
+  <div class="accordion" id="additionalInfoAccordion">
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingAdditionalInfo">
+        <button
+          class="accordion-button"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapseAdditionalInfo"
+          aria-expanded="true"
+          aria-controls="collapseAdditionalInfo">
+          Additional Info
+        </button>
+      </h2>
+
+      <div
+        id="collapseAdditionalInfo"
+        class="accordion-collapse collapse show"
+        aria-labelledby="headingAdditionalInfo"
+        data-bs-parent="#additionalInfoAccordion">
+        <div class="accordion-body">
+          <form [formGroup]="formGroup" >
+
+            <!-- Customer Type -->
+            <div class="mb-3">
+              <label>Customer Type</label>
+              <select class="form-control" formControlName="customerType">
+                <option value="">Select</option>
+                <option *ngFor="let type of customerTypes" [value]="type">
+                  {{ type }}
+                </option>
+              </select>
+            </div>
+
+            <!-- Tax Exemption -->
+            <div class="form-check mb-3">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                formControlName="isTaxExempt"
+                id="taxExemptCheckbox"
+                (change)="toggleTaxRate()">
+              <label class="form-check-label" for="taxExemptCheckbox">
+                This customer is tax exempt
+              </label>
+            </div>
+
+            <div class="row mb-3" *ngIf="formGroup.get('isTaxExempt')?.value">
+              <div class="col-md-6">
+                <label>Reason for Exemption</label>
+                <select class="form-control" formControlName="exemptionReason">
+                  <option value="">Select</option>
+                  <option *ngFor="let reason of exemptionReasons" [value]="reason">
+                    {{ reason }}
+                  </option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label>Exemption Details</label>
+                <input type="text" class="form-control" formControlName="exemptionDetails" />
+              </div>
+            </div>
+
+            <!-- Tax Rate -->
+            <div class="mb-3">
+              <label>Select Tax Rate</label>
+              <input type="text" class="form-control" value="Automated based on location" formControlName="taxRate"
+              [disabled]="formGroup.get('isTaxExempt')?.value"
+              />
+            </div>
+
+            <!-- Opening Balance -->
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label>Opening Balance</label>
+                <input type="number" class="form-control" formControlName="openingBalance" />
+              </div>
+              <div class="col-md-6">
+                <label>As of</label>
+                <input type="date" class="form-control" formControlName="asOfDate" />
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -6,7 +6,6 @@
 using AutoMapper;
 using DAL;
 using DAL.Core;
-using DAL.Core.Interfaces;
 using DAL.DTOS;
 using DAL.Models;
 using DAL.Repositories.Interfaces;
@@ -33,7 +32,6 @@ namespace WFM.Controllers
     public class AccountController : ControllerBase
     {
         private readonly IMapper _mapper;
-        private readonly IAccountManager _accountManager;
         private readonly IAuthorizationService _authorizationService;
         private readonly ILogger<AccountController> _logger;
         private readonly IUnitOfWork _unitOfWork;
@@ -47,14 +45,12 @@ namespace WFM.Controllers
         private readonly IEmailSender _emailSender;
         private readonly ApplicationDbContext _db;
 
-        public AccountController(ApplicationDbContext context, IMapper mapper, IAccountManager accountManager, IAuthorizationService authorizationService,
-            ILogger<AccountController> logger, IUnitOfWork unitOfWork, IConfiguration config,
-            IWebHostEnvironment environment,
-            UserManager<MasterUser> userManager, SignInManager<MasterUser> signInManager, IEmailSender emailSender, IOptions<AppSettings> appSettings, RoleManager<ApplicationRole> roleManager)
+        public AccountController(ApplicationDbContext context, IMapper mapper, IAuthorizationService authorizationService,
+            ILogger<AccountController> logger, IUnitOfWork unitOfWork, IConfiguration config, IWebHostEnvironment environment,UserManager<MasterUser> userManager, 
+            SignInManager<MasterUser> signInManager, IEmailSender emailSender, IOptions<AppSettings> appSettings, RoleManager<ApplicationRole> roleManager)
         {
             _db = context;
             _mapper = mapper;
-            _accountManager = accountManager;
             _authorizationService = authorizationService;
             _environment = environment;
             _logger = logger;
@@ -138,22 +134,6 @@ namespace WFM.Controllers
                 _logger.LogDebug($"AccountController: User not found for {args.UserId}.");
                 return Ok(new { ErrorMessage = $"User not found for {args.UserId}" });
             }
-        }
-
-
-        [HttpGet]
-        [Route("SaveNotificationSetting")]
-        public void SaveNotificationSetting(string? companyid)
-        {
-            var notificationtypes = _unitOfWork.NotificationTypeRepository.GetAll();
-            var notificationsetting = _mapper.Map<List<NotificationSetting>>(notificationtypes);
-            foreach (var item in notificationsetting)
-            {
-                item.CompanyId = companyid;
-            }
-            _unitOfWork.NotificationSettingRepository.AddRange(notificationsetting);
-            _unitOfWork.SaveChanges();
-
         }
 
 

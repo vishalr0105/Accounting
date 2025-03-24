@@ -22,7 +22,6 @@ namespace DAL
         public DbSet<AccountTableLog> AccountTableLog { get; set; }
         public DbSet<ContactsTableLog> ContactsTableLog { get; set; }
         public DbSet<Models.CreditNote> CreditNotes { get; set; }
-        public DbSet<Category> Category { get; set; }
         public DbSet<NewRole> NewRole { get; set; }
         public DbSet<Company> Company { get; set; }
         public DbSet<Contact> Contacts { get; set; }
@@ -36,17 +35,14 @@ namespace DAL
         public DbSet<UserMaster> UserMaster { get; set; }
         public DbSet<MasterUser> masterusers { get; set; }
         public DbSet<Tenant> tenants { get; set; }
-        public DbSet<Notification> NotificationTable { get; set; }
-        public DbSet<NotificationSetting> NotificationSettings { get; set; }
-        public DbSet<NotificationType> NotificationTypes { get; set; }
         public DbSet<VendorTable> VendorTable { get; set; }
         public DbSet<CurrencyMaster> CurrencyMaster { get; set; }
         public DbSet<CompanySidebar> CompanySidebar { get; set; }
         public DbSet<IndustryType> industrytypes { get; set; }
         public DbSet<JobTitle> jobtitle { get; set; }
-
         public DbSet<UserPwdHistory> userpwdhistory { get; set; }
-
+        public DbSet<Customer> customer { get; set; }
+        public DbSet<ProductAndService> productservice { get; set; }
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);

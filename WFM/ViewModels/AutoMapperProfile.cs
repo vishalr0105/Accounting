@@ -60,7 +60,6 @@ namespace WFM.ViewModels
             CreateMap<IdentityRoleClaim<string>, PermissionViewModel>()
                 .ConvertUsing(s => (PermissionViewModel)ApplicationPermissions.GetPermissionByValue(s.ClaimValue));
 
-            CreateMap<Category, CategoryDto>().ReverseMap();
             CreateMap<Company, CompanyDto>().ReverseMap();
 
             CreateMap<InvoiceModel, InvoiceModelDto>()
@@ -75,8 +74,6 @@ namespace WFM.ViewModels
                 .ForMember(x => x.Account_Name, map => map.MapFrom(x => x.Account.AccountName))
                 .ForMember(x => x.Company_name, map => map.MapFrom(x => x.Company.CompanyName));
 
-            CreateMap<NotificationDto, NotificationSetting>().ReverseMap();
-            CreateMap<NotificationType, NotificationSetting>().ReverseMap();
         }
     }
 }

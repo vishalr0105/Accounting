@@ -85,6 +85,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           return ' Need Assistance';
           case 'SubContractor':
             return 'Sub Contractor';
+            case 'ProductsServices':
+              return 'Products & Services'
       default:
         return label;
     }

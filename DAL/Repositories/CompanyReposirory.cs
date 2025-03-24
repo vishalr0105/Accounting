@@ -78,28 +78,10 @@ namespace DAL.Repositories
 
                         await _appContext.CompanySidebar.AddRangeAsync(companySidebarEntries);
                         await _appContext.SaveChangesAsync(); 
-                        var notificationtypes = _appContext.NotificationTypes.ToList();
-                        var notificationsetting = new List<NotificationSetting>();
-                        int maxNSettingId = _appContext.NotificationSettings.OrderByDescending(x => x.NSettingId).FirstOrDefault().NSettingId;
-                        foreach (var item in notificationtypes)
-                        {
-                            maxNSettingId += 1;
-                            notificationsetting.Add(new NotificationSetting{
-                                    CompanyId = company.Id.ToString(),
-                                    N_TypeId = item.N_TypeId,
-                                    NSettingId= maxNSettingId,
-                                    Subscribed = true,
-                                });
-                        }
-                        _appContext.NotificationSettings.AddRange(notificationsetting);
+                       
                         tr.Commit();
                         context.SaveChanges();
 
-                        //var adminroleid = _appContext.TeamRoles
-                        //    .Where(t => t.CompanyId == company.Id
-                        //    && t.Name == "Admin"
-                        //    ).FirstOrDefault();
-                        //userMaster.RollId = adminroleid.Id;
                         _appContext.Update(userMaster);
                         _appContext.SaveChanges();
                     }
@@ -119,6 +101,7 @@ namespace DAL.Repositories
             public string FileName { get; set; } = string.Empty;
             public string SaveTo { get; set; } = string.Empty;
         }
+
         public class FileUploadErrorMessages
         {
             public static string InvalidInput { get; set; } = "Invalid Input";

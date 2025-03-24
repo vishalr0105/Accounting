@@ -13,8 +13,6 @@ namespace DAL.Repositories
     {
         readonly ApplicationDbContext _context;
         IUserRepository _user;
-        ICustomer360 _customer360;
-        ICategoryRepository _category;
         INewRoleRepository _newRole;
         ICompanyReposirory _company;
         IContactRepository _contact;
@@ -25,6 +23,8 @@ namespace DAL.Repositories
         ITenantRepository _tenants;
         IIndustryTypesRepository _industryType;
         IJobTitleRepository _jobTitle;
+        ICustomerRepository _customer;
+        IProductAndServiceRepository _productServicesRepository;
 
         public UnitOfWork(ApplicationDbContext context)
         {
@@ -39,17 +39,6 @@ namespace DAL.Repositories
                 if (_user == null)
                     _user = new UserRepository(_context);
                 return _user;
-            }
-        }
-
-        public ICategoryRepository Category
-        {
-            get
-            {
-                if (_category == null)
-                    _category = new CategoryRepository(_context);
-
-                return _category;
             }
         }
 
@@ -106,15 +95,6 @@ namespace DAL.Repositories
                 return _dashboardRepository;
             }
         }
-       
-        public ICustomer360 Customer360
-        {
-            get
-            {
-                _customer360 ??= new Customer360(_context);
-                return _customer360;
-            }
-        }
 
 
         public IVendorRepository vendorRepository
@@ -126,9 +106,6 @@ namespace DAL.Repositories
             }
         }
                  
-        public INotificationSettingRepository NotificationSettingRepository => new NotificationSettingRepository(_context);
-
-        public INotificationTypeRepository NotificationTypeRepository => new NotificationTypeRepository(_context);
 
         public IMasterUserRepository MasterUsers
         {
@@ -168,6 +145,24 @@ namespace DAL.Repositories
         }
 
         public IUserPwdHistoryRepository UserPwdHistoryRepository => new UserPwdHistoryRepository(_context);
+
+        public ICustomerRepository CustomerRepository
+        {
+            get
+            {
+                _customer ??= new CustomerRepository(_context);
+                return _customer;
+            }
+        }
+
+        public IProductAndServiceRepository ProductAndServiceRepository
+        {
+            get
+            {
+                _productServicesRepository ??= new ProductAndServiceRepository(_context);
+                return _productServicesRepository;
+            }
+        }
 
         public int SaveChanges()
         {

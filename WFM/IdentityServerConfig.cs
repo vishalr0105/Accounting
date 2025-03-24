@@ -13,7 +13,7 @@ namespace WFM
     public class IdentityServerConfig
     {
         public const string ApiName = "quickapp_api";
-        public const string ApiFriendlyName = "WFM API";
+        public const string ApiFriendlyName = "Accounting API";
         public const string QuickAppClientID = "quickapp_spa";
         public const string SwaggerClientID = "swaggerui";
 

@@ -1,0 +1,68 @@
+<div class="accordion-item mt-3">
+  <!-- Accordion Header -->
+  <h2 class="accordion-header" id="heading{{ sectionKey }}">
+    <button
+      class="accordion-button"
+      type="button"
+      data-bs-toggle="collapse"
+      [attr.data-bs-target]="'#collapse'+sectionKey"
+      aria-expanded="true"
+      [attr.aria-controls]="'collapse'+sectionKey">
+      {{ title }}
+    </button>
+  </h2>
+
+  <!-- Accordion Body -->
+  <div
+    id="collapse{{ sectionKey }}"
+    class="accordion-collapse collapse show"
+    [attr.aria-labelledby]="'heading'+sectionKey"
+    data-bs-parent="#formAccordion">
+
+    <div class="accordion-body">
+      <div [formGroup]="formGroup">
+        <ng-container *ngFor="let field of fields">
+
+          <!-- Checkbox Field -->
+          <div *ngIf="field.type === 'checkbox'" class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" [formControlName]="field.key" id="{{ field.key }}" />
+            <label class="form-check-label" for="{{ field.key }}">{{ field.label }}</label>
+          </div>
+
+          <!-- Conditionally Render Fields Based on Checkbox -->
+          <div *ngIf="!field?.condition || formGroup.get(field?.condition)?.value">
+
+            <!-- Text & Number Fields -->
+            <div *ngIf="field.type === 'text' || field.type === 'number'" class="mb-3">
+              <label class="form-label">{{ field.label }}</label>
+              <input [type]="field.type" class="form-control" [formControlName]="field.key" />
+            </div>
+
+            <!-- date -->
+            <div *ngIf="field.type == 'date'"  class="mb-3">
+              <label class="form-label">{{ field.label }}</label>
+              <input [type]="field.type" class="form-control" [formControlName]="field.key" />
+            </div>
+
+            <!-- Textarea -->
+            <div *ngIf="field.type === 'textarea'" class="mb-3">
+              <label class="form-label">{{ field.label }}</label>
+              <textarea class="form-control" [formControlName]="field.key"></textarea>
+            </div>
+
+            <!-- Select Dropdown -->
+            <div *ngIf="field.type === 'select'" class="mb-3">
+              <label class="form-label">{{ field.label }}</label>
+              <select class="form-select" [formControlName]="field.key">
+                <option *ngFor="let option of field.options" [value]="option">{{ option }}</option>
+              </select>
+            </div>
+
+          </div>
+
+        </ng-container>
+      </div>
+    </div>
+
+  </div>
+</div>

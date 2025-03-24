@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { EditSettingsModel, PageSettingsModel, ToolbarItems } from '@syncfusion/ej2-angular-grids';
 import { MenuEventArgs, MenuItemModel } from '@syncfusion/ej2-angular-navigations';
+import { CustomersService } from '../service/customers.service';
+import { Route, Router } from '@angular/router';
 
 @Component({
   selector: 'app-customer-list',
@@ -8,10 +10,32 @@ import { MenuEventArgs, MenuItemModel } from '@syncfusion/ej2-angular-navigation
   styleUrls: ['./customer-list.component.scss']
 })
 export class CustomerListComponent implements OnInit {
-
-  constructor() { }
+  // DATA TABLE
+  columnFields = [
+    { field: 'name', header: 'Name',type: 'string' ,visible: true},
+    { field: 'email', header: 'Email Id' ,type: 'string',visible: true},
+    { field: 'phoneNumber', header: 'phone',type: 'sttring' ,visible: true},
+    { field: 'unbilledCharges', header: 'Open Balance' ,type: 'number',visible: true},
+  ];
+  invoiceData = [
+    // { name: "Amy's Bird Sanctuary", company: "Advintek Consulting Services Sdn Bhd", phone: "(650) 555-", balance: 53.09 },
+    // { name: "Apple Care", company: "", phone: "(789) 987-7899", balance: 0.00 },
+    // { name: "Famous Transport", company: "", phone: "(988) 998-8998", balance: 11.04 }
+  ];
+  constructor(private customersService: CustomersService,private router:Router) { }
 
   ngOnInit(): void {
+    this.loadCustomers();
+  }
+  loadCustomers() {
+    this.customersService.getCustomers().subscribe({
+      next: (response) => {
+        this.invoiceData=response
+      },
+      error: (error) => {
+        console.error('Error fetching customers:', error);
+      }
+    });
   }
 
   segments = [
@@ -37,18 +61,7 @@ export class CustomerListComponent implements OnInit {
   onSelect(args: any) {
     console.log('Selected Item:', args.item.text);
   }
-  // DATA TABLE
-  columnFields = [
-    { field: 'name', header: 'Name',type: 'string' ,visible: true},
-    { field: 'company', header: 'company Name' ,type: 'string',visible: true},
-    { field: 'phone', header: 'phone',type: 'sttring' ,visible: true},
-    { field: 'balance', header: 'Open Balance' ,type: 'number',visible: true},
-  ];
-  invoiceData = [
-    { name: "Amy's Bird Sanctuary", company: "Advintek Consulting Services Sdn Bhd", phone: "(650) 555-", balance: 53.09 },
-    { name: "Apple Care", company: "", phone: "(789) 987-7899", balance: 0.00 },
-    { name: "Famous Transport", company: "", phone: "(988) 998-8998", balance: 11.04 }
-  ];
+
   editSettings:EditSettingsModel = { allowEditing: false, allowAdding: false, allowDeleting: false, mode: 'Normal' };
     paginationSettings: PageSettingsModel = {
       pageSize: 10,
@@ -63,7 +76,8 @@ export class CustomerListComponent implements OnInit {
         event.preventDefault();
         if (action === 'edit') {
           this.updateRowId = rowData.id; // Set current row to edit mode
-          console.log('Editing:', rowData);
+          console.log('Editing2:', rowData);
+          this.router.navigateByUrl(`/create-customer/${rowData.id}`);
         } else if (action === 'update') {
           console.log('Updating:', rowData);
           this.updateRowId = null; // Exit edit mode after updating

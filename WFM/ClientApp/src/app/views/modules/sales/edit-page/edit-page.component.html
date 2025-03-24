@@ -1,0 +1,532 @@
+<div class="d-flex mt-6">
+  <!-- left sidebar -->
+  <div
+    class="container bg-white shadow rounded sidebar m-0"
+    [ngStyle]="{ width: showSideBar ? '300px' : '0px' }"
+  >
+    <div
+      *ngIf="showSideBar"
+      [ngStyle]="{ width: showSideBar ? '280px' : '0px' }"
+    >
+      <div
+        class="sidebar-container d-flex flex-column bg-white mt-2"
+        [ngClass]="{ open: showSideBar }"
+      >
+        <!-- Header Section -->
+        <div class="d-flex justify-content-between align-items-center">
+          <h5 class="fw-bold">
+            Autofill this invoice with
+            <span class="badge bg-success">BETA</span>
+          </h5>
+          <!-- <button class="btn btn-light border-0" (click)="toggleSidebar()">✕</button> -->
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="btn-group my-3">
+          <button class="btn btn-secondary active">Files</button>
+          <button class="btn btn-light">Images</button>
+          <button class="btn btn-light">Text</button>
+        </div>
+
+        <!-- Upload Section -->
+        <div class="upload-container border rounded p-4 text-center bg-light">
+          <button class="btn btn-success w-100 mb-3">
+            ✨ Autofill from file
+          </button>
+          <p>or drag and drop here</p>
+          <p class="text-muted small">Supported formats: PDF, PNG, JPEG</p>
+          <p class="fw-bold">
+            Try with <span class="text-primary">estimates</span> or
+            <span class="text-primary">invoices</span>
+          </p>
+
+          <!-- Example invoice images -->
+          <div class="d-flex justify-content-center mt-3">
+            <img
+              src="assets/estimate.png"
+              alt="Estimate"
+              class="img-thumbnail mx-2"
+              width="80"
+            />
+            <img
+              src="assets/invoice.png"
+              alt="Invoice"
+              class="img-thumbnail mx-2"
+              width="80"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <button
+      (click)="sideBar()"
+      [ngStyle]="{
+        position: 'absolute',
+        right: '-22px',
+        top: showSideBar ? '10px' : '50%',
+        transform: showSideBar ? 'none' : 'translateY(-50%)'
+      }"
+      class="sidebar-btn"
+    >
+      <span *ngIf="!showSideBar" class="feather icon-menu"></span>
+      <span *ngIf="showSideBar" class="feather icon-x"></span>
+    </button>
+  </div>
+
+  <!-- main container -->
+  <div class="right-contain">
+    <form [formGroup]="invoiceForm" (ngSubmit)="saveInvoice()">
+      <div class="bg-white shadow rounded p-2">
+        <!-- Invoice Header -->
+        <div class="row mt-3">
+          <div class="col-md-8">
+            <h1 class="text-primary">{{ title | uppercase }}</h1>
+            <p class="fw-bold">
+              {{ invoiceForm.value.companyName | uppercase }}
+            </p>
+            <p>{{ invoiceForm.value.companyAddress }}</p>
+            <a href="#" class="text-primary">Edit company</a>
+          </div>
+          <div class="col-md-4 text-end">
+            <p class="text-muted">
+              Balance due (hidden):
+              <span class="fw-bold">{{ invoiceForm.value.balanceDue }}</span>
+            </p>
+            <img
+              src="assets/logo.png"
+              alt="Company Logo"
+              class="img-fluid"
+              style="max-height: 50px"
+            />
+          </div>
+        </div>
+
+        <!-- Invoice Details -->
+        <div class="bg-light p-3 rounded mt-3">
+          <div class="row">
+            <div class="col-md-4">
+              <label class="form-label">Add customer</label>
+              <select
+                class="form-select mb-3"
+                formControlName="selectedCustomer"
+              >
+                <option *ngFor="let customer of customers" [ngValue]="customer">
+                  {{ customer.name }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div
+            class="row"
+            *ngIf="invoiceForm.get('selectedCustomer.email').value"
+          >
+            <div class="col-md-4" formGroupName="selectedCustomer">
+              <label class="form-label">Email</label>
+              <input type="text" formControlName="email" class="form-control" />
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-4">
+              <label class="form-label">Terms</label>
+              <input type="text" class="form-control" formControlName="terms" />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Invoice Date</label>
+              <input
+                type="date"
+                class="form-control"
+                formControlName="invoiceDate"
+              />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Due Date</label>
+              <input
+                type="date"
+                class="form-control"
+                formControlName="dueDate"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Input Fields -->
+        <div class="row mt-3">
+          <div class="col-md-4">
+            <label class="form-label">Original Email</label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="originalEmail"
+            />
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">EInvoice Validation Status</label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="validationStatus"
+            />
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Invoice Sent SyncToken</label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="syncToken"
+            />
+          </div>
+        </div>
+
+        <!-- Tags Input -->
+        <div class="mt-3">
+          <label class="form-label">Tags (hidden):</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Start typing to add a tag"
+            formControlName="tags"
+          />
+        </div>
+
+        <!-- Product or Service Table -->
+        <div class="mt-4">
+          <h5>Product or Service</h5>
+          <table class="table table-bordered" formArrayName="invoiceItems">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Product/Service</th>
+                <th>Description</th>
+                <th>Qty</th>
+                <th>Rate</th>
+                <th>Amount</th>
+                <th>Tax</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let item of invoiceItems.controls; let i = index"
+                [formGroupName]="i"
+              >
+                <td>{{ i + 1 }}</td>
+                <td>
+                  <select class="form-control" formControlName="product">
+                    <option
+                      *ngFor="let option of productOptions"
+                      [value]="option"
+                    >
+                      {{ option }}
+                    </option>
+                  </select>
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="description"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    class="form-control"
+                    formControlName="qty"
+                    (input)="calculateTotals()"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    class="form-control"
+                    formControlName="rate"
+                    (input)="calculateTotals()"
+                  />
+                </td>
+                <td>{{ item.value.qty * item.value.rate | currency }}</td>
+                <td>
+                  <input
+                    type="checkbox"
+                    formControlName="tax"
+                    (change)="calculateTotals()"
+                  />
+                </td>
+                <td>
+                  <button
+                    class="btn btn-danger btn-sm"
+                    (click)="deleteProduct(i)"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <button class="btn btn-secondary" (click)="addProduct()">
+            Add product or service
+          </button>
+          <button
+            class="btn btn-outline-secondary ms-2"
+            (click)="clearProducts()"
+          >
+            Clear all lines
+          </button>
+
+          <!-- Summary Section -->
+          <div class="mt-4 border p-3">
+            <div class="d-flex justify-content-between">
+              <span>Subtotal</span>
+              <span>{{ invoiceForm.value.subtotal | currency }}</span>
+            </div>
+            <!-- Taxable Subtotal -->
+            <div class="d-flex justify-content-between">
+              <span>Taxable subtotal</span>
+              <span>{{
+                invoiceForm.get("taxableSubtotal")?.value | currency
+              }}</span>
+            </div>
+
+            <!-- Tax Rate Dropdown -->
+            <div class="d-flex justify-content-between mt-2">
+              <label for="taxRate">Select tax rate</label>
+              <select
+                id="taxRate"
+                class="form-control w-auto"
+                formControlName="selectedTaxRate"
+                (change)="calculateTotals()"
+              >
+                <option *ngFor="let rate of taxRates" [value]="rate.value">
+                  {{ rate.label }}
+                </option>
+              </select>
+            </div>
+
+            <!-- Sales Tax -->
+            <div class="d-flex justify-content-between mt-2">
+              <span
+                >Sales tax
+                <i
+                  class="bi bi-question-circle"
+                  title="Tax calculated based on taxable items"
+                ></i
+              ></span>
+              <span>{{ invoiceForm.get("salesTax")?.value | currency }}</span>
+            </div>
+
+            <!-- Invoice Total -->
+            <div class="d-flex justify-content-between mt-3 fw-bold">
+              <span>Invoice total</span>
+              <span>{{
+                invoiceForm.get("invoiceTotal")?.value | currency
+              }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-6">
+            <!-- Customer Payment Options -->
+            <div class="mt-4">
+              <h5>
+                Customer Payment Options
+                <a href="#" class="text-primary">Edit</a>
+              </h5>
+              <div
+                class="mb-2 d-flex overflow-hidden align-items-center"
+                style="height: 50px"
+              >
+                <img
+                  src="https://shopify.dev/assets/templated-apis-screenshots/checkout-ui-extensions/2024-10/paymenticon-default.png"
+                  alt="Payment Options"
+                  class="img-fluid"
+                  width="500px"
+                />
+              </div>
+              <textarea
+                class="form-control mb-2"
+                placeholder="Tell your customer how you want to get paid."
+                formControlName="paymentInstructions"
+              ></textarea>
+            </div>
+            <!-- Notes and Attachments -->
+            <div class="mt-3">
+              <label class="form-label">Note to Customer</label>
+              <textarea
+                class="form-control mb-2"
+                formControlName="customerNote"
+              >
+              </textarea>
+              <label class="form-label">Internal Customer Notes (hidden)</label>
+              <textarea
+                class="form-control mb-2"
+                formControlName="internalNote"
+              ></textarea>
+              <label class="form-label">Memo on Statement (hidden)</label>
+              <textarea
+                class="form-control mb-2"
+                formControlName="statementMemo"
+              ></textarea>
+              <div class="mb-3">
+                <label class="form-label fw-bold">Attachments</label>
+                <div class="input-group">
+                  <input
+                    type="file"
+                    class="form-control"
+                    (change)="onFileSelect($event)"
+                    accept=".jpg,.jpeg,.png,.pdf,.doc,.docx,.xlsx,.csv,.txt"
+                  />
+                </div>
+                <small class="text-muted d-block mt-1"
+                  >Max file size: 20 MB</small
+                >
+
+                <!-- Selected File Preview -->
+                <div
+                  *ngIf="selectedFile"
+                  class="alert alert-light border mt-2 d-flex align-items-center"
+                >
+                  <span class="me-auto"
+                    ><strong>Selected File:</strong>
+                    {{ selectedFile.name }}</span
+                  >
+                  <button
+                    type="button"
+                    class="btn btn-danger btn-sm"
+                    (click)="removeFile()"
+                  >
+                    <i class="bi bi-trash"></i> Remove
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+      </div>
+    </form>
+  </div>
+
+  <!-- right sidebar -->
+  <div
+    class="bg-white m-0"
+    [ngStyle]="{ width: showSideBarRight ? '300px' : '0px' }"
+  >
+    <div
+      *ngIf="showSideBarRight"
+      [ngStyle]="{ width: showSideBarRight ? '300px' : '0px' }"
+    >
+      <div class="w-100">
+        <div class="card p-3" style="max-width: 400px">
+          <div class="d-flex justify-content-between align-items-center">
+            <h5>Invoice 854</h5>
+            <button
+              type="button"
+              class="btn-close"
+              aria-label="Close"
+              (click)="sideBarRight()"
+            ></button>
+          </div>
+          <a href="#" class="text-primary small">Edit default settings</a>
+
+          <div class="accordion mt-3" id="invoiceAccordion">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingOne">
+                <button
+                  class="accordion-button"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapseOne"
+                >
+                  Customization
+                </button>
+              </h2>
+              <div
+                id="collapseOne"
+                class="accordion-collapse collapse show"
+                data-bs-parent="#invoiceAccordion"
+              >
+                <div class="accordion-body">
+                  Customization settings go here...
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingTwo">
+                <button
+                  class="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapseTwo"
+                >
+                  Payment options
+                </button>
+              </h2>
+              <div
+                id="collapseTwo"
+                class="accordion-collapse collapse"
+                data-bs-parent="#invoiceAccordion"
+              >
+                <div class="accordion-body">Payment settings go here...</div>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingThree">
+                <button
+                  class="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapseThree"
+                >
+                  Design
+                </button>
+              </h2>
+              <div
+                id="collapseThree"
+                class="accordion-collapse collapse"
+                data-bs-parent="#invoiceAccordion"
+              >
+                <div class="accordion-body">Design settings go here...</div>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingFour">
+                <button
+                  class="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapseFour"
+                >
+                  Scheduling
+                </button>
+              </h2>
+              <div
+                id="collapseFour"
+                class="accordion-collapse collapse"
+                data-bs-parent="#invoiceAccordion"
+              >
+                <div class="accordion-body">Scheduling settings go here...</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <button (click)="sideBar()"[ngStyle]="{
+      'position': 'absolute',
+      'right': '-22px',
+      'top': showSideBarLeft ? '10px' : '50%',
+      'transform': showSideBarLeft ? 'none' : 'translateY(-50%)'
+    }"
+    class="sidebar-btn"
+    >
+    <span *ngIf="!showSideBarLeft" class="feather icon-menu"></span>
+    <span *ngIf="showSideBarLeft" class="feather icon-x"></span>
+  </button> -->
+  </div>
+</div>

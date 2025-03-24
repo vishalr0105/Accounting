@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { EditSettingsModel, PageSettingsModel, ToolbarItems } from '@syncfusion/ej2-angular-grids';
 import { MenuEventArgs, MenuItemModel } from '@syncfusion/ej2-angular-navigations';
+import { InvoicesService } from '../salesServices/invoices.service';
 
 @Component({
   selector: 'app-invoices',
@@ -9,9 +10,22 @@ import { MenuEventArgs, MenuItemModel } from '@syncfusion/ej2-angular-navigation
 })
 export class InvoicesComponent implements OnInit {
 
-  constructor() { }
+  constructor(private invoiceService:InvoicesService) { }
 
   ngOnInit(): void {
+    this.loadInvoices()
+  }
+  loadInvoices() {
+    this.invoiceService.getInvoices().subscribe({
+      next: (response) => {
+        console.log(response,'response');
+
+        // this.invoiceData=response
+      },
+      error: (error) => {
+        console.error('Error fetching customers:', error);
+      }
+    });
   }
 
   segments = [

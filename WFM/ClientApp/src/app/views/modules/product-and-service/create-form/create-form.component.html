@@ -1,0 +1,25 @@
+<div class="container p-3">
+  <div class="d-flex justify-content-between">
+    <h2>
+      <ng-container *ngIf="itemType=='Service'">
+        Add a new service
+      </ng-container>
+      <ng-container *ngIf="itemType=='Product'">
+        Add a new product
+      </ng-container>
+    </h2>
+    <button class="btn btn-light btn-sm" (click)="goBack()"><span class="feather icon-x-circle"></span></button>
+  </div>
+  <div class="accordion" id="formAccordion" [formGroup]="parentForm">
+    <ng-container *ngFor="let section of (itemType === 'Service' ? service : product)">
+      <app-dynamic-form
+        [title]="section.title"
+        [formGroup]="nameAndContactForm(section.key)"
+        [fields]="section.fields"
+        [sectionKey]="section.key">
+      </app-dynamic-form>
+    </ng-container>
+  </div>
+
+  <button class="btn btn-primary mt-3" (click)="submit()">Submit</button>
+</div>

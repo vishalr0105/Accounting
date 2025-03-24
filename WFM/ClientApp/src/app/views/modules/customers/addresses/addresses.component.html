@@ -1,0 +1,109 @@
+<div class="container mt-4">
+  <div class="accordion" id="addressAccordion">
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingTwo">
+        <button
+          class="accordion-button"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapseTwo"
+          aria-expanded="true"
+          aria-controls="collapseTwo">
+          Addresses
+        </button>
+      </h2>
+
+      <div
+        id="collapseTwo"
+        class="accordion-collapse collapse show"
+        aria-labelledby="headingTwo"
+        data-bs-parent="#addressAccordion">
+        <div class="accordion-body">
+          <form [formGroup]="formGroup" >
+
+            <!-- Billing Address -->
+            <h5>Billing address</h5>
+            <div class="row">
+              <div class="col-md-6">
+                <label>Street address 1</label>
+                <input type="text" class="form-control" formControlName="billingStreet1" />
+              </div>
+              <div class="col-md-6">
+                <label>Street address 2</label>
+                <input type="text" class="form-control" formControlName="billingStreet2" />
+              </div>
+            </div>
+
+            <div class="row mt-2">
+              <div class="col-md-6">
+                <label>City</label>
+                <input type="text" class="form-control" formControlName="billingCity" />
+              </div>
+              <div class="col-md-6">
+                <label>State</label>
+                <input type="text" class="form-control" formControlName="billingState" />
+              </div>
+            </div>
+
+            <div class="row mt-2">
+              <div class="col-md-6">
+                <label>ZIP code</label>
+                <input type="text" class="form-control" formControlName="billingZip" />
+              </div>
+              <div class="col-md-6">
+                <label>Country</label>
+                <input type="text" class="form-control" formControlName="billingCountry" />
+              </div>
+            </div>
+
+            <a href="#" class="d-block mt-2">Preview address</a>
+
+            <!-- Shipping Address -->
+            <h5 class="mt-4">Shipping address</h5>
+            <div class="form-check">
+              <input type="checkbox" class="form-check-input" formControlName="sameAsBilling" (change)="syncShippingAddress()" />
+              <label class="form-check-label">Same as billing address</label>
+            </div>
+
+            <ng-container *ngIf="!formGroup.get('sameAsBilling').value">
+              <div class="row mt-2">
+                <div class="col-md-6">
+                  <label>Street address 1</label>
+                  <input type="text" class="form-control" formControlName="shippingStreet1" />
+                </div>
+                <div class="col-md-6">
+                  <label>Street address 2</label>
+                  <input type="text" class="form-control" formControlName="shippingStreet2" />
+                </div>
+              </div>
+
+              <div class="row mt-2">
+                <div class="col-md-6">
+                  <label>City</label>
+                  <input type="text" class="form-control" formControlName="shippingCity" />
+                </div>
+                <div class="col-md-6">
+                  <label>State</label>
+                  <input type="text" class="form-control" formControlName="shippingState" />
+                </div>
+              </div>
+
+              <div class="row mt-2">
+                <div class="col-md-6">
+                  <label>ZIP code</label>
+                  <input type="text" class="form-control" formControlName="shippingZip" />
+                </div>
+                <div class="col-md-6">
+                  <label>Country</label>
+                  <input type="text" class="form-control" formControlName="shippingCountry" />
+                </div>
+              </div>
+
+              <a href="#" class="d-block mt-2">Preview address</a>
+            </ng-container>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

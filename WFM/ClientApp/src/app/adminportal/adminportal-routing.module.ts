@@ -68,6 +68,8 @@ const route: Routes = [
             (m) => m.NeedAssistanceModule
           ),
       },
+      {path:'products',loadChildren:()=>import('../views/modules/product-and-service/product-and-service.module').then(m=>m.ProductAndServiceModule)},
+
 
     ]
   }

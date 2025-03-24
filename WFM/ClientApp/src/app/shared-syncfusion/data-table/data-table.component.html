@@ -1,15 +1,16 @@
 <ejs-grid #grid
-  [dataSource]="data" 
-  [allowSorting]="allowSorting" 
+  [dataSource]="data"
+  [allowSorting]="allowSorting"
   [allowPaging]="allowPaging"
-  [allowFiltering]="allowFiltering" 
-  [editSettings]="editSettings" 
-  [pageSettings]="pageSettings" 
+  [allowFiltering]="allowFiltering"
+  [editSettings]="editSettings"
+  [pageSettings]="pageSettings"
   [toolbar]="globalSearch ? toolbar : []"
   [showColumnChooser]="true"
-  (rowSelected)="onRowSelected($event)"
   (actionComplete)="onActionComplete($event)"
-  (actionBegin)="onActionBegin($event)" >
+  (actionBegin)="onActionBegin($event)"
+  (rowSelected)="onRowSelected($event)"
+  >
 
   <e-columns>
     <!-- <e-column *ngIf="showCheckbox" type="checkbox" width="50"></e-column> -->
@@ -22,12 +23,12 @@
         <ejs-checkbox [checked]="isChecked(data.id)" (click)="$event.preventDefault(); $event.stopPropagation();" (change)="onCheckboxClick(data.id, $event)"></ejs-checkbox>
       </ng-template>
     </e-column>
-      <e-column  
+      <e-column
                 *ngFor="let col of columns"
-                [field]="col.field" 
-                [headerText]="col.headerText" 
-                [width]="col.width" 
-                [textAlign]="col.textAlign" 
+                [field]="col.field"
+                [headerText]="col.headerText"
+                [width]="col.width"
+                [textAlign]="col.textAlign"
                 [allowFiltering]="false"
                 [filter]="columnFilters ? {} : null"
                 [visible]="col.visible !== false">

@@ -12,21 +12,19 @@ namespace DAL.Repositories.Interfaces
     public interface IUnitOfWork
     {
         IUserRepository User { get; }
-        ICustomer360 Customer360 { get; }
-        ICategoryRepository Category { get; }
         INewRoleRepository NewRole { get; }
         ICompanyReposirory Company { get; }
         IContactRepository Contact { get; }
         IDashboardRepository Dashboard { get; }
         IInvoiceRepository Invoices { get; }
         IVendorRepository vendorRepository { get; }
-        INotificationSettingRepository NotificationSettingRepository { get; }
-        INotificationTypeRepository NotificationTypeRepository { get; }
         IMasterUserRepository MasterUsers { get; }
         ITenantRepository TenantsRepository { get; }
         IIndustryTypesRepository IndustryType { get; }
         IJobTitleRepository JobTitle { get; }
         IUserPwdHistoryRepository UserPwdHistoryRepository { get; }
+        ICustomerRepository CustomerRepository { get; }
+        IProductAndServiceRepository ProductAndServiceRepository { get; }
         int SaveChanges();
 
         Task<int> SaveChangesAsync();

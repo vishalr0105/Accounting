@@ -1,0 +1,8 @@
+<form [formGroup]="customerForm" >
+  <app-name-and-contact [formGroup]="nameAndContactForm"></app-name-and-contact>
+  <app-addresses [formGroup]="addressForm"></app-addresses>
+  <app-notes-and-attachments [formGroup]="notesAttachmentsForm"></app-notes-and-attachments>
+  <app-payments [formGroup]="paymentsForm"></app-payments>
+  <app-additional-info [formGroup]="additionalInfoForm"></app-additional-info>
+  <button (click)="onSubmit()" class="btn btn-success mt-4">{{this.customerId?'update':'Submit'}}</button>
+</form>

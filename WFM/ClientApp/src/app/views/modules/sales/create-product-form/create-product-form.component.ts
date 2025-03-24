@@ -1,5 +1,9 @@
+import { Location } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { EditSettingsModel, GridComponent, RowDropSettingsModel, ToolbarItems } from '@syncfusion/ej2-angular-grids';
+import { EditPageComponent } from '../edit-page/edit-page.component';
+import { EmailViewComponent } from '../email-view/email-view.component';
 
 @Component({
   selector: 'app-create-product-form',
@@ -8,48 +12,47 @@ import { EditSettingsModel, GridComponent, RowDropSettingsModel, ToolbarItems } 
 })
 export class CreateProductFormComponent implements OnInit {
   @ViewChild('grid', { static: false }) public grid: GridComponent;
+  @ViewChild(EditPageComponent) editPageComponent!: EditPageComponent;
+  @ViewChild(EmailViewComponent) emailPageComponent!: EmailViewComponent;
 
-  public data: any[] = [
-    { id: 1, product: 'Item A', description: 'Desc A', qty: 2, rate: 10, amount: 20 },
-    { id: 2, product: 'Item B', description: 'Desc B', qty: 1, rate: 15, amount: 15 },
-    { id: 3, product: 'Item C', description: 'Desc C', qty: 3, rate: 5, amount: 15 },
-  ];
-
-  public editSettings: EditSettingsModel;
-  public toolbar: ToolbarItems[];
-  public rowDropSettings: RowDropSettingsModel = { targetID: 'grid' };
+  pageType: string = '';
+  activeTab: string = 'edit'; // Default Active Tab
+  invoiceData:any={}
   public sum: number = 0;
- // ✅ Dropdown data source
- public productList: any[] = [
-  { id: 1, name: 'Bricks' },
-  { id: 2, name: 'Hours' },
-  { id: 3, name: 'Mobile' },
-  { id: 4, name: 'Sales' },
-];
-  constructor() {
-    this.editSettings = { allowEditing: true, allowDeleting: true, allowAdding: true, mode: 'Normal' };
-    this.toolbar = ['Add', 'Edit', 'Delete', 'Update', 'Cancel'];
-    this.calculateSum();
+
+  constructor(private router: Router,private location: Location,private route: ActivatedRoute) {}
+
+  ngOnInit() {
+    this.route.data.subscribe(data => {
+      this.pageType = data['pageType']; // Get the pageType from route data
+      console.log('Page Type:', this.pageType);
+    });
   }
 
-  ngOnInit() {}
-
-  calculateAmount(data: any) {
-    data.amount = data.qty * data.rate;
+  manage(){
+   if( this.activeTab=='edit') this.editPageComponent.sideBarRight()
+   if( this.activeTab=='email') this.emailPageComponent.sideBarRight()
   }
 
-  actionComplete(args: any) {
-    if (args.requestType === 'save') {
-      this.calculateAmount(args.data);
-      this.calculateSum();
-    }
-    if (args.requestType === 'delete') {
-      this.data = this.data.filter(item => item.id !== args.data[0].id);  // Remove deleted row
-      this.calculateSum();
-    }
+  reviewAndSend() {
+    console.log('Reviewing and Sending Invoice...');
   }
 
-  calculateSum() {
-    this.sum = this.data.reduce((acc, item) => acc + item.amount, 0);
+  goBack() {
+    // this.router.navigate(['../']); // Navigate to the previous route
+    this.location.back();
+  }
+  setActiveTab(tab: string) {
+    this.activeTab = tab;
+  }
+
+  // get edit component form data======================
+
+  getInvoiceData(data: any) {
+    this.invoiceData = data; // Store or process as needed
+  }
+  submitInvoice() {
+    console.log("Final Submitted Invoice Data:", this.invoiceData);
+    // Send to API or further processing
   }
 }

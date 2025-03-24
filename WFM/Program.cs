@@ -10,7 +10,6 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using DAL.Core;
 using WFM.Authorization;
-using DAL.Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using WFM.Helpers;
 using WFM;
@@ -162,7 +161,6 @@ try
     builder.Services.Configure<AppSettings>(builder.Configuration);
     builder.Services.AddScoped<IEmailSender, EmailSender>();
     builder.Services.AddScoped<IUnitOfWork, HttpUnitOfWork>();
-    builder.Services.AddScoped<IAccountManager, AccountManager>();
     builder.Services.AddSession();
     // Auth Handlers
     builder.Services.AddSingleton<IAuthorizationHandler, ViewUserAuthorizationHandler>();

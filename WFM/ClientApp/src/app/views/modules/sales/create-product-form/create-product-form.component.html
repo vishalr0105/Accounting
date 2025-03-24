@@ -1,31 +1,84 @@
-<ejs-grid #grid [dataSource]="data" allowPaging="true" allowSorting="true"
-          allowRowDragAndDrop="true" [editSettings]="editSettings" [toolbar]="toolbar"
-          (actionComplete)="actionComplete($event)">
+<header
+  class="d-flex flex-column position-fixed w-100 bg-white zindex-3333 top-0"
+>
+  <div
+    class="d-flex justify-content-between align-items-center border-bottom py-2 px-3"
+  >
+    <!-- Left Section -->
+    <div class="d-flex align-items-center gap-2">
+      <span class="feather icon-refresh-ccw"></span>
+      <!-- Bootstrap Icon (Change as needed) -->
+      <p class="m-0 fw-bold">{{pageType}}</p>
+    </div>
 
-  <e-columns>
-    <e-column field="id" headerText="#" width="50" textAlign="Center" isPrimaryKey="true"></e-column>
+    <!-- Right Section -->
+    <div class="d-flex align-items-center gap-3">
+      <a href="#" class="text-decoration-none text-dark"><span class="feather icon-help-circle"></span></a>
+      <button class="btn btn-light btn-sm" (click)="goBack()"><span class="feather icon-x-circle"></span></button>
+    </div>
+  </div>
 
-    <!-- ✅ Product Dropdown -->
-    <e-column field="productId" headerText="Product/Service" width="200"
-              [foreignKeyField]="'id'" [foreignKeyValue]="'name'" [dataSource]="productList">
-    </e-column>
+  <div
+    class="d-flex justify-content-between align-items-center border-bottom py-2 px-3"
+  >
+    <!-- <ul class="list-unstyled d-flex gap-3 m-0">
+      <li><a href="#" class="text-decoration-none text-dark">Edit</a></li>
+      <li><a href="#" class="text-decoration-none text-dark">Email View</a></li>
+      <li><a href="#" class="text-decoration-none text-dark">Payor View</a></li>
+      <li><a href="#" class="text-decoration-none text-dark">PDF View</a></li>
+    </ul> -->
+    <ul class="list-unstyled d-flex gap-3 m-0">
+      <li>
+        <a  class="text-decoration-none"
+           [ngClass]="{ 'fw-bold text-primary': activeTab === 'edit' }"
+           (click)="setActiveTab('edit')">Edit</a>
+      </li>
+      <li>
+        <a  class="text-decoration-none"
+           [ngClass]="{ 'fw-bold text-primary': activeTab === 'email' }"
+           (click)="setActiveTab('email')">Email View</a>
+      </li>
+      <li>
+        <a  class="text-decoration-none"
+           [ngClass]="{ 'fw-bold text-primary': activeTab === 'payor' }"
+           (click)="setActiveTab('payor')">Payor View</a>
+      </li>
+      <li>
+        <a  class="text-decoration-none"
+           [ngClass]="{ 'fw-bold text-primary': activeTab === 'pdf' }"
+           (click)="setActiveTab('pdf')">PDF View</a>
+      </li>
+    </ul>
 
-    <e-column field="description" headerText="Description" width="200"></e-column>
-    <e-column field="qty" headerText="Qty" width="100" editType="numericedit"></e-column>
-    <e-column field="rate" headerText="Rate" width="100" editType="numericedit"></e-column>
-    <e-column field="amount" headerText="Amount" width="120" format="C2" textAlign="Right"></e-column>
-  </e-columns>
+    <ul class="list-unstyled d-flex gap-3 m-0">
+      <li><button class="btn btn-light btn-sm " (click)="manage()"><span class="feather icon-settings"></span> Manage</button></li>
+      <li><button class="btn btn-light btn-sm">
+        <span class="feather icon-message-circle"></span>
+        Take Tour</button></li>
+      <li><button class="btn btn-light btn-sm">
+        <i class="feather icon-message-square icon-xs me-sm-2 me-lg-0 me-xl-2 mb-md-1 mb-xl-0"></i>
+        Feedback</button></li>
+    </ul>
+  </div>
+</header>
+  <ng-container *ngIf="activeTab === 'edit'">
+      <app-edit-page [title]="pageType" (formSubmit)="getInvoiceData($event)"></app-edit-page>
+  </ng-container>
+  <ng-container *ngIf="activeTab === 'email'">
+      <app-email-view></app-email-view>
+  </ng-container>
 
-  <!-- ✅ Subtotal Calculation -->
-  <e-aggregates>
-    <e-aggregate>
-      <e-columns>
-        <e-column field="amount" type="Sum" format="C2">
-          <e-footerTemplate>
-            Subtotal: $ {{ calculateSum() }}
-          </e-footerTemplate>
-        </e-column>
-      </e-columns>
-    </e-aggregate>
-  </e-aggregates>
-</ejs-grid>
+
+<footer
+  class="d-flex justify-content-between align-items-center mt-4 border-top p-3 position-fixed bottom-0 w-100 bg-white footer-z-inder"
+>
+  <button class="btn btn-link text-success">Print or download</button>
+  <div>
+    <button class="btn btn-success" (click)="submitInvoice()">
+      Save and close
+    </button>
+    <button class="btn btn-success ms-2" (click)="reviewAndSend()">
+      Review and send
+    </button>
+  </div>
+</footer>

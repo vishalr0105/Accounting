@@ -41,44 +41,165 @@ namespace WFM.Controllers
         }
 
 
-        [HttpPost]
-        [Route("AddInvoice")]
-        public async Task<IActionResult> addInvoice(InvoiceDto model)
+        [HttpGet]
+        [Route("invoices")]
+        public async Task<IActionResult> GetInvoices()
         {
+            _logger.LogInformation($"Called invoices API.");
             try
             {
-                var invoiceExist = await _context.InvoicesTable.SingleOrDefaultAsync(d => d.InvoiceNu == model.invoiceData.InvoiceNu);
-
-                if (invoiceExist == null)
-                {
-                    model.invoiceData.CreatedAt = DateTime.UtcNow;
-                    model.invoiceData.CreatedBy = Utilities.GetUserId(User);
-                    model.invoiceData.sendToUser = false;
-                    model.invoiceData.CompanyId = Utilities.GetCompanyId(User);
-                    var data = await _context.InvoicesTable.AddAsync(model.invoiceData);
-                    for (int i = 0; i < model.items.Count; i++)
-                    {
-                    }
-                    var returnModel = _mapper.Map<InvoiceModelDto>(model.invoiceData);
-                    _unitofwork.NotificationSettingRepository.IsNotificationSubscribed(new Notification
-                    {
-                        Notifications = "New Invoice Created",
-                        NotificationTypeId = (int)NotificaitonTypes.NewInvoiceCreated,
-                        UserId = new Guid(Utilities.GetUserId(User)),
-                        UpdatedAt = DateTime.Now,
-                        CompanyId = Utilities.GetCompanyId(User)!.Value,
-                    });
-                    _context.SaveChanges();
-                    return Ok(returnModel.Id);
-                }
-                return BadRequest("Invoice is already exists");
+                var res = $"invoices";
+                return Ok(res);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message, ex);
-                return BadRequest(ex.Message);
+                _logger.LogDebug("EstimateController: GetInvoices Error.");
+                return Ok(new { ErrorMessage = ex.Message ?? ex.InnerException.Message });
             }
         }
 
+
+        [HttpGet]
+        [Route("viewinvoice")]
+        public async Task<IActionResult> ViewInvoice()
+        {
+            _logger.LogInformation($"Called viewinvoice API.");
+            try
+            {
+                var res = $"viewinvoice";
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogDebug("EstimateController: ViewInvoice Error.");
+                return Ok(new { ErrorMessage = ex.Message ?? ex.InnerException.Message });
+            }
+        }
+
+
+        [HttpPost]
+        [Route("addinvoice")]
+        public async Task<IActionResult> AddInvoice(InvoiceDto model)
+        {
+            _logger.LogInformation($"Called addinvoice API.");
+            try
+            {
+                var res = $"addinvoice";
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogDebug("EstimateController: AddInvoice Error.");
+                return Ok(new { ErrorMessage = ex.Message ?? ex.InnerException.Message });
+            }
+        }
+
+
+        [HttpPost]
+        [Route("updateinvoice")]
+        public async Task<IActionResult> UpdateInvoice(InvoiceDto model)
+        {
+            _logger.LogInformation($"Called updateinvoice API.");
+            try
+            {
+                var res = $"updateinvoice";
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogDebug("EstimateController: UpdateInvoice Error.");
+                return Ok(new { ErrorMessage = ex.Message ?? ex.InnerException.Message });
+            }
+        }
+
+
+        [HttpDelete]
+        [Route("deleteinvoice")]
+        public async Task<IActionResult> DeleteInvoice()
+        {
+            _logger.LogInformation($"Called deleteinvoice API.");
+            try
+            {
+                var res = $"deleteinvoice";
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogDebug("EstimateController: DeleteInvoice Error.");
+                return Ok(new { ErrorMessage = ex.Message ?? ex.InnerException.Message });
+            }
+        }
+
+
+        [HttpPost]
+        [Route("sendinvoice")]
+        public async Task<IActionResult> SendInvoice()
+        {
+            _logger.LogInformation($"Called sendinvoice API.");
+            try
+            {
+                var res = $"sendinvoice";
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogDebug("EstimateController: SendInvoice Error.");
+                return Ok(new { ErrorMessage = ex.Message ?? ex.InnerException.Message });
+            }
+        }
+
+
+        [HttpPost]
+        [Route("shareinvoicelink")]
+        public async Task<IActionResult> ShareInvoiceLink()
+        {
+            _logger.LogInformation($"Called shareinvoicelink API.");
+            try
+            {
+                var res = $"shareinvoicelink";
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogDebug("EstimateController: ShareInvoiceLink Error.");
+                return Ok(new { ErrorMessage = ex.Message ?? ex.InnerException.Message });
+            }
+        }
+
+
+        [HttpPost]
+        [Route("viewinvoiceactivity")]
+        public async Task<IActionResult> ViewInvoiceActivity()
+        {
+            _logger.LogInformation($"Called viewinvoiceactivity API.");
+            try
+            {
+                var res = $"viewinvoiceactivity";
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogDebug("EstimateController: ViewInvoiceActivity Error.");
+                return Ok(new { ErrorMessage = ex.Message ?? ex.InnerException.Message });
+            }
+        }
+
+
+        [HttpPost]
+        [Route("printinvoice")]
+        public async Task<IActionResult> PrintInvoice()
+        {
+            _logger.LogInformation($"Called printinvoice API.");
+            try
+            {
+                var res = $"printinvoice";
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogDebug("EstimateController: PrintInvoice Error.");
+                return Ok(new { ErrorMessage = ex.Message ?? ex.InnerException.Message });
+            }
+        }
     }
 }

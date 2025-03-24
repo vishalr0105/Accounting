@@ -17,7 +17,7 @@ import { AppTitleService } from './views/services/app-title.service';
 import { ConfigurationService } from './views/services/configuration.service';
 import { ThemeManager } from './views/services/theme-manager';
 import { AlertService } from './views/services/alert.service';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule,HTTP_INTERCEPTORS  } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { AuthService } from './views/services/auth.service';
@@ -54,6 +54,7 @@ import { TabGroupComponent } from './views/pages/tab-group/tab-group/tab-group.c
 import { ErrorPageComponent } from './views/pages/error-page/error-page.component';
 import { ExistingOrganizationComponent } from './views/pages/existing-organization/existing-organization.component';
 import { UserService } from './views/pages/general/services/user.service';
+import { AuthInterceptorService } from './interceptors/auth-interceptor.service';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -125,12 +126,18 @@ export function HttpLoaderFactory(http: HttpClient) {
           {
             id: FacebookLoginProvider.PROVIDER_ID,
             provider: new FacebookLoginProvider('763951915061949')
-          }
+          },
+
         ],
         onError: (err) => {
           console.error(err);
         }
       } as SocialAuthServiceConfig,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorService,
+      multi: true
     },
     ToolbarService,
     SearchService,

@@ -3,13 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using DAL.Repositories.Interfaces;
-using Microsoft.AspNetCore.Mvc;
-using iTextSharp.text.pdf;
-using iTextSharp.text;
-using System.IO;
+
 namespace DAL.Repositories
 {
     public class InvoiceRepository : Repository<Invoice>, IInvoiceRepository
@@ -29,6 +25,7 @@ namespace DAL.Repositories
         {
             return await _appContext.Invoices.Where(x => x.UserId == UserId && x.CreatedAt >= FromDate && x.CreatedAt <= ToDate).ToListAsync();
         }
+
         public async Task<IEnumerable<Invoice>> GetInvoicesByUserId(string UserId)
         {
             return await _appContext.Invoices.Where(x => x.UserId == UserId).ToListAsync();

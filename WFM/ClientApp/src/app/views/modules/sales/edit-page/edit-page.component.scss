@@ -1,0 +1,46 @@
+.zindex-3333 {
+  z-index: 3333;
+}
+.mt-6{
+  margin-top: 6rem !important;
+}
+.sidebar{
+  height: 78vh;
+  position: sticky;
+  // top: 106px;
+}
+.right-contain{
+  width: 100%;
+  // margin: auto auto;
+  height: 77vh;
+  overflow-y: scroll;
+  padding: 20px;
+  // padding-top: 0px;
+}
+.sidebar-btn{
+    background: rgb(255, 255, 255);
+    z-index: 2;
+    border: 1px solid rgb(107, 108, 114);
+    border-radius: 6px;
+    height: 30px;
+    width: 30px;
+    display: flex;
+    padding: 4px;
+    align-items: center;
+    justify-content: center;
+}
+.sidebar-container {
+  // position: fixed;
+  top: 0;
+  right: -400px; /* Initially hidden */
+  // width: 400px;
+  height: 100%;
+  transition: right 0.3s ease-in-out;
+}
+
+.sidebar-container.open {
+  right: 0;
+}
+.badge{
+  min-width: unset !important;
+}
