@@ -25,7 +25,7 @@
     <app-dropdown-menu
       [label]="'Date'"
       [items]="dateRanges"
-      [defaultValue]="'last_12_months'"
+      [defaultValue]="'all'"
       placeholder="All transactions"
       [allowFiltering]="false"
       (itemSelected)="onDropdownSelection($event)"
@@ -33,11 +33,10 @@
     </app-dropdown-menu>
     <app-dropdown-menu
       [label]="'Status'"
-      [items]="status"
+      [items]="statusDropdown"
       [defaultValue]="'all'"
       placeholder="All transactions"
-      [allowFiltering]="false"
-      (itemSelected)="onDropdownSelection($event)"
+      (itemSelected)="onDropdownSelectionStatus($event)"
     >
     </app-dropdown-menu>
     <div class="d-flex align-items-center transaction-btn btn btn-success me-2 p-0 m-0 ms-auto" >

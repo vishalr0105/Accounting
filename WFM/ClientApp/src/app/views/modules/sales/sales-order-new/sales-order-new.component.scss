@@ -1,0 +1,52 @@
+/* Custom styling for sales order */
+.card {
+  border-radius: 0.5rem;
+}
+
+.card-header {
+  border-radius: 0.5rem 0.5rem 0 0 !important;
+}
+
+.table {
+  th {
+    font-weight: 500;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    color: #6c757d;
+    border-bottom-width: 2px;
+  }
+
+  td {
+    vertical-align: middle;
+    padding: 0.75rem;
+  }
+}
+
+.form-control, .form-select {
+  &:focus {
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.1);
+    border-color: #86b7fe;
+  }
+}
+
+.input-group-text {
+  background-color: #f8f9fa;
+}
+
+textarea {
+  resize: none;
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+
+  &:focus {
+    background-color: white;
+  }
+}
+
+.badge {
+  font-size: 0.8rem;
+  letter-spacing: 0.5px;
+}
+.height-checkbox{
+  height: 57px;
+}

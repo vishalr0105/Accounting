@@ -16,20 +16,20 @@ export class GlobalApiService {
         endpoint: string,
         body?: any,
         params?: any,
-        headers?: any
+        // headers?: any
     ):Observable<T>{
 
         // set headers
-        const httpHeaters = new HttpHeaders({
-            'Authorization': `Bearer ${localStorage.getItem('token') || ''}`,
-            'Content-Type': 'application/json',
-            ...headers
-        });
+        // const httpHeaters = new HttpHeaders({
+        //     'Authorization': `Bearer ${localStorage.getItem('token') || ''}`,
+        //     'Content-Type': 'application/json',
+        //     ...headers
+        // });
 
         return this.http.request<T>(method, `${this.baseUrl}/${endpoint}`, {
             body,
             params:new HttpParams({ fromObject: params }),
-            headers: httpHeaters
+            // headers: httpHeaters
         })
     }
 }

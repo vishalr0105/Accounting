@@ -1,1 +1,105 @@
-<p>sales-orders works!</p>
+<div class="invoice-container">
+
+  <div class="d-flex gap-2 mb-2 align-items-end">
+    <app-dropdown-menu
+    [label]="'Status'"
+    [items]="statusDropdown"
+    [defaultValue]="'all'"
+    placeholder="All transactions"
+    [allowFiltering]="false"
+    (itemSelected)="onDropdownSelectionStatus($event)"
+  >
+  </app-dropdown-menu>
+    <app-dropdown-menu
+      [label]="'Date'"
+      [items]="dateRanges"
+      [defaultValue]="'all'"
+      placeholder="All transactions"
+      [allowFiltering]="false"
+      (itemSelected)="onDropdownSelection($event)"
+    >
+    </app-dropdown-menu>
+
+    <div class="d-flex align-items-center transaction-btn btn btn-success me-2 p-0 m-0 ms-auto" >
+      <!-- Regular Button -->
+      <button ejs-button cssClass="bg-transparent h-100 text-white border-end border-2 text-u text-capitalize" routerLink="/orders/new">
+       Create Sales order
+      </button>
+
+      <!-- Separate Menu Button -->
+      <button
+      class="bg-transparent text-white h-100"
+      ejs-dropdownbutton
+      [items]="items"
+      content=""
+      (select)="onSelect($event)"
+    ></button>
+    </div>
+  </div>
+
+  <app-data-table
+    [columns]="columnFields"
+    [data]="salesOrders"
+    [updateRowId]="updateRowId"
+    [showCheckbox]="true"
+    [globalSearch]="true"
+    [allowFiltering]="false"
+    [columnFilters]="false"
+    [allowSorting]="true"
+    [showActionColumn]="true"
+    [actionColumnTitle]="'Actions'"
+    [allowPaging]="true"
+    [editSettings]="editSettings"
+    [pageSettings]="paginationSettings"
+    [toolbar]="toolbar"
+    (actionClicked)="onCustomAction($event.action, $event.rowData)"
+    (checkBoxSelectedIds)="onCheckBoxSelectedIds($event)"
+    (rowSelected)="onRowSelected($event)"
+  >
+    <ng-template #actionsTemplate let-data>
+      <button
+        *ngIf="updateRowId !== data.id"
+        (click)="onCustomAction('edit', data)"
+        class="bg-transparent border-0"
+      >
+        <span class="e-icons e-edit"></span>
+      </button>
+      <button
+        *ngIf="updateRowId === data.id"
+        (click)="onCustomAction('update', data)"
+        class="bg-transparent border-0"
+      >
+        <span class="e-icons e-save"></span>
+      </button>
+      <button
+        (click)="onCustomAction('delete', data)"
+        class="bg-transparent border-0"
+      >
+        <span class="e-icons e-delete"></span>
+      </button>
+      <button
+        class="bg-transparent border-0"
+        ejs-dropdownbutton
+        [items]="menuItems"
+        content=""
+        (click)="menuItems = getMenuItems($event, data)"
+        (select)="onMenuSelect($event, data)"
+      ></button>
+    </ng-template>
+  </app-data-table>
+  <!-- table sidebar -->
+  <div
+    class="overlay"
+    *ngIf="isTableSidebarOpen"
+    (click)="closeSidebar()"
+  ></div>
+
+  <div class="table-sidebar" *ngIf="isTableSidebarOpen">
+    <button class="close-btn" (click)="closeSidebar()">X</button>
+    <h3>Invoice</h3>
+    <p><strong>Customer:</strong></p>
+    <p><strong>Method:</strong></p>
+    <p><strong>Due Date:</strong></p>
+    <p><strong>Balance:</strong></p>
+  </div>
+</div>

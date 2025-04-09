@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { EditSettingsModel, PageSettingsModel, ToolbarItems } from '@syncfusion/ej2-angular-grids';
 import { MenuEventArgs, MenuItemModel } from '@syncfusion/ej2-angular-navigations';
 import { InvoicesService } from '../salesServices/invoices.service';
+import { Router } from '@angular/router';
+import { catchError, concatMap, map, of, shareReplay, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-invoices',
@@ -9,24 +11,111 @@ import { InvoicesService } from '../salesServices/invoices.service';
   styleUrls: ['./invoices.component.scss']
 })
 export class InvoicesComponent implements OnInit {
-
-  constructor(private invoiceService:InvoicesService) { }
+  invoiceData:any=[]
+  filteredData: any[] = [];
+  totalCount: number = 0;
+  chunkSize: number = 100; // Default chunk size
+  currentPage: number = 1;
+  currentPageRequested: number = 0;
+  status: any = 'all';
+  date: any = 'all';
+  statusDropdown:any=[]
+  constructor(private invoiceService:InvoicesService,private router:Router) { }
 
   ngOnInit(): void {
-    this.loadInvoices()
+    this.loadStatusDropdownValues()
+    this.fetchInvoiceData()
   }
-  loadInvoices() {
-    this.invoiceService.getInvoices().subscribe({
-      next: (response) => {
-        console.log(response,'response');
-
-        // this.invoiceData=response
+  loadStatusDropdownValues(){
+    this.invoiceService.getInvoiceStaus().subscribe({
+      next:(res)=>{
+        console.log('res',res);
+        this.statusDropdown=[{ text: 'All', value: 'all' }]
+        res.forEach((status: string) => {
+          this.statusDropdown.push({ text: status, value: status });
+        });
       },
-      error: (error) => {
-        console.error('Error fetching customers:', error);
+      error:(err)=>{
+        console.log('err',err);
+
       }
-    });
+    })
   }
+   fetchInvoiceData(): void {
+
+      this.invoiceData =[];
+      this.filteredData = [];
+      // Prevent API call if the same page was already requested
+      // if (this.currentPage === this.currentPageRequested) {
+      //   console.log(`Page ${this.currentPage} already requested`);
+      //   return; // Skip the API call if it's the same page
+      // }
+
+      // Mark the current page as requested
+      this.currentPageRequested = this.currentPage;
+
+      // First, get the total count of sales orders
+      this.invoiceService
+        .getInvoiceCount(
+          this.status,
+          this.date,
+        )
+        .pipe(
+          switchMap((countResponse: any) => {
+            // Assuming response contains the total count like { totalcount: 500 }
+            this.totalCount = countResponse.totalcount;
+
+            const totalPages = Math.ceil(this.totalCount / this.chunkSize);
+            console.log('Total Pages:', totalPages);
+
+            // Create an observable for all the pages that we need to fetch
+            const pageRequests = Array.from(
+              { length: totalPages },
+              (_, pageIndex) => {
+                return this.invoiceService
+                  .getInvoices(
+                    this.chunkSize,
+                    pageIndex + 1,
+                    this.status,
+                    this.date,
+                  )
+                  .pipe(
+                    catchError((err) => {
+                      console.error('Error fetching page', pageIndex + 1, err);
+                      return of([]); // Return an empty array in case of error
+                    })
+                  );
+              }
+            );
+
+            // Use concatMap to handle all page requests sequentially (so the requests don't overload the server)
+            return of(...pageRequests); // Spread the pageRequests into an observable
+          }),
+          concatMap((request) => request), // Ensure the requests happen one after the other
+          map((pageData: any[]) => {
+            // Accumulate the sales data from each chunk
+            this.invoiceData = [...this.invoiceData, ...pageData];
+            this.filteredData = [...this.invoiceData];
+
+          }),
+          catchError((err) => {
+            console.error('Error occurred during fetching sales data', err);
+            return of([]); // Return an empty array in case of any error
+          })
+        )
+        .pipe(
+          // Cache the result for reuse and avoid multiple calls for the same data
+          shareReplay(1)
+        )
+        .subscribe({
+          next: () => {
+            console.log('Sales data loaded successfully');
+          },
+          error: (err) => {
+            console.error('Error in subscription', err);
+          },
+        });
+    }
 
   segments = [
     { label: 'Overdue', displayTxt: 'Overdue', count: '$11.04', color: 'blue' },
@@ -40,16 +129,7 @@ export class InvoicesComponent implements OnInit {
     alert(`You clicked on ${label}`);
   }
 
-  status=[
-    {text:'All',value:'all'},
-    {text:'Need attention',value:'need attention'},
-    {text:'Unpaid',value:'unpaid'},
-    {text:'Overdue',value:'overdue'},
-    {text:'Not due',value:'not due'},
-    {text:'Paid',value:'paid'},
-    {text:'Not deposited',value:'not deposited'},
-    {text:'Deposited',value:'deposited'},
-  ]
+
   dateRanges = [
     { text: 'All', value: 'all' },
     { text: 'Custom dates', value: 'custom' },
@@ -68,8 +148,19 @@ export class InvoicesComponent implements OnInit {
     { text: '2024', value: '2024' },
     { text: '2023', value: '2023' }
   ];
-  onDropdownSelection(selectedValue: any) {
+  onDropdownSelectionStatus(selectedValue: any) {
     console.log('Selected:', selectedValue);
+    if(this.status!=selectedValue){
+      this.status=selectedValue
+      this.fetchInvoiceData()
+    }
+  }
+  onDropdownSelection(selectedValue:any){
+    console.log('Selected:', selectedValue);
+    if(this.date!=selectedValue){
+      this.date=selectedValue
+      this.fetchInvoiceData()
+    }
   }
   public items: { text: string }[] = [
     { text: 'Import invoices' },
@@ -85,11 +176,7 @@ export class InvoicesComponent implements OnInit {
     { field: 'amount', header: 'AMOUNT' ,type: 'number',visible: true},
     { field: 'status', header: 'STATUS' ,type: 'string' ,visible: true},
   ];
-  invoiceData = [
-    {id:1, date: '12/26/24', no: '1014', customer: 'Famous Transport', amount: 11.04, status: 'Overdue 26 days', issue: 'Delivery issue' },
-    {id:2, date: '1/8/25', no: '1023', customer: 'Amy\'s Bird Sanctuary', amount: 11.03, status: 'Due in 17 days', issue: 'Delivery issue' },
-    {id:3, date: '1/12/25', no: '852', customer: 'Amy\'s Bird Sanctuary', amount: 11.03, status: 'Due in 21 days', issue: 'Viewed' }
-  ];
+
   editSettings:EditSettingsModel = { allowEditing: false, allowAdding: false, allowDeleting: false, mode: 'Normal' };
     paginationSettings: PageSettingsModel = {
       pageSize: 10,
@@ -104,6 +191,7 @@ export class InvoicesComponent implements OnInit {
         event.preventDefault();
         if (action === 'edit') {
           this.updateRowId = rowData.id; // Set current row to edit mode
+          this.router.navigateByUrl(`/create-invoice/${rowData.id}`);
           console.log('Editing:', rowData);
         } else if (action === 'update') {
           console.log('Updating:', rowData);

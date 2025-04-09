@@ -20,7 +20,13 @@ namespace DAL.Models
         public Guid? SalesOrderLineId { get; set; }
 
         [Column("itemid")]
-        public Guid? ItemId { get; set; }
+        public Guid ItemId { get; set; }
+        
+        [Column("tax")]
+        public bool Tax { get; set; }
+        
+        [Column("description")]
+        public string Description { get; set; }
 
         [Column("measurementid")]
         public Guid? MeasurementId { get; set; }
@@ -29,13 +35,13 @@ namespace DAL.Models
         public Guid? InventoryControlJournalId { get; set; }
 
         [Column("quantity", TypeName = "numeric(18,2)")]
-        public decimal? Quantity { get; set; }
+        public int Quantity { get; set; }
 
         [Column("discount", TypeName = "numeric(18,2)")]
         public decimal? Discount { get; set; }
 
         [Column("amount", TypeName = "numeric(18,2)")]
-        public decimal? Amount { get; set; }
+        public decimal Amount { get; set; }
 
         [Column("tenantid")]
         public Guid? TenantId { get; set; }

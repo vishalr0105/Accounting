@@ -5,7 +5,7 @@ using System;
 
 namespace DAL.Repositories.Interfaces
 {
-    public interface IProductAndServiceRepository: IRepository<ProductAndService>
+    public interface IProductAndServiceRepository : IRepository<ProductAndService>
     {
         Task<List<ProductAndService>> GetProductsAndServices();
         Task<ProductAndService> GetProductServiceById(Guid id);

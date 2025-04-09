@@ -1,3 +1,6 @@
+// @import '~ag-grid-community/styles/ag-grid.css';
+// @import '~ag-grid-community/styles/ag-theme-alpine.css';
+
 /* segmented-progress-bar.component.scss */
 .gridContainer {
   display: flex;
@@ -49,7 +52,7 @@
   height: 43px;
 }
 
-// sidebar 
+// sidebar
 .data-table-container {
   display: flex;
 }

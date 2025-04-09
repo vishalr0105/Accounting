@@ -1,8 +1,15 @@
-<form [formGroup]="customerForm" >
-  <app-name-and-contact [formGroup]="nameAndContactForm"></app-name-and-contact>
-  <app-addresses [formGroup]="addressForm"></app-addresses>
-  <app-notes-and-attachments [formGroup]="notesAttachmentsForm"></app-notes-and-attachments>
-  <app-payments [formGroup]="paymentsForm"></app-payments>
-  <app-additional-info [formGroup]="additionalInfoForm"></app-additional-info>
-  <button (click)="onSubmit()" class="btn btn-success mt-4">{{this.customerId?'update':'Submit'}}</button>
-</form>
+<div class="container mt-4">
+  <div class="text-end">
+    <button class="btn btn-light btn-sm" (click)="goBack()"><span class="feather icon-x-circle"></span></button>
+  </div>
+  <form [formGroup]="customerForm" >
+    <app-name-and-contact [formGroup]="nameAndContactForm"></app-name-and-contact>
+    <app-addresses [formGroup]="addressForm"></app-addresses>
+    <app-notes-and-attachments [formGroup]="notesAttachmentsForm"></app-notes-and-attachments>
+    <app-payments [formGroup]="paymentsForm"></app-payments>
+    <app-additional-info [formGroup]="additionalInfoForm"></app-additional-info>
+    <div class="text-end">
+      <button (click)="onSubmit()" [disabled]="!this.customerForm.valid"  class="btn btn-success mt-4">{{this.customerId?'update':'Submit'}}</button>
+    </div>
+  </form>
+</div>

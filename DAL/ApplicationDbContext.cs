@@ -42,7 +42,22 @@ namespace DAL
         public DbSet<JobTitle> jobtitle { get; set; }
         public DbSet<UserPwdHistory> userpwdhistory { get; set; }
         public DbSet<Customer> customer { get; set; }
+        public DbSet<GeneralLedgerHeader> generalledgerheader { get; set; }
+        public DbSet<GeneralLedgerLine> generalledgerline { get; set; }
+        public DbSet<GeneralLedgerSetting> generalledgersetting { get; set; }
+        public DbSet<SalesInvoiceHeader> salesinvoiceheader { get; set; }
+        public DbSet<SalesInvoiceLine> salesinvoiceline { get; set; }
+        public DbSet<SalesOrderHeader> salesorderheader { get; set; }
+        public DbSet<SalesOrderLine> salesorderline { get; set; }
+        public DbSet<SalesQuoteHeader> salesquoteheader { get; set; }
+        public DbSet<SalesQuoteLine> salesquoteline { get; set; }
+        public DbSet<SalesReceiptHeader> salesreceiptheader { get; set; }
+        public DbSet<SalesReceiptLine> salesreceiptline { get; set; }
+        public DbSet<Tax> tax { get; set; }
+        public DbSet<TaxGroup> taxgroup { get; set; }
+        public DbSet<PaymentTerm> paymentterm { get; set; }
         public DbSet<ProductAndService> productservice { get; set; }
+
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);

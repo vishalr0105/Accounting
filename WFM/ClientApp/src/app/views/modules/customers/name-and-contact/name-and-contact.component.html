@@ -8,7 +8,8 @@
           data-bs-toggle="collapse"
           data-bs-target="#collapseOne"
           aria-expanded="true"
-          aria-controls="collapseOne">
+          aria-controls="collapseOne"
+        >
           Name and Contact
         </button>
       </h2>
@@ -17,34 +18,185 @@
         id="collapseOne"
         class="accordion-collapse collapse show"
         aria-labelledby="headingOne"
-        data-bs-parent="#customerAccordion">
+        data-bs-parent="#customerAccordion"
+      >
         <div class="accordion-body">
-          <form [formGroup]="formGroup" >
-            <div class="alert alert-danger" *ngIf="formGroup.invalid">
+          <form [formGroup]="formGroup">
+            <!-- <div class="alert alert-danger" *ngIf="formGroup.invalid">
               Please fill all required fields
-            </div>
+            </div> -->
 
             <!-- Name Fields -->
             <div class="row">
               <div class="col-md-2">
                 <label>Title</label>
-                <input type="text" class="form-control" formControlName="title" />
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="title"
+                  [class.is-invalid]="
+                    formGroup.get('title').invalid &&
+                    formGroup.get('title').touched
+                  "
+                />
+                <div
+                  *ngIf="
+                    formGroup.get('title').invalid &&
+                    formGroup.get('title').touched
+                  "
+                >
+                  <small
+                    class="text-danger"
+                    *ngIf="formGroup.get('title').hasError('required')"
+                    >Title is required.</small
+                  >
+                  <small
+                    class="text-danger"
+                    *ngIf="formGroup.get('title').hasError('minlength')"
+                    >Title must be at least 2 characters long.</small
+                  >
+                  <small
+                    class="text-danger"
+                    *ngIf="formGroup.get('title').hasError('noNumbers')"
+                    >Title cannot contain numbers.</small
+                  >
+                </div>
               </div>
               <div class="col-md-3">
                 <label>First Name</label>
-                <input type="text" class="form-control" formControlName="firstName" />
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="firstName"
+                  [class.is-invalid]="
+                    formGroup.get('firstName').invalid &&
+                    formGroup.get('firstName').touched
+                  "
+                />
+                <div
+                  *ngIf="
+                    formGroup.get('firstName').invalid &&
+                    formGroup.get('firstName').touched
+                  "
+                >
+                  <small
+                    class="text-danger"
+                    *ngIf="formGroup.get('firstName').hasError('required')"
+                    >First Name is required.</small
+                  >
+                  <small
+                    class="text-danger"
+                    *ngIf="formGroup.get('firstName').hasError('minlength')"
+                    >First Name must be at least 2 characters long.</small
+                  >
+                  <small
+                    class="text-danger"
+                    *ngIf="formGroup.get('firstName').hasError('noNumbers')"
+                    >First Name cannot contain numbers.</small
+                  >
+                </div>
               </div>
               <div class="col-md-3">
                 <label>Middle Name</label>
-                <input type="text" class="form-control" formControlName="middleName" />
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="middleName"
+                  [class.is-invalid]="
+                    formGroup.get('middleName').invalid &&
+                    formGroup.get('middleName').touched
+                  "
+                />
+                <div
+                  *ngIf="
+                    formGroup.get('middleName').invalid &&
+                    formGroup.get('middleName').touched
+                  "
+                >
+                  <small
+                    class="text-danger"
+                    *ngIf="formGroup.get('middleName').hasError('required')"
+                    >Middle Name is required</small
+                  >
+                  <small
+                    class="text-danger"
+                    *ngIf="formGroup.get('middleName').hasError('minlength')"
+                    >Middle Name must be at least 2 characters long.</small
+                  >
+                  <small
+                    class="text-danger"
+                    *ngIf="formGroup.get('middleName').hasError('noNumbers')"
+                    >Middle Name cannot contain numbers.</small
+                  >
+                </div>
               </div>
               <div class="col-md-3">
                 <label>Last Name</label>
-                <input type="text" class="form-control" formControlName="lastName" />
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="lastName"
+                  [class.is-invalid]="
+                    formGroup.get('lastName').invalid &&
+                    formGroup.get('lastName').touched
+                  "
+                />
+                <div
+                  *ngIf="
+                    formGroup.get('lastName').invalid &&
+                    formGroup.get('lastName').touched
+                  "
+                >
+                  <small
+                    class="text-danger"
+                    *ngIf="formGroup.get('lastName').hasError('required')"
+                    >Last name is required</small
+                  >
+                  <small
+                    class="text-danger"
+                    *ngIf="formGroup.get('lastName').hasError('minlength')"
+                    >Last Name must be at least 2 characters long.</small
+                  >
+                  <small
+                    class="text-danger"
+                    *ngIf="formGroup.get('lastName').hasError('noNumbers')"
+                    >Last Name cannot contain numbers.</small
+                  >
+                </div>
               </div>
               <div class="col-md-1">
                 <label>Suffix</label>
-                <input type="text" class="form-control" formControlName="suffix" />
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="suffix"
+                  [class.is-invalid]="
+                    formGroup.get('suffix').invalid &&
+                    formGroup.get('suffix').touched
+                  "
+                />
+                <div
+                  *ngIf="
+                    formGroup.get('suffix').invalid &&
+                    formGroup.get('suffix').touched
+                  "
+                >
+                  <small
+                    class="text-danger"
+                    *ngIf="formGroup.get('suffix').hasError('required')"
+                    >Suffix is required</small
+                  >
+                  <small
+                    class="text-danger"
+                    *ngIf="formGroup.get('suffix').hasError('minlength')"
+                    >Suffix must be at least 2 characters long.</small
+                  >
+                  <small
+                    class="text-danger"
+                    *ngIf="formGroup.get('suffix').hasError('noNumbers')"
+                    >Suffix cannot contain numbers.</small
+                  >
+                </div>
               </div>
             </div>
 
@@ -52,11 +204,74 @@
             <div class="row mt-3">
               <div class="col-md-6">
                 <label>Company Name</label>
-                <input type="text" class="form-control" formControlName="companyName" />
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="companyName"
+                  [class.is-invalid]="
+                    formGroup.get('companyName').invalid &&
+                    formGroup.get('companyName').touched
+                  "
+                />
+                <div
+                  *ngIf="
+                    formGroup.get('companyName').invalid &&
+                    formGroup.get('companyName').touched
+                  "
+                >
+                  <small
+                    class="text-danger"
+                    *ngIf="formGroup.get('companyName').hasError('required')"
+                    >Company Name is required</small
+                  >
+                  <small
+                  class="text-danger"
+                  *ngIf="formGroup.get('companyName').hasError('minlength')"
+                  >Company Name must be at least 2 characters long.</small
+                >
+                <small
+                  class="text-danger"
+                  *ngIf="formGroup.get('companyName').hasError('noNumbers')"
+                  >Company Name cannot contain numbers.</small
+                >
+                </div>
               </div>
               <div class="col-md-6">
-                <label>Customer Display Name *</label>
-                <input type="text" class="form-control" formControlName="customerDisplayName" required />
+                <label>Customer Display Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="customerDisplayName"
+                  required
+                  [class.is-invalid]="
+                    formGroup.get('customerDisplayName').invalid &&
+                    formGroup.get('customerDisplayName').touched
+                  "
+                />
+                <div
+                  *ngIf="
+                    formGroup.get('customerDisplayName').invalid &&
+                    formGroup.get('customerDisplayName').touched
+                  "
+                >
+                  <small
+                    class="text-danger"
+                    *ngIf="
+                      formGroup.get('customerDisplayName').hasError('required')
+                    "
+                    >Customer display name is required</small
+                  >
+                  <small
+                  class="text-danger"
+                  *ngIf="formGroup.get('customerDisplayName').hasError('minlength')"
+                  >Customer Display Name must be at least 2 characters long.</small
+                >
+                <small
+                  class="text-danger"
+                  *ngIf="formGroup.get('customerDisplayName').hasError('noNumbers')"
+                  >Customer Display Name cannot contain numbers.</small
+                >
+                </div>
               </div>
             </div>
 
@@ -64,11 +279,54 @@
             <div class="row mt-3">
               <div class="col-md-6">
                 <label>Email</label>
-                <input type="email" class="form-control" formControlName="email" />
+                <input
+                  type="email"
+                  class="form-control"
+                  formControlName="email"
+                  [class.is-invalid]="
+                    formGroup.get('email').invalid &&
+                    formGroup.get('email').touched
+                  "
+                />
+                <div
+                  *ngIf="
+                    formGroup.get('email').invalid &&
+                    formGroup.get('email').touched
+                  "
+                >
+                  <small
+                    class="text-danger"
+                    *ngIf="formGroup.get('email').hasError('required')"
+                    >Email is required</small
+                  >
+                </div>
               </div>
               <div class="col-md-6">
                 <label>Phone Number</label>
-                <input type="text" class="form-control" formControlName="phoneNumber" />
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="phoneNumber"
+                  [class.is-invalid]="
+                    formGroup.get('phoneNumber').invalid &&
+                    formGroup.get('phoneNumber').touched
+                  "
+                />
+                <div
+                  *ngIf="
+                    formGroup.get('phoneNumber').invalid &&
+                    formGroup.get('phoneNumber').touched
+                  "
+                >
+                  <small
+                    class="text-danger"
+                    *ngIf="formGroup.get('phoneNumber').hasError('required')"
+                    >PhoneNumber is required</small
+                  >
+                  <small class="text-danger" *ngIf="formGroup.get('phoneNumber').hasError('pattern')">
+                    Please enter a valid phone number (10 digits).
+                  </small>
+                </div>
               </div>
             </div>
 
@@ -76,46 +334,238 @@
             <div class="row mt-3">
               <div class="col-md-6">
                 <label>CC</label>
-                <input type="text" class="form-control" formControlName="cc" />
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="cc"
+                  [class.is-invalid]="
+                    formGroup.get('cc').invalid && formGroup.get('cc').touched
+                  "
+                />
+                <div
+                  *ngIf="
+                    formGroup.get('cc').invalid && formGroup.get('cc').touched
+                  "
+                >
+                  <small
+                    class="text-danger"
+                    *ngIf="formGroup.get('cc').hasError('required')"
+                    >cc is required</small
+                  >
+                  <small
+                  class="text-danger"
+                  *ngIf="formGroup.get('cc').hasError('minlength')"
+                  >cc must be at least 2 characters long.</small
+                >
+                <small
+                  class="text-danger"
+                  *ngIf="formGroup.get('cc').hasError('noNumbers')"
+                  >cc cannot contain numbers.</small
+                >
+                </div>
               </div>
               <div class="col-md-6">
                 <label>BCC</label>
-                <input type="text" class="form-control" formControlName="bcc" />
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="bcc"
+                  [class.is-invalid]="
+                    formGroup.get('bcc').invalid && formGroup.get('bcc').touched
+                  "
+                />
+                <div
+                  *ngIf="
+                    formGroup.get('bcc').invalid && formGroup.get('bcc').touched
+                  "
+                >
+                  <small
+                    class="text-danger"
+                    *ngIf="formGroup.get('bcc').hasError('required')"
+                    >Bcc is required</small
+                  >
+                  <small
+                  class="text-danger"
+                  *ngIf="formGroup.get('bcc').hasError('minlength')"
+                  >Bcc must be at least 2 characters long.</small
+                >
+                <small
+                  class="text-danger"
+                  *ngIf="formGroup.get('bcc').hasError('noNumbers')"
+                  >Bcc cannot contain numbers.</small
+                >
+                </div>
               </div>
             </div>
 
             <div class="row mt-3">
               <div class="col-md-6">
                 <label>Mobile Number</label>
-                <input type="text" class="form-control" formControlName="mobileNumber" />
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="mobileNumber"
+                  [class.is-invalid]="
+                    formGroup.get('mobileNumber').invalid &&
+                    formGroup.get('mobileNumber').touched
+                  "
+                />
+                <div
+                  *ngIf="
+                    formGroup.get('mobileNumber').invalid &&
+                    formGroup.get('mobileNumber').touched
+                  "
+                >
+                  <small
+                    class="text-danger"
+                    *ngIf="formGroup.get('mobileNumber').hasError('required')"
+                    >Mobile Number is required</small
+                  >
+                  <small class="text-danger" *ngIf="formGroup.get('mobileNumber').hasError('pattern')">
+                    Please enter a valid Mobile number (10 digits).
+                  </small>
+                </div>
               </div>
               <div class="col-md-6">
                 <label>Fax</label>
-                <input type="text" class="form-control" formControlName="fax" />
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="fax"
+                  [class.is-invalid]="
+                    formGroup.get('fax').invalid && formGroup.get('fax').touched
+                  "
+                />
+                <div
+                  *ngIf="
+                    formGroup.get('fax').invalid && formGroup.get('fax').touched
+                  "
+                >
+                  <small
+                    class="text-danger"
+                    *ngIf="formGroup.get('fax').hasError('required')"
+                    >Fax is required</small
+                  >
+                  <small
+                  class="text-danger"
+                  *ngIf="formGroup.get('fax').hasError('minlength')"
+                  >fax must be at least 2 characters long.</small
+                >
+                <small
+                  class="text-danger"
+                  *ngIf="formGroup.get('fax').hasError('noNumbers')"
+                  >fax cannot contain numbers.</small
+                >
+                </div>
               </div>
             </div>
 
             <div class="row mt-3">
               <div class="col-md-6">
                 <label>Other</label>
-                <input type="text" class="form-control" formControlName="other" />
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="other"
+                  [class.is-invalid]="
+                    formGroup.get('other').invalid &&
+                    formGroup.get('other').touched
+                  "
+                />
+                <div
+                  *ngIf="
+                    formGroup.get('other').invalid &&
+                    formGroup.get('other').touched
+                  "
+                >
+                  <small
+                    class="text-danger"
+                    *ngIf="formGroup.get('other').hasError('required')"
+                    >Other is required</small
+                  >
+                  <small
+                  class="text-danger"
+                  *ngIf="formGroup.get('other').hasError('minlength')"
+                  >other must be at least 2 characters long.</small
+                >
+                <small
+                  class="text-danger"
+                  *ngIf="formGroup.get('other').hasError('noNumbers')"
+                  >other cannot contain numbers.</small
+                >
+                </div>
               </div>
               <div class="col-md-6">
                 <label>Website</label>
-                <input type="text" class="form-control" formControlName="website" />
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="website"
+                  [class.is-invalid]="
+                    formGroup.get('website').invalid &&
+                    formGroup.get('website').touched
+                  "
+                />
+                <div
+                  *ngIf="
+                    formGroup.get('website').invalid &&
+                    formGroup.get('website').touched
+                  "
+                >
+                  <small
+                    class="text-danger"
+                    *ngIf="formGroup.get('website').hasError('required')"
+                    >Website is required</small
+                  >
+
+                </div>
               </div>
             </div>
 
             <div class="row mt-3">
               <div class="col-md-6">
                 <label>Name to Print on Checks</label>
-                <input type="text" class="form-control" formControlName="nameOnCheck" />
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="nameOnCheck"
+                  [class.is-invalid]="
+                    formGroup.get('nameOnCheck').invalid &&
+                    formGroup.get('nameOnCheck').touched
+                  "
+                />
+                <div
+                  *ngIf="
+                    formGroup.get('nameOnCheck').invalid &&
+                    formGroup.get('nameOnCheck').touched
+                  "
+                >
+                  <small
+                    class="text-danger"
+                    *ngIf="formGroup.get('nameOnCheck').hasError('required')"
+                    >Name On Check is required</small
+                  >
+                  <small
+                  class="text-danger"
+                  *ngIf="formGroup.get('nameOnCheck').hasError('minlength')"
+                  >Name On Check must be at least 2 characters long.</small
+                >
+                <small
+                  class="text-danger"
+                  *ngIf="formGroup.get('nameOnCheck').hasError('noNumbers')"
+                  >Name On Check cannot contain numbers.</small
+                >
+                </div>
               </div>
             </div>
 
             <!-- Sub Customer Checkbox -->
             <div class="form-check mt-3">
-              <input type="checkbox" class="form-check-input" formControlName="isSubCustomer" />
+              <input
+                type="checkbox"
+                class="form-check-input"
+                formControlName="isSubCustomer"
+              />
               <label class="form-check-label">Is a sub-customer</label>
             </div>
 
@@ -125,17 +575,32 @@
                 <label>Parent Customer</label>
                 <select class="form-control" formControlName="parentCustomer">
                   <option value="">Select Parent</option>
-                  <option *ngFor="let customer of customers" [value]="customer">{{ customer }}</option>
+                  <option *ngFor="let customer of customers" [value]="customer">
+                    {{ customer }}
+                  </option>
                 </select>
-                <small class="text-danger" *ngIf="formGroup.get('parentCustomer').invalid">
+                <small
+                  class="text-danger"
+                  *ngIf="formGroup.get('parentCustomer').invalid"
+                >
                   Enter a parent customer
                 </small>
               </div>
             </div>
 
             <!-- Bill Parent Customer Checkbox -->
-            <div class="form-check mt-3" *ngIf="formGroup.get('parentCustomer').value && formGroup.get('isSubCustomer').value">
-              <input type="checkbox" class="form-check-input" formControlName="billParentCustomer" />
+            <div
+              class="form-check mt-3"
+              *ngIf="
+                formGroup.get('parentCustomer').value &&
+                formGroup.get('isSubCustomer').value
+              "
+            >
+              <input
+                type="checkbox"
+                class="form-check-input"
+                formControlName="billParentCustomer"
+              />
               <label class="form-check-label">Bill parent customer</label>
             </div>
 

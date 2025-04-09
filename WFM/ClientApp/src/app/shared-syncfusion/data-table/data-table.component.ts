@@ -13,7 +13,7 @@ export class DataTableComponent {
   @Input() totalRecords: number = 200;
   @Input() pageSettings: PageSettingsModel = {
     pageSize: 5,
-    pageCount: 100,
+    pageCount: 5,
     currentPage: 0,
     pageSizes: [5, 10, 20, 50],
     totalRecordsCount: 100,
@@ -30,6 +30,8 @@ export class DataTableComponent {
   @Input() actionColumnTitle = 'Actions';
   @Input() editSettings: EditSettingsModel = { allowEditing: false, allowAdding: false, allowDeleting: false, mode: 'Normal' };
   @Input() updateRowId: number | null = null;
+  @Input() customePagination=false;
+
 
   @Output() rowSelected = new EventEmitter<any>();
   @Output() checkBoxSelectedIds = new EventEmitter<any[]>();
@@ -37,7 +39,7 @@ export class DataTableComponent {
   @Output() pageChanged = new EventEmitter<{ currentPage: number, pageSize: number }>();
   @Output() sortingChanged = new EventEmitter<{ field: string, direction: string }>();
   @Output() filteringChanged = new EventEmitter<{ field: string, value: string, matchCase: boolean, operator: string }>();
-  @Output() searchValueChanged = new EventEmitter<string>();  
+  @Output() searchValueChanged = new EventEmitter<string>();
 
   @ContentChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
   @ViewChild('grid') public grid!: GridComponent;
@@ -47,9 +49,9 @@ export class DataTableComponent {
     event.preventDefault();
     this.actionClicked.emit({ action, rowData });
   }
-  updatePageSettings() {
-    this.pageSettings = { ...this.pageSettings, totalRecordsCount: this.totalRecords };
-  }
+  // updatePageSettings() {
+  //   // this.pageSettings = { ...this.pageSettings, totalRecordsCount: this.totalRecords };
+  // }
 
   get filteredColumns(): ColumnModel[] {
     return this.columns.map(col => ({
@@ -69,37 +71,37 @@ export class DataTableComponent {
   //     allowFiltering: false,
   //     allowSorting: false
   //   };
-    
+
   //   const displayColumns = this.columns.map(col => ({
   //     ...col,
   //     showColumnMenu: this.columnFilters,
   //     allowFiltering: this.columnFilters ? col.allowFiltering !== false : false
   //   }));
-    
+
   //   if (this.showActionColumn) {
   //     displayColumns.push(actionColumn);
   //   }
   //   return displayColumns;
   // }
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['totalRecords']) {
-      // this.updatePageSettings();  // ✅ Runs when totalRecords changes
-      console.log("🔄 totalRecords changed:", this.totalRecords);
+    // if (changes['totalRecords']) {
+    //   // this.updatePageSettings();  // ✅ Runs when totalRecords changes
+    //   console.log("🔄 totalRecords changed:", this.totalRecords);
 
-      // ✅ Update totalRecordsCount dynamically
-      // this.pageSettings = { ...this.pageSettings, totalRecordsCount: this.totalRecords };
+    //   // ✅ Update totalRecordsCount dynamically
+    //   // this.pageSettings = { ...this.pageSettings, totalRecordsCount: this.totalRecords };
 
-      // ✅ Ensure Syncfusion Grid updates properly
-      setTimeout(() => {
-        if (this.grid) {
-          this.updatePageSettings();
-          console.log("✅ Grid refreshed with new totalRecordsCount:", this.pageSettings.totalRecordsCount);
-        }
-      },500);
-    }
+    //   // ✅ Ensure Syncfusion Grid updates properly
+    //   setTimeout(() => {
+    //     if (this.grid) {
+    //       this.updatePageSettings();
+    //       console.log("✅ Grid refreshed with new totalRecordsCount:", this.pageSettings.totalRecordsCount);
+    //     }
+    //   },500);
+    // }
   }
-  
-  
+
+
   ngAfterViewInit() {
     // this.updatePageSettings();
     this.hideDefaultColumns(); // Hide default columns on component load
@@ -174,7 +176,7 @@ onActionComplete(event: any) {
     console.log("Updated Page Size:", newPageSize);
 
     // Update pageSettings to reflect the new page size
-    this.pageSettings = { ...this.pageSettings, pageSize: newPageSize };
+    // this.pageSettings = { ...this.pageSettings, pageSize: newPageSize };
 
     // Emit to parent if needed
     this.pageChanged.emit({ currentPage, pageSize: newPageSize });
@@ -206,4 +208,55 @@ onActionComplete(event: any) {
       }
     }
   }
+
+
+  // public totalRecords: number = 0;
+  public pageSize: number = 5;
+  public currentPage: number = 1;
+  public pageCount: number = 10;
+  // Method to handle page size change
+  onPageSizeChange(event: Event): void {
+    const selectElement = event.target as HTMLSelectElement;
+    const newPageSize = Number(selectElement.value); // Accessing the value property
+    this.pageSize = newPageSize;
+    // this.loadSalesData(this.currentPage, this.pageSize);
+    this.pageChanged.emit({ currentPage:this.pageSettings.currentPage, pageSize: newPageSize });
+  }
+
+
+  // Method to go to the next page
+  goToNextPage(): void {
+    if (this.pageSettings.currentPage < this.pageSettings.pageCount) {
+      this.pageSettings.currentPage ++;
+      // this.loadSalesData(this.currentPage, this.pageSize);
+    this.pageChanged.emit({ currentPage:this.pageSettings.currentPage, pageSize: this.pageSettings.pageSize });
+
+    }
+  }
+
+  // Method to go to the previous page
+  goToPreviousPage(): void {
+    if (this.pageSettings.currentPage > 1) {
+      this.pageSettings.currentPage--;
+      // this.loadSalesData(this.currentPage, this.pageSize);
+    this.pageChanged.emit({ currentPage:this.pageSettings.currentPage, pageSize: this.pageSettings.pageSize });
+
+    }
+  }
+
+  goToPage(page: number) {
+    if (page >= 1 && page <= this.pageSettings.pageCount) {
+      this.pageSettings.currentPage = page;
+    this.pageChanged.emit({ currentPage:this.pageSettings.currentPage, pageSize: this.pageSettings.pageSize });
+
+      // Add your logic to update the content for the selected page
+    }
+  }
+
+  // Syncfusion page settings
+  // public pageSettings = {
+  //   pageSize: this.pageSize,
+  //   currentPage: this.currentPage,
+  //   totalRecords: this.totalRecords
+  // };
 }

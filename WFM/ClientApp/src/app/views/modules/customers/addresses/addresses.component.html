@@ -26,33 +26,63 @@
             <div class="row">
               <div class="col-md-6">
                 <label>Street address 1</label>
-                <input type="text" class="form-control" formControlName="billingStreet1" />
+                <input type="text" class="form-control" formControlName="billingStreet1" 
+                [class.is-invalid]="formGroup.get('billingStreet1').invalid && formGroup.get('billingStreet1').touched"
+                />
+                <div *ngIf="formGroup.get('billingStreet1').invalid && formGroup.get('billingStreet1').touched">
+                  <small class="text-danger" *ngIf="formGroup.get('billingStreet1').hasError('required')">Street address 1 is required</small>
+                </div>
               </div>
               <div class="col-md-6">
                 <label>Street address 2</label>
-                <input type="text" class="form-control" formControlName="billingStreet2" />
+                <input type="text" class="form-control" formControlName="billingStreet2" 
+                [class.is-invalid]="formGroup.get('billingStreet2').invalid && formGroup.get('billingStreet2').touched"
+                />
+                <div *ngIf="formGroup.get('billingStreet2').invalid && formGroup.get('billingStreet2').touched">
+                  <small class="text-danger" *ngIf="formGroup.get('billingStreet2').hasError('required')">Street address 2 is required</small>
+                </div>
               </div>
             </div>
 
             <div class="row mt-2">
               <div class="col-md-6">
                 <label>City</label>
-                <input type="text" class="form-control" formControlName="billingCity" />
+                <input type="text" class="form-control" formControlName="billingCity" 
+                [class.is-invalid]="formGroup.get('billingCity').invalid && formGroup.get('billingCity').touched"
+                />
+                <div *ngIf="formGroup.get('billingCity').invalid && formGroup.get('billingCity').touched">
+                  <small class="text-danger" *ngIf="formGroup.get('billingCity').hasError('required')">City is required</small>
+                </div>
               </div>
               <div class="col-md-6">
                 <label>State</label>
-                <input type="text" class="form-control" formControlName="billingState" />
+                <input type="text" class="form-control" formControlName="billingState" 
+                [class.is-invalid]="formGroup.get('billingState').invalid && formGroup.get('billingState').touched"
+                />
+                <div *ngIf="formGroup.get('billingState').invalid && formGroup.get('billingState').touched">
+                  <small class="text-danger" *ngIf="formGroup.get('billingState').hasError('required')">State is required</small>
+                </div>
               </div>
             </div>
 
             <div class="row mt-2">
               <div class="col-md-6">
                 <label>ZIP code</label>
-                <input type="text" class="form-control" formControlName="billingZip" />
+                <input type="text" class="form-control" formControlName="billingZip" 
+                [class.is-invalid]="formGroup.get('billingZip').invalid && formGroup.get('billingZip').touched"
+                />
+                <div *ngIf="formGroup.get('billingZip').invalid && formGroup.get('billingZip').touched">
+                  <small class="text-danger" *ngIf="formGroup.get('billingZip').hasError('required')">ZIP code is required</small>
+                </div>
               </div>
               <div class="col-md-6">
                 <label>Country</label>
-                <input type="text" class="form-control" formControlName="billingCountry" />
+                <input type="text" class="form-control" formControlName="billingCountry" 
+                [class.is-invalid]="formGroup.get('billingCountry').invalid && formGroup.get('billingCountry').touched"
+                />
+                <div *ngIf="formGroup.get('billingCountry').invalid && formGroup.get('billingCountry').touched">
+                  <small class="text-danger" *ngIf="formGroup.get('billingCountry').hasError('required')">Country is required</small>
+                </div>
               </div>
             </div>
 

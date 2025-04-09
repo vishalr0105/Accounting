@@ -74,7 +74,7 @@
 >
   <button class="btn btn-link text-success">Print or download</button>
   <div>
-    <button class="btn btn-success" (click)="submitInvoice()">
+    <button class="btn btn-success" [disabled]="!this.isValid" (click)="submitInvoice()">
       Save and close
     </button>
     <button class="btn btn-success ms-2" (click)="reviewAndSend()">

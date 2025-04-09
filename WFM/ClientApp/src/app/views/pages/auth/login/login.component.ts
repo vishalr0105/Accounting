@@ -203,7 +203,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
   //         },
   //         (error) => {
-  //           this.alertService.stopLoadingMessage();
+            // this.alertService.stopLoadingMessage();
 
   //           if (Utilities.checkNoNetwork(error)) {
   //             this.alertService.showToasterWithTitle(

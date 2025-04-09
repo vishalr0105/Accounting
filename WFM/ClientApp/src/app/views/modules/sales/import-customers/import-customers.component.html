@@ -1,0 +1,83 @@
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-8 mx-auto">
+      <!-- Step Indicators -->
+      <div class="d-flex justify-content-between mb-4">
+        <div class="step active">1. UPLOAD</div>
+        <div class="step">2. MAP DATA</div>
+        <div class="step">3. IMPORT</div>
+      </div>
+
+      <!-- Form for File Upload -->
+      <h4>First time importing customers?</h4>
+      <p>All your customer information must be in one file.</p>
+      <p>The top row of your file must contain a header title for each column of information.</p>
+      <p><strong>Customer Name</strong> is the only required field.</p>
+
+      <form>
+        <div class="form-group">
+          <label for="fileUpload">Select a CSV or Excel file to upload</label>
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Upload an EXCEL or CSV file" readonly>
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary" type="button" (click)="openFileModal(content)">Browse</button>
+            </div>
+          </div>
+          <small class="form-text text-muted">Download a sample file</small>
+        </div>
+
+        <hr>
+
+        <h6>Select Google Sheet</h6>
+        <button class="btn btn-outline-primary" type="button" (click)="openGoogleSheetModal(googleSheetModalTemplate)">Connect</button>
+        <!-- <button class="btn btn-outline-primary" type="button" (click)="openGoogleSheetModal()">Connect</button> -->
+        <p class="mt-2"><a href="#">Preview a sample</a></p>
+
+        <!-- Navigation Buttons -->
+        <div class="d-flex justify-content-between mt-4">
+          <button class="btn btn-secondary" type="button">Cancel</button>
+          <button class="btn btn-success" type="button">Next</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- File Modal -->
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title">Select File</h5>
+      <button type="button" class="close" (click)="modal.close()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <input type="file" class="form-control-file" id="fileInput" accept=".csv, .xlsx, .xls" (change)="onFileChange($event)">
+      <small class="form-text text-muted">Please upload a CSV or Excel file.</small>
+       <!-- Error message for invalid file type -->
+    <div *ngIf="fileError" class="text-danger mt-2">
+      <small>Invalid file type. Please upload a CSV or Excel file.</small>
+    </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="modal.close()">Close</button>
+      <button [disabled]="uploadbtn" type="button" class="btn btn-primary">Upload</button>
+    </div>
+  </ng-template>
+
+  <!-- Google Sheets Modal -->
+  <ng-template #googleSheetModalTemplate let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title">Connect Google Sheet</h5>
+      <button type="button" class="close" (click)="modal.close()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p>Connect your Google Sheets account to import customer data.</p>
+      <button class="btn btn-primary">Connect</button>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="modal.close()">Close</button>
+    </div>
+  </ng-template>
+</div>

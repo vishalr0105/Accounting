@@ -25,22 +25,33 @@
             <div class="row mb-3">
               <div class="col-md-6">
                 <label>Primary Payment Method</label>
-                <select class="form-control" formControlName="paymentMethod">
+                <select class="form-control" formControlName="paymentMethod"
+                [class.is-invalid]="formGroup.get('paymentMethod').invalid && formGroup.get('paymentMethod').touched"
+                
+                >
                   <option value="">Select Payment Method</option>
                   <option *ngFor="let method of paymentMethods" [value]="method">
                     {{ method }}
                   </option>
                 </select>
+                <div *ngIf="formGroup.get('paymentMethod').invalid && formGroup.get('paymentMethod').touched">
+                  <small class="text-danger">Please select a Primary Payment Method.</small>
+                </div>
               </div>
 
               <!-- Terms -->
               <div class="col-md-6">
                 <label>Terms</label>
-                <select class="form-control" formControlName="terms">
+                <select class="form-control" formControlName="terms"
+                [class.is-invalid]="formGroup.get('terms').invalid && formGroup.get('terms').touched"
+                >
                   <option value="Net 15">Net 15</option>
                   <option value="Net 30">Net 30</option>
                   <option value="Net 60" selected>Net 60</option>
                 </select>
+                <div *ngIf="formGroup.get('terms').invalid && formGroup.get('terms').touched">
+                  <small class="text-danger" *ngIf="formGroup.get('terms').hasError('required')">Please select a Terms.</small>
+                </div>
               </div>
             </div>
 
@@ -48,12 +59,17 @@
             <div class="row mb-3">
               <div class="col-md-6">
                 <label>Sales Form Delivery Options</label>
-                <select class="form-control" formControlName="deliveryOptions">
+                <select class="form-control" formControlName="deliveryOptions"
+                [class.is-invalid]="formGroup.get('deliveryOptions').invalid && formGroup.get('deliveryOptions').touched"
+                >
                   <option value="">Select Delivery Option</option>
                   <option value="Email">Email</option>
                   <option value="Print">Print</option>
                   <option value="Both">Both</option>
                 </select>
+                <div *ngIf="formGroup.get('deliveryOptions').invalid && formGroup.get('deliveryOptions').touched">
+                  <small class="text-danger" *ngIf="formGroup.get('deliveryOptions').hasError('required')">Please select a Sales Form Delivery Options.</small>
+                </div>
               </div>
 
               <div class="col-md-6">
@@ -69,7 +85,14 @@
             <!-- Credit Limit -->
             <div class="mb-3">
               <label>Credit Limit</label>
-              <input type="number" class="form-control" formControlName="creditLimit" placeholder="Enter credit limit" />
+              <input type="number" class="form-control" formControlName="creditLimit" placeholder="Enter credit limit" 
+              [min]="1"
+              [class.is-invalid]="formGroup.get('creditLimit').invalid && formGroup.get('creditLimit').touched"
+                />
+                <div *ngIf="formGroup.get('creditLimit').invalid && formGroup.get('creditLimit').touched">
+                  <small class="text-danger" *ngIf="formGroup.get('creditLimit').hasError('required')">Credit Limit is required</small>
+                  <small class="text-danger" *ngIf="formGroup.get('creditLimit').hasError('min')">Credit Limit minimum required is 1</small>
+                </div>
             </div>
 
           </form>

@@ -1,18 +1,17 @@
-﻿using AutoMapper;
+﻿using Accounting.Helpers;
+using AutoMapper;
 using DAL;
-using DAL.Core;
 using DAL.Models;
 using DAL.Repositories.Interfaces;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using System;
 using WFM.Helpers;
 using Utilities = WFM.Helpers.Utilities;
 
 namespace WFM.Controllers
 {
 
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class InvoicesController : ControllerBase
@@ -26,10 +25,8 @@ namespace WFM.Controllers
         private readonly IMapper _mapper;
         private IUnitOfWork _unitofwork;
 
-        public InvoicesController(ILogger<InvoicesController> logger,
-            ApplicationDbContext context, IEmailSender emailSender,
-            IConfiguration configuration, IWebHostEnvironment environment,
-            IMapper mapper, IUnitOfWork unitOfWork)
+        public InvoicesController(ILogger<InvoicesController> logger, ApplicationDbContext context, IEmailSender emailSender,
+            IConfiguration configuration, IWebHostEnvironment environment, IMapper mapper, IUnitOfWork unitOfWork)
         {
             _context = context;
             _emailSender = emailSender;
@@ -42,73 +39,287 @@ namespace WFM.Controllers
 
 
         [HttpGet]
+        [Route("gettotalcount")]
+        public async Task<IActionResult> GetTotalCount( [FromQuery] string status = "all", [FromQuery] string date = "all")
+        {
+            _logger.LogInformation($"Called gettotalcount API.");
+            try
+            {
+                var count = await _unitofwork.SalesInvoiceHeaderRepository.GetSalesInvoiceCountAsync(status, date);
+                return Ok(new { totalcount = count });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogDebug("InvoiceController: GetTotalCount Error.");
+                return BadRequest(new { ErrorMessage = ex.Message ?? ex.InnerException.Message });
+            }
+        }
+
+
+        [HttpGet]
         [Route("invoices")]
-        public async Task<IActionResult> GetInvoices()
+        public async Task<IActionResult> GetInvoices([FromQuery] int pageSize = 10, [FromQuery] int currentPage = 1, [FromQuery] string status = "all", [FromQuery] string date = "all")
         {
             _logger.LogInformation($"Called invoices API.");
             try
             {
-                var res = $"invoices";
-                return Ok(res);
+                var siheaders = await _unitofwork.SalesInvoiceHeaderRepository.GetSalesInvoiceHeaders(pageSize, currentPage, status, date);
+                var customerIds = siheaders.Select(item => item.CustomerId).Distinct().ToList();
+                var customers = await _unitofwork.CustomerRepository.GetCustomersByIds(customerIds);
+                var customerDictionary = customers.ToDictionary(c => c.Id, c => c.FirstName);
+
+                List<InvoiceListItem> list = new List<InvoiceListItem>();
+                foreach (var item in siheaders)
+                {
+                    customerDictionary.TryGetValue(item.CustomerId, out var customerName);
+
+                    var hitem = new InvoiceListItem()
+                    {
+                        Id = item.Id,
+                        Customer = customerName,
+                        Date = DateTime.Parse(item.CreatedAt),
+                        Status = ((InvoiceStatus)item.Status).ToString(),
+                        No = item.No,
+                        Amount = item.Amount
+                    };
+
+                    list.Add(hitem);
+                }
+
+                return Ok(list.Skip((currentPage - 1) * pageSize).Take(pageSize).ToList());
             }
             catch (Exception ex)
             {
-                _logger.LogDebug("EstimateController: GetInvoices Error.");
-                return Ok(new { ErrorMessage = ex.Message ?? ex.InnerException.Message });
+                _logger.LogDebug("InvoiceController: GetInvoices Error.");
+                return BadRequest(new { ErrorMessage = ex.Message ?? ex.InnerException.Message });
+            }
+        }
+
+
+        [HttpGet]
+        [Route("statuslist")]
+        public async Task<IActionResult> GetStatusList()
+        {
+            _logger.LogInformation($"Called statuslist API.");
+            try
+            {
+                var statuslist = await _unitofwork.SalesInvoiceHeaderRepository.GetDistinctStatuses();
+                return Ok(statuslist);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogDebug("InvoiceController: GetStatusList Error.");
+                return BadRequest(new { ErrorMessage = ex.Message ?? ex.InnerException.Message });
             }
         }
 
 
         [HttpGet]
         [Route("viewinvoice")]
-        public async Task<IActionResult> ViewInvoice()
+        public async Task<IActionResult> ViewInvoice(string id)
         {
             _logger.LogInformation($"Called viewinvoice API.");
             try
             {
-                var res = $"viewinvoice";
+                var headerId = Guid.Parse(id);
+                var header = await _unitofwork.SalesInvoiceHeaderRepository.GetSalesInvoiceHeaderById(headerId);
+                var lines = await _unitofwork.SalesInvoiceLineRepository.GetSalesInvoiceLineByHeaderId(headerId);
+                var customer = await _unitofwork.CustomerRepository.GetCustomerById(header.CustomerId);
+                var cust = new Customer1()
+                {
+                    Id = customer.Id,
+                    Email = customer.Email,
+                    Name = $"{customer.FirstName} {customer.LastName}",
+                    PhoneNumber = "902837487" ,
+                    UnbilledCharges = 0.00M
+
+                };
+                var items = new List<InvoiceItem>();
+                foreach (var item in lines)
+                {
+                    var line = new InvoiceItem()
+                    {
+                        Product = item.ItemId,
+                        Qty = item.Quantity,
+                        Rate = item.Amount,
+                        Tax = item.Tax,
+                        Description = "item.Description"
+                    };
+                    items.Add(line);
+                }
+                var res = new InvoiceCreateReq()
+                {
+                    SelectedCustomer = cust,
+                    Subtotal = header.SubTotal,
+                    SelectedTaxRate = header.TaxPercent / 100,
+                    TaxableSubtotal = header.TaxableSubtotal,
+                    InvoiceTotal = header.Amount,
+                    InvoiceDate = DateTime.Parse(header.CreatedAt),
+                    DueDate = DateTime.Parse(header.DueDate),
+                    SalesTax = header.TaxAmount,
+                    Terms = "Net 30",
+                    Items = items,
+                    BalanceDue = 0.00M,
+                    CompanyName = "Sandbox Company_US_2",
+                    CompanyAddress = "123 Sierra Way, San Pablo CA 87999",
+                    CustomerNote = "Thank you for your business and have a great day!",
+                };
+
                 return Ok(res);
             }
             catch (Exception ex)
             {
-                _logger.LogDebug("EstimateController: ViewInvoice Error.");
-                return Ok(new { ErrorMessage = ex.Message ?? ex.InnerException.Message });
+                _logger.LogDebug("InvoiceController: ViewInvoice Error.");
+                return BadRequest(new { ErrorMessage = ex.Message ?? ex.InnerException.Message });
             }
         }
 
 
         [HttpPost]
         [Route("addinvoice")]
-        public async Task<IActionResult> AddInvoice(InvoiceDto model)
+        public async Task<IActionResult> AddInvoice([FromBody] InvoiceCreateReq model)
         {
             _logger.LogInformation($"Called addinvoice API.");
             try
             {
-                var res = $"addinvoice";
-                return Ok(res);
+                var currentUser = Utilities.GetUserId(this.User);
+                var tenantId = Guid.NewGuid();
+                var glheader = new GeneralLedgerHeader()
+                {
+                    Id = Guid.NewGuid(),
+                    DocumentType = (int)ProductType.Invoice,
+                    TenantId = tenantId,
+                    Description = $"New invoice is created",
+                    CreatedBy = currentUser,
+                    CreatedAt = DateTime.UtcNow.ToString()
+                };
+                var no = await _unitofwork.SalesInvoiceHeaderRepository.GetNextNo();
+                var glline = new GeneralLedgerLine()
+                {
+                    Id = Guid.NewGuid(),
+                    GeneralLedgerHeaderId = glheader.Id,
+                    Amount = model.InvoiceTotal,
+                    TenantId = tenantId,
+                    CreatedBy = currentUser,
+                    CreatedAt = DateTime.UtcNow.ToString()
+                };
+
+                var siheader = new SalesInvoiceHeader()
+                {
+                    Id = Guid.NewGuid(),
+                    CustomerId = model.SelectedCustomer.Id,
+                    GeneralLedgerHeaderId = glheader.Id,
+                    TenantId = tenantId,
+                    SubTotal = model.Subtotal,
+                    Amount = model.InvoiceTotal,
+                    TaxAmount = model.SalesTax,
+                    TaxPercent = model.SelectedTaxRate * 100,
+                    TaxableSubtotal = model.TaxableSubtotal,
+                    DueDate=model.DueDate.ToString(),
+                    No = no,
+                    CreatedBy = currentUser,
+                    Status = 1,
+                    CreatedAt = DateTime.UtcNow.ToString()
+                };
+
+                foreach (var item in model.Items)
+                {
+                    var siline = new SalesInvoiceLine()
+                    {
+                        Id = Guid.NewGuid(),
+                        SalesInvoiceHeaderId = siheader.Id,
+                        ItemId = item.Product,
+                        Quantity = item.Qty,
+                        SalesOrderLineId = Guid.Empty,
+                        Amount = item.Qty * item.Rate,
+                        TenantId = tenantId,
+                        CreatedBy = currentUser,
+                        CreatedAt = DateTime.UtcNow.ToString()
+                    };
+                    await _unitofwork.SalesInvoiceLineRepository.CreateSalesInvoiceLine(siline);
+                }
+
+                await _unitofwork.GeneralLedgerHeaderRepository.CreateGeneralLedgerHeader(glheader);
+                await _unitofwork.GeneralLedgerLineRepository.CreateGeneralLedgerLine(glline);
+                await _unitofwork.SalesInvoiceHeaderRepository.CreateSalesInvoiceHeader(siheader);
+
+                return Ok(new { isSuccess = true, message = $"Invoice added Successfully..!" });
             }
             catch (Exception ex)
             {
-                _logger.LogDebug("EstimateController: AddInvoice Error.");
-                return Ok(new { ErrorMessage = ex.Message ?? ex.InnerException.Message });
+                _logger.LogDebug("InvoiceController: AddInvoice Error.");
+                return BadRequest(new { ErrorMessage = ex.Message ?? ex.InnerException.Message });
             }
         }
 
 
         [HttpPost]
         [Route("updateinvoice")]
-        public async Task<IActionResult> UpdateInvoice(InvoiceDto model)
+        public async Task<IActionResult> UpdateInvoice(string id, [FromBody] InvoiceCreateReq model)
         {
             _logger.LogInformation($"Called updateinvoice API.");
             try
             {
-                var res = $"updateinvoice";
-                return Ok(res);
+                var headerId = Guid.Parse(id);
+                var originalheader = await _unitofwork.SalesInvoiceHeaderRepository.GetSalesInvoiceHeaderById(headerId);
+
+                var updatedheader = new SalesInvoiceHeader()
+                {
+                    Id = headerId,
+                    CustomerId = model.SelectedCustomer.Id,
+                    SubTotal = model.Subtotal,
+                    Amount = model.InvoiceTotal,
+                    TaxAmount = model.SalesTax,
+                    TaxPercent = model.SelectedTaxRate * 100,
+                    TaxableSubtotal = model.TaxableSubtotal,
+                    No = originalheader.No,
+                    CreatedBy = originalheader.CreatedBy,
+                    Status = originalheader.Status,
+                    CreatedAt = originalheader.CreatedAt,
+                    DueDate = model.DueDate.ToString(), // Format as needed
+                    UpdatedAt = DateTime.UtcNow.ToString() // If needed, format this too
+                };
+                var updateSuccess = await _unitofwork.SalesInvoiceHeaderRepository.UpdateSalesInvoiceHeader(updatedheader);
+                if (!updateSuccess)
+                {
+                    _logger.LogError($"Failed to update invoice header with ID {headerId}.");
+                    return BadRequest(new { Message = "Error updating invoice." });
+                }
+
+                var existingLines = await _unitofwork.SalesInvoiceLineRepository.GetSalesInvoiceLineByHeaderId(headerId);
+                foreach (var line in existingLines)
+                {
+                    await _unitofwork.SalesInvoiceLineRepository.DeleteSalesInvoiceLine(line.Id);
+                }
+
+                foreach (var item in model.Items)
+                {
+                    var siline = new SalesInvoiceLine()
+                    {
+                        Id = Guid.NewGuid(),  // Generate a new GUID for the new line
+                        SalesInvoiceHeaderId = updatedheader.Id,
+                        ItemId = item.Product,
+                        Quantity = item.Qty,
+                        SalesOrderLineId = Guid.Empty,  // Assuming this is empty for now
+                        Amount = item.Qty * item.Rate,
+                        UpdatedAt = DateTime.UtcNow.ToString()
+                    };
+
+                    var lineSuccess = await _unitofwork.SalesInvoiceLineRepository.CreateSalesInvoiceLine(siline);
+                    if (lineSuccess == null)
+                    {
+                        _logger.LogError($"Failed to add new invoice line for product ID {item.Product}");
+                    }
+                }
+
+                _logger.LogInformation($"Invoice with ID {headerId} updated successfully.");
+
+                return Ok(new { Message = "Invoice updated successfully", InvoiceId = headerId });
             }
             catch (Exception ex)
             {
-                _logger.LogDebug("EstimateController: UpdateInvoice Error.");
-                return Ok(new { ErrorMessage = ex.Message ?? ex.InnerException.Message });
+                _logger.LogDebug("InvoiceController: UpdateInvoice Error.");
+                return BadRequest(new { ErrorMessage = ex.Message ?? ex.InnerException.Message });
             }
         }
 
@@ -125,8 +336,8 @@ namespace WFM.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogDebug("EstimateController: DeleteInvoice Error.");
-                return Ok(new { ErrorMessage = ex.Message ?? ex.InnerException.Message });
+                _logger.LogDebug("InvoiceController: DeleteInvoice Error.");
+                return BadRequest(new { ErrorMessage = ex.Message ?? ex.InnerException.Message });
             }
         }
 
@@ -143,8 +354,8 @@ namespace WFM.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogDebug("EstimateController: SendInvoice Error.");
-                return Ok(new { ErrorMessage = ex.Message ?? ex.InnerException.Message });
+                _logger.LogDebug("InvoiceController: SendInvoice Error.");
+                return BadRequest(new { ErrorMessage = ex.Message ?? ex.InnerException.Message });
             }
         }
 
@@ -161,8 +372,8 @@ namespace WFM.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogDebug("EstimateController: ShareInvoiceLink Error.");
-                return Ok(new { ErrorMessage = ex.Message ?? ex.InnerException.Message });
+                _logger.LogDebug("InvoiceController: ShareInvoiceLink Error.");
+                return BadRequest(new { ErrorMessage = ex.Message ?? ex.InnerException.Message });
             }
         }
 
@@ -179,8 +390,8 @@ namespace WFM.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogDebug("EstimateController: ViewInvoiceActivity Error.");
-                return Ok(new { ErrorMessage = ex.Message ?? ex.InnerException.Message });
+                _logger.LogDebug("InvoiceController: ViewInvoiceActivity Error.");
+                return BadRequest(new { ErrorMessage = ex.Message ?? ex.InnerException.Message });
             }
         }
 
@@ -197,8 +408,8 @@ namespace WFM.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogDebug("EstimateController: PrintInvoice Error.");
-                return Ok(new { ErrorMessage = ex.Message ?? ex.InnerException.Message });
+                _logger.LogDebug("InvoiceController: PrintInvoice Error.");
+                return BadRequest(new { ErrorMessage = ex.Message ?? ex.InnerException.Message });
             }
         }
     }

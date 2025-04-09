@@ -12,6 +12,8 @@ import { ExternalAppComponent } from './views/pages/auth/external-app/external-a
 import { CreateProductFormComponent } from './views/modules/sales/create-product-form/create-product-form.component';
 import { NewCustomerComponent } from './views/modules/customers/new-customer/new-customer.component';
 import { CreateFormComponent } from './views/modules/product-and-service/create-form/create-form.component';
+import { SalesOrderNewComponent } from './views/modules/sales/sales-order-new/sales-order-new.component';
+import { RecurringPaymentNewComponent } from './views/modules/sales/recurring-payment-new/recurring-payment-new.component';
 
 @Injectable()
 export class LowerCaseUrlSerializer extends DefaultUrlSerializer {
@@ -46,8 +48,8 @@ const routes: Routes = [
       import('./adminportal/adminportal.module').then(
         (m) => m.AdminportalModule
       ),
-    canActivate: [AuthGuard],
-    data: { role: ['Admin'] },
+    // canActivate: [AuthGuard],
+    // data: { role: ['Admin'] },
   },
   {
     path: 'user',
@@ -66,11 +68,20 @@ const routes: Routes = [
   { path: 'paymentfailed', component: ExternalAppComponent },
   // { path: 'testing', component: CreateProductFormComponent },
   { path: 'create-invoice', component: CreateProductFormComponent, data: { pageType: 'invoice' } },
+  { path: 'create-invoice/:id', component: CreateProductFormComponent, data: { pageType: 'invoice' } },
+  { path: 'create-estimation/:id', component: CreateProductFormComponent, data: { pageType: 'estimation' } },
   { path: 'create-estimation', component: CreateProductFormComponent, data: { pageType: 'estimation' } },
   { path: 'create-customer', component: NewCustomerComponent},
   { path: 'create-customer/:id', component: NewCustomerComponent},
+  { path: 'orders/:id', component: SalesOrderNewComponent },
+  { path: 'orders/new', component: SalesOrderNewComponent },
+  { path: 'recurringpayment/new', component: RecurringPaymentNewComponent },
   {
     path: 'create-form',
+    component: CreateFormComponent
+  },
+  {
+    path: 'create-form/:id',
     component: CreateFormComponent
   },
   {

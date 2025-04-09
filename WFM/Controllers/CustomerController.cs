@@ -3,6 +3,7 @@ using DAL;
 using DAL.DTOS;
 using DAL.Models;
 using DAL.Repositories.Interfaces;
+using iTextSharp.text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -26,7 +27,7 @@ namespace Accounting.Controllers
         private readonly IConfiguration _config;
 
         public CustomerController(ApplicationDbContext context, IMapper mapper, IAuthorizationService authorizationService,
-            ILogger<CustomerController> logger, IUnitOfWork unitOfWork, IConfiguration config, UserManager<MasterUser> userManager, 
+            ILogger<CustomerController> logger, IUnitOfWork unitOfWork, IConfiguration config, UserManager<MasterUser> userManager,
             SignInManager<MasterUser> signInManager, IOptions<AppSettings> appSettings, RoleManager<ApplicationRole> roleManager)
         {
             _db = context;
@@ -43,13 +44,17 @@ namespace Accounting.Controllers
 
         [HttpGet]
         [Route("getcustomers")]
-        public async Task<IActionResult> GetCustomers()
+        public async Task<IActionResult> GetCustomers(int pageSize = 10, int currentPage = 1)
         {
             _logger.LogInformation($"Called getcustomers API.");
             try
             {
-                var res = await _unitOfWork.CustomerRepository.GetCustomers();
-                return Ok(res);
+                var customers = await _unitOfWork.CustomerRepository.GetCustomers(pageSize, currentPage);
+
+                int totalRecords = await _unitOfWork.CustomerRepository.GetTotalCustomerCount();
+                int totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
+
+                return Ok(customers);
             }
             catch (Exception ex)
             {
@@ -57,7 +62,25 @@ namespace Accounting.Controllers
                 return Ok(new { ErrorMessage = ex.Message ?? ex.InnerException.Message });
             }
         }
-        
+
+
+        [HttpGet]
+        [Route("customers")]
+        public async Task<IActionResult> CustomerList(int pageSize = 100, int currentPage = 1)
+        {
+            _logger.LogInformation($"Called customers API.");
+            try
+            {
+                var customerslist = await _unitOfWork.CustomerRepository.CustomerList(pageSize, currentPage);
+                return Ok(customerslist);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogDebug("CustomerController: GetCustomers Error.");
+                return Ok(new { ErrorMessage = ex.Message ?? ex.InnerException.Message });
+            }
+        }
+
 
         [HttpGet]
         [Route("getcustomerbyid")]
@@ -216,7 +239,7 @@ namespace Accounting.Controllers
                     Id = Guid.Parse(custId),
                     Title = request.NameAndContact.Title,
                     FirstName = request.NameAndContact.FirstName,
-                    MiddleName=request.NameAndContact.MiddleName,
+                    MiddleName = request.NameAndContact.MiddleName,
                     LastName = request.NameAndContact.LastName,
                     Email = request.NameAndContact.Email,
                     BillingAddressFirstName = request.NameAndContact.FirstName,
@@ -248,11 +271,11 @@ namespace Accounting.Controllers
                     //CardStatus = request.CardStatus,
                     //PreferredCurrencyCode = request.PreferredCurrencyCode,
                     //PaymentMethodObjectType = request.PrimaryPaymentMethodObjectType,
-                    CreatedAt = DateTime.UtcNow.ToString("o"),
+                    //CreatedAt = DateTime.UtcNow.ToString("o"),
                     UpdatedAt = DateTime.UtcNow.ToString("o")
                 };
                 var res = await _unitOfWork.CustomerRepository.UpdateCustomer(cust);
-                return Ok(new { isSuccess = res , message = $"Customer Updated Successfully.!"});
+                return Ok(new { isSuccess = res, message = $"Customer Updated Successfully.!" });
             }
             catch (Exception ex)
             {

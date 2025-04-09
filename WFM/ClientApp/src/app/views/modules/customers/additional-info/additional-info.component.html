@@ -24,12 +24,17 @@
             <!-- Customer Type -->
             <div class="mb-3">
               <label>Customer Type</label>
-              <select class="form-control" formControlName="customerType">
+              <select class="form-control" formControlName="customerType"
+              [class.is-invalid]="formGroup.get('customerType').invalid && formGroup.get('customerType').touched"
+              >
                 <option value="">Select</option>
                 <option *ngFor="let type of customerTypes" [value]="type">
                   {{ type }}
                 </option>
               </select>
+              <div *ngIf="formGroup.get('customerType').invalid && formGroup.get('customerType').touched">
+                <small class="text-danger">Please select a Customer Type.</small>
+              </div>
             </div>
 
             <!-- Tax Exemption -->
@@ -48,16 +53,26 @@
             <div class="row mb-3" *ngIf="formGroup.get('isTaxExempt')?.value">
               <div class="col-md-6">
                 <label>Reason for Exemption</label>
-                <select class="form-control" formControlName="exemptionReason">
+                <select class="form-control" formControlName="exemptionReason"
+                [class.is-invalid]="formGroup.get('exemptionReason').invalid && formGroup.get('exemptionReason').touched"
+                >
                   <option value="">Select</option>
                   <option *ngFor="let reason of exemptionReasons" [value]="reason">
                     {{ reason }}
                   </option>
                 </select>
+                <div *ngIf="formGroup.get('exemptionReason').invalid && formGroup.get('exemptionReason').touched">
+                  <small class="text-danger">Pease select a Reason for Exemption.</small>
+                </div>
               </div>
               <div class="col-md-6">
                 <label>Exemption Details</label>
-                <input type="text" class="form-control" formControlName="exemptionDetails" />
+                <input type="text" class="form-control" formControlName="exemptionDetails" 
+                [class.is-invalid]="formGroup.get('exemptionDetails').invalid && formGroup.get('exemptionDetails').touched"
+                />
+                <div *ngIf="formGroup.get('exemptionDetails').invalid && formGroup.get('exemptionDetails').touched">
+                  <small class="text-danger">Exemption Details is required</small>
+                </div>
               </div>
             </div>
 
@@ -66,18 +81,33 @@
               <label>Select Tax Rate</label>
               <input type="text" class="form-control" value="Automated based on location" formControlName="taxRate"
               [disabled]="formGroup.get('isTaxExempt')?.value"
+              [class.is-invalid]="formGroup.get('taxRate').invalid && formGroup.get('taxRate').touched"
               />
+              <div *ngIf="formGroup.get('taxRate').invalid && formGroup.get('taxRate').touched">
+                <small class="text-danger">Please select a Tax Rate.</small>
+              </div>
             </div>
 
             <!-- Opening Balance -->
             <div class="row mb-3">
               <div class="col-md-6">
                 <label>Opening Balance</label>
-                <input type="number" class="form-control" formControlName="openingBalance" />
+                <input type="number" class="form-control" formControlName="openingBalance" 
+                [class.is-invalid]="formGroup.get('openingBalance').invalid && formGroup.get('openingBalance').touched"
+                />
+                <div *ngIf="formGroup.get('openingBalance').invalid && formGroup.get('openingBalance').touched">
+                  <small class="text-danger" *ngIf="formGroup.get('openingBalance').hasError('required')">Opening Balance is required</small>
+                  <small class="text-danger" *ngIf="formGroup.get('openingBalance').hasError('min')">Opening Balance must be at least 1</small>
+                </div>
               </div>
               <div class="col-md-6">
                 <label>As of</label>
-                <input type="date" class="form-control" formControlName="asOfDate" />
+                <input type="date" class="form-control" formControlName="asOfDate" 
+                [class.is-invalid]="formGroup.get('asOfDate').invalid && formGroup.get('asOfDate').touched"
+                />
+                <div *ngIf="formGroup.get('asOfDate').invalid && formGroup.get('asOfDate').touched">
+                  <small class="text-danger">'As of' is required</small>
+                </div>
               </div>
             </div>
           </form>

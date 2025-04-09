@@ -14,7 +14,7 @@ namespace DAL.Models
 
         [Required]
         [Column("salesquoteheaderid")]
-        public Guid SalesQuoteHeaderId { get; set; }
+        public Guid SalesQuoteHeaderId { get; set; }    
 
         [Required]
         [Column("itemid")]
@@ -25,8 +25,8 @@ namespace DAL.Models
         public Guid MeasurementId { get; set; }
 
         [Required]
-        [Column("quantity", TypeName = "numeric(18,2)")]
-        public decimal Quantity { get; set; }
+        [Column("quantity")]
+        public int Quantity { get; set; }
 
         [Required]
         [Column("discount", TypeName = "numeric(18,2)")]
@@ -35,6 +35,9 @@ namespace DAL.Models
         [Required]
         [Column("amount", TypeName = "numeric(18,2)")]
         public decimal Amount { get; set; }
+
+        [Column("tax")]
+        public bool Tax { get; set; }
 
         [Column("tenantid")]
         public Guid? TenantId { get; set; }

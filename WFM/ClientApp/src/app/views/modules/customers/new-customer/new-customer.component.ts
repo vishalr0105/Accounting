@@ -1,9 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { CustomersService } from '../service/customers.service';
 import { error } from 'console';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-new-customer',
@@ -18,38 +19,40 @@ export class NewCustomerComponent implements OnInit {
     private fb: FormBuilder,
     private customersService: CustomersService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private location: Location,
+
   ) {
     this.customerForm = this.fb.group({
       nameAndContact: this.fb.group({
-        title: [''],
-        firstName: [''],
-        middleName: [''],
-        lastName: [''],
-        suffix: [''],
-        companyName: [''],
-        customerDisplayName: ['', Validators.required],
-        email: ['', [Validators.email]],
-        phoneNumber: [''],
-        cc: [''],
-        bcc: [''],
-        mobileNumber: [''],
-        fax: [''],
-        other: [''],
-        website: [''],
-        nameOnCheck: [''],
+        title: ['',[Validators.required,Validators.minLength(2),this.noNumbersValidator(), ]],
+        firstName: ['',[Validators.required,Validators.minLength(2),this.noNumbersValidator(), ]],
+        middleName: ['',[Validators.required,Validators.minLength(2),this.noNumbersValidator(), ]],
+        lastName: ['',[Validators.required,Validators.minLength(2),this.noNumbersValidator(), ]],
+        suffix: ['',[Validators.required,Validators.minLength(2),this.noNumbersValidator(), ]],
+        companyName: ['',[Validators.required,Validators.minLength(2),this.noNumbersValidator(), ],],
+        customerDisplayName: ['', [Validators.required,Validators.minLength(2),this.noNumbersValidator(), ]],
+        email: ['', [Validators.email,Validators.required]],
+        phoneNumber: ['',[Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
+        cc: ['',[Validators.required,Validators.minLength(2),this.noNumbersValidator(), ]],
+        bcc: ['',[Validators.required,Validators.minLength(2),this.noNumbersValidator(), ]],
+        mobileNumber: ['',[Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
+        fax: ['',[Validators.required,Validators.minLength(2),this.noNumbersValidator(), ]],
+        other: ['',[Validators.required,Validators.minLength(2),this.noNumbersValidator(), ]],
+        website: ['',[Validators.required ]],
+        nameOnCheck: ['',[Validators.required,Validators.minLength(2),this.noNumbersValidator(), ]],
         isSubCustomer: [false],
         parentCustomer: [''],
         billParentCustomer: [false],
       }),
       address: this.fb.group({
-        billingStreet1: [''],
-        billingStreet2: [''],
-        billingCity: [''],
-        billingState: [''],
-        billingZip: [''],
-        billingCountry: ['MYS'], // Default country to Malaysia
-        sameAsBilling: [true],
+        billingStreet1: ['',Validators.required],
+        billingStreet2: ['',Validators.required],
+        billingCity: ['',Validators.required],
+        billingState: ['',Validators.required],
+        billingZip: ['',Validators.required],
+        billingCountry: ['MYS',Validators.required], // Default country to Malaysia
+        sameAsBilling: [false],
         shippingStreet1: [''],
         shippingStreet2: [''],
         shippingCity: [''],
@@ -62,22 +65,29 @@ export class NewCustomerComponent implements OnInit {
         attachment: [null],
       }),
       payments: this.fb.group({
-        paymentMethod: [''],
-        terms: ['Net 60'],
-        deliveryOptions: [''],
-        invoiceLanguage: ['English'],
-        creditLimit: [''],
+        paymentMethod: ['',Validators.required],
+        terms: ['Net 60',Validators.required],
+        deliveryOptions: ['',Validators.required],
+        invoiceLanguage: ['English',Validators.required],
+        creditLimit: ['',[Validators.required,Validators.min(1)]],
       }),
       additionalInfo: this.fb.group({
-        customerType: [''],
+        customerType: ['',Validators.required],
         isTaxExempt: [false],
         exemptionReason: [''],
         exemptionDetails: [''],
         taxRate: [''],
-        openingBalance: ['0.00'],
-        asOfDate: [new Date().toISOString().split('T')[0]], // Default to today’s date
+        openingBalance: ['',[Validators.required,Validators.min(1)]],
+        asOfDate: [new Date().toISOString().split('T')[0],Validators.required], // Default to today’s date
       }),
     });
+  }
+  noNumbersValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value;
+      const hasNumbers = /\d/.test(value);  // Check if the value contains any numbers
+      return hasNumbers ? { 'noNumbers': { value: control.value } } : null;
+    };
   }
   get nameAndContactForm(): FormGroup {
     return this.customerForm.get('nameAndContact') as FormGroup;
@@ -95,6 +105,18 @@ export class NewCustomerComponent implements OnInit {
     return this.customerForm.get('additionalInfo') as FormGroup;
   }
   ngOnInit(): void {
+    // this.customerForm.get('additionalInfo').get('isTaxExempt').valueChanges.subscribe(checked=>{
+    //   console.log(checked,'checked');
+    //   if(checked){
+    //     this.customerForm.get('additionalInfo').get('exemptionReason')?.setValidators([Validators.required])
+    //     this.customerForm.get('additionalInfo').get('exemptionDetails')?.setValidators([Validators.required])
+    //     this.customerForm.get('additionalInfo').get('taxRate')?.clearValidators()
+    //   }else{
+    //     this.customerForm.get('additionalInfo').get('exemptionReason')?.clearValidators()
+    //     this.customerForm.get('additionalInfo').get('exemptionDetails')?.clearValidators()
+    //     this.customerForm.get('additionalInfo').get('taxRate')?.setValidators([Validators.required])
+    //   }
+    // })
     this.route.paramMap.subscribe((params) => {
       this.customerId = params.get('id'); // Extract the ID from the URL
 
@@ -136,66 +158,52 @@ export class NewCustomerComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log('Final Customer Form Data:', this.customerForm.value);
-    console.log(
-      'Final Customer Form Data:',
-      JSON.stringify(this.customerForm.value)
-    );
-    if (this.customerId) {
-      this.customersService
-        .updateCustomerById(this.customerForm.value, this.customerId)
-        .subscribe(
-          (res) => {
-            console.log(res, 'res');
+    console.log('Submitting Customer Form:', JSON.stringify(this.customerForm.value));
+    console.log(this.customerForm.invalid,'invalidn');
+    console.log(this.customerForm.valid,'valid');
+    // if (this.customerForm.invalid) {
+    //   // If form is invalid, loop through the controls and log the invalid ones
+    //   Object.keys(this.customerForm.controls).forEach((controlName) => {
+    //     const control = this.customerForm.get(controlName);
+    //     if (control?.invalid) {
+    //       console.log(`${controlName} is invalid`);
+    //     }
+    //   });
+    // }
+    const isUpdating = !!this.customerId;
+    const serviceCall = isUpdating
+      ? this.customersService.updateCustomerById(this.customerForm.value, this.customerId)
+      : this.customersService.createCustomer(this.customerForm.value);
 
-            // Show SweetAlert after update
-            Swal.fire({
-              title: 'Customer Updated Successfully!',
-              text: 'Your customer details have been updated. We will process it and get back to you if needed.',
-              icon: 'success',
-              confirmButtonText: 'OK',
-            }).then(() => {
-              // Redirect to customer list after clicking OK
-              this.router.navigateByUrl(`/admin/customer`);
-            });
-          },
-          (error) => {
-            console.error('Update failed', error);
-            // Optionally, show an error alert
-            Swal.fire({
-              title: 'Error!',
-              text: 'There was an issue updating the customer. Please try again later.',
-              icon: 'error',
-              confirmButtonText: 'OK',
-            });
-          }
-        );
-    } else {
-      this.customersService.createCustomer(this.customerForm.value).subscribe({
-        next: (res) => {
-          console.log(res, 'res');
-          // Show SweetAlert after successful creation
-          Swal.fire({
-            title: 'Customer Created Successfully!',
-            text: 'Your customer has been added successfully. We will process it and get back to you if needed.',
-            icon: 'success',
-            confirmButtonText: 'OK',
-          }).then(() => {
-            // Redirect to customer list after clicking OK
-            this.router.navigateByUrl(`/admin/customer`);
-          });
-        },
-        error: (err) => {
-          console.error(err);
-        },
-      });
-    }
-    // console.log('Final Customer Form Data:', this.customerData);
+    serviceCall.subscribe({
+      next: (res) => {
+        console.log('Server Response:', res);
 
-    setTimeout(() => {
-      this.resetCustomerForm();
-    }, 10000);
+        Swal.fire({
+          title: isUpdating ? 'Customer Updated!' : 'Customer Created!',
+          text: `The customer has been ${isUpdating ? 'updated' : 'added'} successfully.`,
+          icon: 'success',
+          confirmButtonText: 'OK',
+        }).then(() => {
+          this.router.navigateByUrl(`/admin/customer`);
+        });
+      },
+      error: (error) => {
+        console.error('Operation failed:', error);
+
+        Swal.fire({
+          title: 'Error!',
+          text: 'There was an issue processing your request. Please try again later.',
+          icon: 'error',
+          confirmButtonText: 'OK',
+        });
+      },
+    });
+
+    // Reset form after 10 seconds
+    setTimeout(() => this.resetCustomerForm(), 10000);
   }
+
   resetCustomerForm() {
     this.customerForm.reset({
       nameAndContact: {
@@ -243,7 +251,7 @@ export class NewCustomerComponent implements OnInit {
         terms: 'Net 60', // Default value
         deliveryOptions: '',
         invoiceLanguage: 'English', // Default value
-        creditLimit: '',
+        creditLimit: '0',
       },
       additionalInfo: {
         customerType: '',
@@ -255,5 +263,10 @@ export class NewCustomerComponent implements OnInit {
         asOfDate: new Date().toISOString().split('T')[0], // Default to today’s date
       },
     });
+  }
+
+  goBack() {
+    // this.router.navigate(['../']); // Navigate to the previous route
+    this.location.back();
   }
 }

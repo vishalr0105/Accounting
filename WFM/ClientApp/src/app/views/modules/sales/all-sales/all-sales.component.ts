@@ -1,50 +1,162 @@
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { EditSettingsModel, PageSettingsModel, ToolbarItems } from '@syncfusion/ej2-angular-grids';
-import { MenuEventArgs, MenuItemModel } from '@syncfusion/ej2-angular-navigations';
+import { Router } from '@angular/router';
+import {
+  EditSettingsModel,
+  PageSettingsModel,
+  ToolbarItems,
+} from '@syncfusion/ej2-angular-grids';
+import {
+  MenuEventArgs,
+  MenuItemModel,
+} from '@syncfusion/ej2-angular-navigations';
+import { AllSalesService } from '../salesServices/all-sales.service';
+import { catchError, concatMap, map, of, shareReplay, switchMap } from 'rxjs';
+import { CustomersService } from '../../customers/service/customers.service';
 
 @Component({
   selector: 'app-all-sales',
   templateUrl: './all-sales.component.html',
-  styleUrls: ['./all-sales.component.scss']
+  styleUrls: ['./all-sales.component.scss'],
 })
-export class AllSalesComponent {
-  toolbar: ToolbarItems[] = [ 'Search','ColumnChooser'];
+export class AllSalesComponent implements OnInit {
+  toolbar: ToolbarItems[] = ['Search', 'ColumnChooser'];
   columns = [
-    { field: 'id', header: 'ID', type: 'number' ,visible: false},
-    { field: 'name', header: 'Name', type: 'string' ,visible: true},
-    { field: 'amount', header: 'Amount', type: 'number' ,visible: true},
-    { field: 'date', header: 'Date', type: 'date' ,visible: true},
+    { field: 'id', header: 'ID', type: 'number', visible: false },
+    { field: 'customer', header: 'Customer', type: 'string', visible: true },
+    { field: 'amount', header: 'Amount', type: 'number', visible: true },
+    { field: 'date', header: 'Date', type: 'date', visible: true },
+    { field: 'type', header: 'Type', type: 'string', visible: true },
   ];
-  updatebtn:boolean = false;
-  salesData = [
-    { id: 1, name: 'Order 1', amount: 150, date: '2024-02-10' },
-    { id: 2, name: 'Order 2', amount: 250, date: '2024-02-12' },
-    { id: 3, name: 'Order 3', amount: 350, date: '2024-02-15' },
-    { id: 4, name: 'Order 4', amount: 350, date: '2024-02-15' },
-    { id: 5, name: 'Order 5', amount: 350, date: '2024-02-15' },
-    { id: 6, name: 'Order 6', amount: 350, date: '2024-02-15' },
-    { id: 7, name: 'Order 7', amount: 350, date: '2024-02-15' },
-    { id: 8, name: 'Order 8', amount: 350, date: '2024-02-15' },
-    { id: 8, name: 'Order 8', amount: 350, date: '2024-02-15' },
-    { id: 8, name: 'Order 8', amount: 350, date: '2024-02-15' },
-    { id: 8, name: 'Order 8', amount: 350, date: '2024-02-15' },
-    { id: 8, name: 'Order 8', amount: 350, date: '2024-02-15' },
-    { id: 8, name: 'Order 8', amount: 350, date: '2024-02-15' },
-    { id: 8, name: 'Order 8', amount: 350, date: '2024-02-15' },
-    { id: 8, name: 'Order 8', amount: 350, date: '2024-02-15' },
-    { id: 8, name: 'Order 8', amount: 350, date: '2024-02-15' },
-    { id: 8, name: 'Order 8', amount: 350, date: '2024-02-15' },
-    { id: 8, name: 'Order 8', amount: 350, date: '2024-02-15' },
-    { id: 8, name: 'Order 8', amount: 350, date: '2024-02-15' },
-    { id: 8, name: 'Order 8', amount: 350, date: '2024-02-15' },
-    { id: 8, name: 'Order 8', amount: 350, date: '2024-02-15' },
-    { id: 8, name: 'Order 8', amount: 350, date: '2024-02-15' },
-    { id: 8, name: 'Order 8', amount: 350, date: '2024-02-15' },
-  ];
-  constructor(private changeDetectorRef: ChangeDetectorRef) { }
-  editSettings:EditSettingsModel = { allowEditing: false, allowAdding: false, allowDeleting: false, mode: 'Normal' };
+  updatebtn: boolean = false;
+  salesData: any[] = [];
+  filteredData: any[] = [];
+  totalCount: number = 0;
+  chunkSize: number = 100; // Default chunk size
+  currentPage: number = 1;
+  currentPageRequested: number = 0;
+  type: any = 'all';
+  date: any = 'all';
+  customer: any = 'all';
+
+  sportsData: any = [];
+
+  constructor(
+    private changeDetectorRef: ChangeDetectorRef,
+    private http: HttpClient,
+    private router: Router,
+    private allSalesService: AllSalesService,
+    private customersService: CustomersService
+  ) {
+    console.log('totalCount', this.totalCount);
+  }
+
+  ngOnInit(): void {
+    this.loadCustomerDropdownValues()
+    this.fetchSalesData();
+  }
+  fetchSalesData(): void {
+    this.salesData =[];
+    this.filteredData = [];
+    // Prevent API call if the same page was already requested
+    // if (this.currentPage === this.currentPageRequested) {
+    //   console.log(`Page ${this.currentPage} already requested`);
+    //   return; // Skip the API call if it's the same page
+    // }
+
+    // Mark the current page as requested
+    this.currentPageRequested = this.currentPage;
+
+    // First, get the total count of sales orders
+    this.allSalesService
+      .getAllSalesOrdersCount(
+        this.type,
+        this.date,
+        this.customer
+      )
+      .pipe(
+        switchMap((countResponse: any) => {
+          // Assuming response contains the total count like { totalcount: 500 }
+          this.totalCount = countResponse.totalcount;
+
+          const totalPages = Math.ceil(this.totalCount / this.chunkSize);
+          console.log('Total Pages:', totalPages);
+
+          // Create an observable for all the pages that we need to fetch
+          const pageRequests = Array.from(
+            { length: totalPages },
+            (_, pageIndex) => {
+              return this.allSalesService
+                .getAllSalesOrders(
+                  this.chunkSize,
+                  pageIndex + 1,
+                  this.type,
+                  this.date,
+                  this.customer
+                )
+                .pipe(
+                  catchError((err) => {
+                    console.error('Error fetching page', pageIndex + 1, err);
+                    return of([]); // Return an empty array in case of error
+                  })
+                );
+            }
+          );
+
+          // Use concatMap to handle all page requests sequentially (so the requests don't overload the server)
+          return of(...pageRequests); // Spread the pageRequests into an observable
+        }),
+        concatMap((request) => request), // Ensure the requests happen one after the other
+        map((pageData: any[]) => {
+          // Accumulate the sales data from each chunk
+          this.salesData = [...this.salesData, ...pageData];
+          this.filteredData = [...this.salesData];
+          console.log('Unique types:', [...new Set(this.salesData.map(res => res.type))]);
+
+        }),
+        catchError((err) => {
+          console.error('Error occurred during fetching sales data', err);
+          return of([]); // Return an empty array in case of any error
+        })
+      )
+      .pipe(
+        // Cache the result for reuse and avoid multiple calls for the same data
+        shareReplay(1)
+      )
+      .subscribe({
+        next: () => {
+          console.log('Sales data loaded successfully');
+        },
+        error: (err) => {
+          console.error('Error in subscription', err);
+        },
+      });
+  }
+  loadCustomerDropdownValues(){
+    this.customersService.getCustomers().subscribe({
+      next: (res) => {
+        this.sportsData = [{ text: 'All', value: 'all' }]; // Initial value
+
+        // Map the response to the desired format [{ text: 'John Doe', value: 'john.doe@example.com' }]
+        const transformedData = res.map((customer: any) => ({
+          text: customer.firstName,
+          value: customer.firstName,
+        }));
+
+        // Add the transformed data to sportsData
+        this.sportsData = [...this.sportsData, ...transformedData];
+      },
+      error: (err) => {},
+    });
+  }
+  editSettings: EditSettingsModel = {
+    allowEditing: false,
+    allowAdding: false,
+    allowDeleting: false,
+    mode: 'Normal',
+  };
   paginationSettings: PageSettingsModel = {
-    pageSize: 10,
+    pageSize: 5,
     pageCount: 5,
     currentPage: 1,
     pageSizes: [5, 10, 20, 50],
@@ -69,12 +181,12 @@ export class AllSalesComponent {
     const clickedAction = event.item.id;
     console.log(`Clicked Action: ${clickedAction}`);
     console.log('Row Data:', rowData);
-  
+
     // Perform action based on clicked menu item
     this.onCustomAction(clickedAction, rowData);
   }
   menuItems: any[] = [];
-  getMenuItems(event:Event ,rowData: any): MenuItemModel[] {
+  getMenuItems(event: Event, rowData: any): MenuItemModel[] {
     event.stopPropagation(); // Prevent row selection
     event.preventDefault();
     return [
@@ -85,29 +197,46 @@ export class AllSalesComponent {
       { text: 'Print packing slip', id: 'print' },
       { text: 'Void', id: 'void' },
       { text: 'Delete', id: 'delete' },
-      { text: 'View activity', id: 'activity' }
+      { text: 'View activity', id: 'activity' },
     ];
   }
-
 
   onEdit(id: number) {
     console.log('Edit clicked for ID:', id);
     // Add your edit logic here
   }
 
-  onDelete(id: number) {
-    console.log('Delete clicked for ID:', id);
-    this.salesData = this.salesData.filter(item => item.id !== id);
-  }
-
-
-
   segments = [
-    { label: 'Estimates', displayTxt: 'Estimates', count: '$0.00', color: 'blue' },
-    { label: 'Unbilled income', displayTxt: 'Unbilled income', count: '$0.00', color: 'purple' },
-    { label: 'Overdue invoice', displayTxt: 'Overdue invoice', count: '$11.04', color: 'orange' },
-    { label: 'Open invoices and credits', displayTxt: 'Open invoices', count: '$64.13', color: 'gray' },
-    { label: 'Recently paid', displayTxt: 'Recently paid', count: '$0.00', color: 'green' }
+    {
+      label: 'Estimates',
+      displayTxt: 'Estimates',
+      count: '$0.00',
+      color: 'blue',
+    },
+    {
+      label: 'Unbilled income',
+      displayTxt: 'Unbilled income',
+      count: '$0.00',
+      color: 'purple',
+    },
+    {
+      label: 'Overdue invoice',
+      displayTxt: 'Overdue invoice',
+      count: '$11.04',
+      color: 'orange',
+    },
+    {
+      label: 'Open invoices and credits',
+      displayTxt: 'Open invoices',
+      count: '$64.13',
+      color: 'gray',
+    },
+    {
+      label: 'Recently paid',
+      displayTxt: 'Recently paid',
+      count: '$0.00',
+      color: 'green',
+    },
   ];
 
   onSegmentClick(label: string) {
@@ -115,17 +244,16 @@ export class AllSalesComponent {
     alert(`You clicked on ${label}`);
   }
 
-
   dropdownItems = [
     { text: 'All transactions', value: 'all' },
-    { text: 'Invoices', value: 'invoices' },
-    { text: 'Estimates', value: 'estimates' },
-    { text: 'Change orders', value: 'change_orders' },
-    { text: 'Credit memos', value: 'credit_memos' },
-    { text: 'Sales Receipts', value: 'sales_receipts' },
-    { text: 'Unbilled Income', value: 'unbilled_income' },
-    { text: 'Money received', value: 'money_received' },
-    { text: 'Recently paid', value: 'recently_paid' }
+    { text: 'Invoices', value: 'Invoice' },
+    { text: 'Estimates', value: 'Estimate' },
+    { text: 'Sales Order', value: 'SalesOrder' },
+    { text: 'Recurring Payment', value: 'RecurringPayment' },
+    // { text: 'Sales Receipts', value: 'sales_receipts' },
+    // { text: 'Unbilled Income', value: 'unbilled_income' },
+    // { text: 'Money received', value: 'money_received' },
+    // { text: 'Recently paid', value: 'recently_paid' },
   ];
   dateRanges = [
     { text: 'All', value: 'all' },
@@ -143,89 +271,87 @@ export class AllSalesComponent {
     { text: 'Year to date', value: 'ytd' },
     { text: 'This year', value: 'this_year' },
     { text: '2024', value: '2024' },
-    { text: '2023', value: '2023' }
+    { text: '2023', value: '2023' },
   ];
 
-  
   onDropdownSelection(selectedValue: any) {
     console.log('Selected:', selectedValue);
+    this.type=selectedValue
+    this.fetchSalesData();
+
   }
 
-  public sportsData = [
-    { value: '1', text: 'Soccer' },
-    { value: '2', text: 'Basketball' },
-    { value: '3', text: 'Baseball' },
-    { value: '4', text: 'Tennis' },
-    { value: '5', text: 'Cricket' }
-  ];
-
-  selectedSport: string = ''; // Store selected value
 
   onDropdownSelectionChange(value: string) {
-    this.selectedSport = value;
-    console.log('Selected Sport:', value); // Log selected value
+    console.log('Selected Sport:', value);
+    this.customer=value
+    this.fetchSalesData();
+
   }
 
   public items: { text: string }[] = [
     { text: 'Invoice' },
     { text: 'Import invoices' },
-    { text: 'Payment' },
+    // { text: 'Payment' },
     { text: 'Estimate' },
     { text: 'Payment Link' },
-    { text: 'Sales Receipt' },
-    { text: 'Credit Memo' },
-    { text: 'Refund Receipt' },
-    { text: 'Delayed Credit' },
-    { text: 'Delayed Charge' },
-    { text: 'Time Activity' }
+    // { text: 'Sales Receipt' },
+    // { text: 'Credit Memo' },
+    // { text: 'Refund Receipt' },
+    // { text: 'Delayed Credit' },
+    // { text: 'Delayed Charge' },
+    // { text: 'Time Activity' }
   ];
 
   onSelect(args: any) {
     console.log('Selected Item:', args.item.text);
+    if (args.item.text == 'Invoice') {
+      this.router.navigate(['/admin/sales/invoices']);
+    } else if (args.item.text == 'Estimate') {
+      this.router.navigate(['/admin/sales/estimates']);
+    } else if (args.item.text == 'Payment Link') {
+      this.router.navigate(['/admin/sales/paymentlinks']);
+    } else if (args.item.text == 'Import invoices') {
+      this.router.navigate(['/admin/sales/importdata']);
+    }
   }
-  
-    onCheckBoxSelectedIds(selectedIds: number[]) {
-      console.log('Selected IDs:', selectedIds);
-    }
 
-    isTableSidebarOpen = false;
-    onRowSelected(rowData: any) {
-      this.isTableSidebarOpen = true;
-      console.log('Selected Row:', rowData);
-    }
-    closeSidebar() {
-      this.isTableSidebarOpen = false;
-    }
+  onCheckBoxSelectedIds(selectedIds: number[]) {
+    console.log('Selected IDs:', selectedIds);
+  }
 
-    handlePageChange(event: { currentPage: number; pageSize: number }) {
-      console.log('Page Changed:', event);
-      const { currentPage, pageSize } = event;
-      
-      // Perform necessary actions, like fetching new data from API
-    }
-    sortField: string = '';
-    sortDirection: string = '';
-    filterField: string = '';
-    filterValue: string = '';
-     // 🔹 Handle Sorting Change
-     onSortingChange(event: { field: string, direction: string }) {
-      console.log("Sorting Data:", event);
-      // this.fetchData({ sortField: event.field, sortOrder: event.direction });
-    }
-    
-    onFilteringChange(event: { field: string, value: string, matchCase: boolean, operator: string }) {
-      console.log("Filtering Data:", event);
-      // this.fetchData({ filterField: event.field, filterValue: event.value, filterOperator: event.operator });
-    }
-    onSearchChanged(searchValue: string) {
-      console.log("🔹 Received Search Value in Parent:", searchValue);
-      this.salesData=[
-        { id: 1, name: 'Order 1', amount: 150, date: '2024-02-10' },
-    { id: 2, name: 'Order 2', amount: 250, date: '2024-02-12' },
-    { id: 3, name: 'Order 3', amount: 350, date: '2024-02-15' },
-      ]
-      this.changeDetectorRef.detectChanges();
-      // Now call API with searchValue for server-side filtering
-      // this.fetchFilteredData(searchValue);
-    }
+  isTableSidebarOpen = false;
+  onRowSelected(rowData: any) {
+    this.isTableSidebarOpen = true;
+    console.log('Selected Row:', rowData);
+  }
+  closeSidebar() {
+    this.isTableSidebarOpen = false;
+  }
+
+  handlePageChange(event: { currentPage: number; pageSize: number }) {
+    console.log('Page Changed:', event);
+    const { currentPage, pageSize } = event;
+
+    // Perform necessary actions, like fetching new data from API
+  }
+  sortField: string = '';
+  sortDirection: string = '';
+  filterField: string = '';
+  filterValue: string = '';
+  // 🔹 Handle Sorting Change
+  onSortingChange(event: { field: string; direction: string }) {
+    console.log('Sorting Data:', event);
+    // this.fetchData({ sortField: event.field, sortOrder: event.direction });
+  }
+
+  onFilteringChange(event: {
+    field: string;
+    value: string;
+    matchCase: boolean;
+    operator: string;
+  }) {
+    console.log('Filtering Data:', event);
+    // this.fetchData({ filterField: event.field, filterValue: event.value, filterOperator: event.operator });
+  }
 }

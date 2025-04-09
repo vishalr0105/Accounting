@@ -19,7 +19,7 @@ namespace DAL.Models
 
         [Column("firstname")]
         public string? FirstName { get; set; }
-        
+
         [Column("middlename")]
         public string? MiddleName { get; set; }
 
@@ -76,7 +76,7 @@ namespace DAL.Models
 
         [Column("billingaddressstatecode")]
         public string? BillingAddressStateCode { get; set; }
-        
+
         [Column("billingaddresszipcode")]
         public string? BillingAddressZipCode { get; set; }
 
@@ -203,5 +203,16 @@ namespace DAL.Models
 
         [Column("updatedat")]
         public string? UpdatedAt { get; set; }
+    }
+
+    public class CustomerListItem
+    {
+        public Guid Id { get; set; }
+        public string? No { get; set; }
+        public string? Title { get; set; }
+        public string? FirstName { get; set; }
+        public string? MiddleName { get; set; }
+        public string? LastName { get; set; }
+        public string? Email { get; set; }
     }
 }

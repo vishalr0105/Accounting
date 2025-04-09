@@ -17,31 +17,22 @@ namespace DAL.Repositories
             _appContext = (ApplicationDbContext)context;
         }
 
-        public async Task<List<Customer>> GetCustomers()
+        public async Task<List<Customer>> GetCustomers(int pageSize, int currentPage)
         {
-            try
-            {
-                var res = await _appContext.customer.ToListAsync();
-                return res;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            var res = await _appContext.customer.Skip((currentPage - 1) * pageSize).Take(pageSize).ToListAsync();
+            return res;
+        }
+
+        public async Task<int> GetTotalCustomerCount()
+        {
+            return await _appContext.customer.CountAsync();
         }
 
         public async Task<Customer> CreateCustomer(Customer cust)
         {
-            try
-            {
-                var res = await _appContext.customer.AddAsync(cust);
-                await _appContext.SaveChangesAsync();
-                return res.Entity;
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            var res = await _appContext.customer.AddAsync(cust);
+            await _appContext.SaveChangesAsync();
+            return res.Entity;
         }
 
         public async Task<bool> UpdateCustomer(Customer cust)
@@ -65,7 +56,7 @@ namespace DAL.Repositories
 
             if (customer == null)
             {
-                return false; // Customer not found
+                return false;
             }
 
             _appContext.customer.Remove(customer);
@@ -76,7 +67,6 @@ namespace DAL.Repositories
 
         public async Task<bool> InActiveCustomer(Guid custId)
         {
-
             var customer = await _appContext.customer.FindAsync(custId);
 
             if (customer == null)
@@ -92,8 +82,8 @@ namespace DAL.Repositories
 
         public async Task<List<Customer>> SearchCustomer(string searchterm)
         {
-            var res = await _appContext.customer.Where(c => c.FirstName.ToLower().Contains(searchterm) 
-                                                        || c.LastName.ToLower().Contains(searchterm) 
+            var res = await _appContext.customer.Where(c => c.FirstName.ToLower().Contains(searchterm)
+                                                        || c.LastName.ToLower().Contains(searchterm)
                                                         || c.Email.ToLower().Contains(searchterm))
                                                 .ToListAsync();
             return res;
@@ -103,6 +93,27 @@ namespace DAL.Repositories
         {
             var customer = await _appContext.customer.FindAsync(custId);
             return customer;
+        }
+
+        public async Task<List<Customer>> GetCustomersByIds(List<Guid> customerIds)
+        {
+            return await _appContext.customer.Where(c => customerIds.Contains(c.Id)).ToListAsync();
+        }
+
+        public async Task<List<CustomerListItem>> CustomerList(int pageSize, int currentPage)
+        {
+            var res = await _appContext.customer.Skip((currentPage - 1) * pageSize).Take(pageSize)
+                                .Select(c => new CustomerListItem
+                                {
+                                    Id = c.Id,
+                                    No = c.No,
+                                    Title = c.Title,
+                                    FirstName = c.FirstName,
+                                    MiddleName = c.MiddleName,
+                                    LastName = c.LastName,
+                                    Email = c.Email
+                                }).ToListAsync();
+            return res;
         }
     }
 }

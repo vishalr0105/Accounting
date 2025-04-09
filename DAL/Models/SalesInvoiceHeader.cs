@@ -23,10 +23,6 @@ namespace DAL.Models
         public string? No { get; set; }
 
         [Required]
-        [Column("date")]
-        public DateTime Date { get; set; }
-
-        [Required]
         [Column("shippinghandlingcharge", TypeName = "numeric(18,2)")]
         public decimal ShippingHandlingCharge { get; set; }
 
@@ -38,6 +34,27 @@ namespace DAL.Models
 
         [Column("status")]
         public int? Status { get; set; }
+
+        [Column("amount")]
+        public decimal Amount { get; set; }
+
+        [Column("subtotal")]
+        public decimal SubTotal { get; set; }
+        
+        [Column("taxablesubtotal")]
+        public decimal TaxableSubtotal { get; set; }
+
+        [Column("taxpercent")]
+        public decimal TaxPercent { get; set; }
+
+        [Column("taxamount")]
+        public decimal TaxAmount { get; set; }
+
+        [Column("terms")]
+        public string Terms { get; set; }
+        
+        [Column("duedate")]
+        public string? DueDate { get; set; }
 
         [Column("tenantid")]
         public Guid? TenantId { get; set; }

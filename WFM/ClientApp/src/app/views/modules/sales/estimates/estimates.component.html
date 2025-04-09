@@ -3,17 +3,17 @@
   <div class="d-flex gap-2 mb-2 align-items-end">
     <app-dropdown-menu
     [label]="'Status'"
-    [items]="status"
+    [items]="statusDropdown"
     [defaultValue]="'all'"
     placeholder="All transactions"
     [allowFiltering]="false"
-    (itemSelected)="onDropdownSelection($event)"
+    (itemSelected)="onDropdownSelectionStatus($event)"
   >
   </app-dropdown-menu>
     <app-dropdown-menu
       [label]="'Date'"
       [items]="dateRanges"
-      [defaultValue]="'last_12_months'"
+      [defaultValue]="'all'"
       placeholder="All transactions"
       [allowFiltering]="false"
       (itemSelected)="onDropdownSelection($event)"
@@ -39,7 +39,7 @@
 
   <app-data-table
     [columns]="columnFields"
-    [data]="invoiceData"
+    [data]="estimates"
     [updateRowId]="updateRowId"
     [showCheckbox]="true"
     [globalSearch]="true"

@@ -27,6 +27,9 @@
           <div *ngIf="field.type === 'checkbox'" class="form-check mb-3">
             <input class="form-check-input" type="checkbox" [formControlName]="field.key" id="{{ field.key }}" />
             <label class="form-check-label" for="{{ field.key }}">{{ field.label }}</label>
+            <div *ngIf="formGroup.get(field.key)?.invalid && formGroup.get(field.key)?.touched" class="text-danger">
+              <div *ngIf="formGroup.get(field.key)?.hasError('required')">This field is required.</div>
+            </div>
           </div>
 
           <!-- Conditionally Render Fields Based on Checkbox -->
@@ -36,18 +39,35 @@
             <div *ngIf="field.type === 'text' || field.type === 'number'" class="mb-3">
               <label class="form-label">{{ field.label }}</label>
               <input [type]="field.type" class="form-control" [formControlName]="field.key" />
+              <div *ngIf="formGroup.get(field.key)?.invalid && formGroup.get(field.key)?.touched" class="text-danger">
+                <div *ngIf="formGroup.get(field.key)?.hasError('required')">This field is required.</div>
+                <div *ngIf="formGroup.get(field.key)?.hasError('minlength')">Must be at least 3 characters long.</div>
+                <div *ngIf="formGroup.get(field.key)?.hasError('pattern')">Invalid format.</div>
+              </div>
+  
             </div>
 
             <!-- date -->
             <div *ngIf="field.type == 'date'"  class="mb-3">
               <label class="form-label">{{ field.label }}</label>
               <input [type]="field.type" class="form-control" [formControlName]="field.key" />
+              <div *ngIf="formGroup.get(field.key)?.invalid && formGroup.get(field.key)?.touched" class="text-danger">
+                <div *ngIf="formGroup.get(field.key)?.hasError('required')">This field is required.</div>
+                <div *ngIf="formGroup.get(field.key)?.hasError('minlength')">Must be at least 3 characters long.</div>
+                <div *ngIf="formGroup.get(field.key)?.hasError('pattern')">Invalid format.</div>
+              </div>
+  
             </div>
 
             <!-- Textarea -->
             <div *ngIf="field.type === 'textarea'" class="mb-3">
               <label class="form-label">{{ field.label }}</label>
               <textarea class="form-control" [formControlName]="field.key"></textarea>
+              <div *ngIf="formGroup.get(field.key)?.invalid && formGroup.get(field.key)?.touched" class="text-danger">
+                <div *ngIf="formGroup.get(field.key)?.hasError('required')">This field is required.</div>
+                <div *ngIf="formGroup.get(field.key)?.hasError('minlength')">Minimum length is 10 characters.</div>
+              </div>
+            
             </div>
 
             <!-- Select Dropdown -->
@@ -56,6 +76,9 @@
               <select class="form-select" [formControlName]="field.key">
                 <option *ngFor="let option of field.options" [value]="option">{{ option }}</option>
               </select>
+              <div *ngIf="formGroup.get(field.key)?.invalid && formGroup.get(field.key)?.touched" class="text-danger">
+                <div *ngIf="formGroup.get(field.key)?.hasError('required')">This field is required.</div>
+              </div>
             </div>
 
           </div>

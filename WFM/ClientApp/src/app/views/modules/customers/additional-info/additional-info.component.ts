@@ -19,7 +19,12 @@ export class AdditionalInfoComponent implements OnInit {
   ];
   constructor(private fb: FormBuilder) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.formGroup.get('taxExemptCheckbox')?.valueChanges.subscribe((isChecked) => {
+      console.log(isChecked,'isChecked');
+      
+    })
+  }
   resetForm() {
     this.additionalInfoForm.reset({
       customerType: '',

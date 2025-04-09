@@ -25,6 +25,20 @@ namespace DAL.Repositories
         IJobTitleRepository _jobTitle;
         ICustomerRepository _customer;
         IProductAndServiceRepository _productServicesRepository;
+        IGeneralLedgerHeaderRepository _generalLedgerHeaderRepository;
+        IGeneralLedgerLineRepository _generalLedgerLineRepository;
+        IGeneralLedgerSettingRepository _generalLedgerSettingRepository;
+        ISalesInvoiceHeaderRepository _salesInvoiceHeaderRepository;
+        ISalesInvoiceLineRepository _salesInvoiceLineRepository;
+        ISalesOrderHeaderRepository _salesOrderHeaderRepository;
+        ISalesOrderLineRepository _salesOrderLineRepository;
+        ISalesQuoteHeaderRepository _salesQuoteHeaderRepository;
+        ISalesQuoteLineRepository _salesQuoteLineRepository;
+        ISalesReceiptHeaderRepository _salesReceiptHeaderRepository;
+        ISalesReceiptLineRepository _salesReceiptLineRepository;
+        ITaxRepository _taxRepository;
+        ITaxGroupRepository _taxGroupRepository;
+        IPaymentTermRepository _paymentTermRepository;
 
         public UnitOfWork(ApplicationDbContext context)
         {
@@ -85,7 +99,7 @@ namespace DAL.Repositories
                 return _contact;
             }
         }
-       
+
         public IDashboardRepository Dashboard
         {
             get
@@ -105,7 +119,7 @@ namespace DAL.Repositories
                 return _VendorRepository;
             }
         }
-                 
+
 
         public IMasterUserRepository MasterUsers
         {
@@ -161,6 +175,132 @@ namespace DAL.Repositories
             {
                 _productServicesRepository ??= new ProductAndServiceRepository(_context);
                 return _productServicesRepository;
+            }
+        }
+
+        public IGeneralLedgerHeaderRepository GeneralLedgerHeaderRepository
+        {
+            get
+            {
+                _generalLedgerHeaderRepository ??= new GeneralLedgerHeaderRepository(_context);
+                return _generalLedgerHeaderRepository;
+            }
+        }
+
+        public IGeneralLedgerLineRepository GeneralLedgerLineRepository
+        {
+            get
+            {
+                _generalLedgerLineRepository ??= new GeneralLedgerLineRepository(_context);
+                return _generalLedgerLineRepository;
+            }
+        }
+
+        public IGeneralLedgerSettingRepository GeneralLedgerSettingRepository
+        {
+            get
+            {
+                _generalLedgerSettingRepository ??= new GeneralLedgerSettingRepository(_context);
+                return _generalLedgerSettingRepository;
+            }
+        }
+
+        public ISalesInvoiceHeaderRepository SalesInvoiceHeaderRepository
+        {
+            get
+            {
+                _salesInvoiceHeaderRepository ??= new SalesInvoiceHeaderRepository(_context);
+                return _salesInvoiceHeaderRepository;
+            }
+        }
+
+        public ISalesInvoiceLineRepository SalesInvoiceLineRepository
+        {
+            get
+            {
+                _salesInvoiceLineRepository ??= new SalesInvoiceLineRepository(_context);
+                return _salesInvoiceLineRepository;
+            }
+        }
+
+        public ISalesOrderHeaderRepository SalesOrderHeaderRepository
+        {
+            get
+            {
+                _salesOrderHeaderRepository ??= new SalesOrderHeaderRepository(_context);
+                return _salesOrderHeaderRepository;
+            }
+        }
+
+        public ISalesOrderLineRepository SalesOrderLineRepository
+        {
+            get
+            {
+                _salesOrderLineRepository ??= new SalesOrderLineRepository(_context);
+                return _salesOrderLineRepository;
+            }
+        }
+
+        public ISalesQuoteHeaderRepository SalesQuoteHeaderRepository
+        {
+            get
+            {
+                _salesQuoteHeaderRepository ??= new SalesQuoteHeaderRepository(_context);
+                return _salesQuoteHeaderRepository;
+            }
+        }
+
+        public ISalesQuoteLineRepository SalesQuoteLineRepository
+        {
+            get
+            {
+                _salesQuoteLineRepository ??= new SalesQuoteLineRepository(_context);
+                return _salesQuoteLineRepository;
+            }
+        }
+
+        public ISalesReceiptHeaderRepository SalesReceiptHeaderRepository
+        {
+            get
+            {
+                _salesReceiptHeaderRepository ??= new SalesReceiptHeaderRepository(_context);
+                return _salesReceiptHeaderRepository;
+            }
+        }
+
+        public ISalesReceiptLineRepository SalesReceiptLineRepository
+        {
+            get
+            {
+                _salesReceiptLineRepository ??= new SalesReceiptLineRepository(_context);
+                return _salesReceiptLineRepository;
+            }
+        }
+
+        public ITaxRepository TaxRepository
+        {
+            get
+            {
+                _taxRepository ??= new TaxRepository(_context);
+                return _taxRepository;
+            }
+        }
+
+        public ITaxGroupRepository TaxGroupGroupRepository
+        {
+            get
+            {
+                _taxGroupRepository ??= new TaxGroupRepository(_context);
+                return _taxGroupRepository;
+            }
+        }
+
+        public IPaymentTermRepository PaymentTermRepository
+        {
+            get
+            {
+                _paymentTermRepository ??= new PaymentTermRepository(_context);
+                return _paymentTermRepository;
             }
         }
 

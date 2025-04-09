@@ -19,7 +19,16 @@ export class CustomersService {
           name: `${customer.firstName} ${customer.lastName}`,
           email: customer.email,
           unbilledCharges: customer.unbilledCharges,
-          phoneNumber: customer.phoneNumber || 'N/A'
+          phoneNumber: customer.phoneNumber || 'N/A',
+          billingAddressFirstName:customer.billingAddressFirstName,
+          billingAddressLastName:customer.billingAddressLastName,
+          billingAddressLine1:customer.billingAddressLine1,
+          billingAddressLine2:customer.billingAddressLine2,
+          billingAddressCity:customer.billingAddressCity,
+          billingAddressState:customer.billingAddressState,
+          billingAddressCountry:customer.billingAddressCountry,
+          firstName:customer.firstName
+
         }))
       )
     );

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { stackedData ,variespiedata} from './datasource';
+import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-overview',
   templateUrl: './overview.component.html',
@@ -47,18 +48,18 @@ export class OverviewComponent implements OnInit {
     { label: "Send an invoice and let your customers pay you online", completed: false, action: "Start" }
   ];
   actions = [
-    { label: "Customer", icon: "fa-user" },
-    { label: "Product or service", icon: "fa-box" },
-    { label: "Estimate", icon: "fa-file-invoice-dollar" },
-    { label: "Invoice", icon: "fa-file-alt" },
-    { label: "Recurring invoice", icon: "fa-sync-alt" },
-    { label: "Receive payment", icon: "fa-hand-holding-usd" },
-    { label: "Sales receipt", icon: "fa-receipt" },
-    { label: "Bank deposit", icon: "fa-university" },
-    { label: "Payment links", icon: "fa-link" },
-    { label: "Take payment", icon: "fa-credit-card" },
-    { label: "Create statement", icon: "fa-file-contract" },
-    { label: "Create recurring payment", icon: "fa-redo" }
+    { label: "Customer", icon: "fa-user" ,routerLink:'/admin/customer/customer-list'},
+    { label: "Product or service", icon: "fa-box" ,routerLink:'/admin/products'},
+    { label: "Estimate", icon: "fa-file-invoice-dollar" ,routerLink:'/admin/sales/estimates'},
+    { label: "Invoice", icon: "fa-file-alt" ,routerLink:'/admin/sales/invoices'},
+    { label: "Recurring invoice", icon: "fa-sync-alt",routerLink:'' },
+    { label: "Receive payment", icon: "fa-hand-holding-usd" ,routerLink:''},
+    { label: "Sales receipt", icon: "fa-receipt" ,routerLink:''},
+    { label: "Bank deposit", icon: "fa-university",routerLink:'' },
+    { label: "Payment links", icon: "fa-link" ,routerLink:'/admin/sales/paymentlinks'},
+    { label: "Take payment", icon: "fa-credit-card" ,routerLink:''},
+    { label: "Create statement", icon: "fa-file-contract" ,routerLink:''},
+    { label: "Create recurring payment", icon: "fa-redo" ,routerLink:'/recurringpayment/new'}
   ];
 
   // invoices
@@ -100,7 +101,7 @@ export class OverviewComponent implements OnInit {
     { week: 'Week 3', income: 0 },
     { week: 'Week 4', income: 0 }
   ];
-  
+
   public primaryXAxis: Object = { valueType: 'Category' };
   public primaryYAxis: Object = { labelFormat: '${value}' };
 

@@ -30,6 +30,8 @@ export class CustomerListComponent implements OnInit {
   loadCustomers() {
     this.customersService.getCustomers().subscribe({
       next: (response) => {
+        console.log('hio');
+
         this.invoiceData=response
       },
       error: (error) => {
@@ -60,6 +62,9 @@ export class CustomerListComponent implements OnInit {
   ];
   onSelect(args: any) {
     console.log('Selected Item:', args.item.text);
+    if(args.item.text=='Import customers'){
+      this.router.navigate(['/admin/sales/importdata'])
+    }
   }
 
   editSettings:EditSettingsModel = { allowEditing: false, allowAdding: false, allowDeleting: false, mode: 'Normal' };

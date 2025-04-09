@@ -12,9 +12,9 @@ namespace DAL.Models
         [Column("id")]
         public Guid Id { get; set; } = Guid.NewGuid();
 
-        [Required]
-        [Column("date")]
-        public DateTime Date { get; set; }
+        //[Required]
+        //[Column("date")]
+        //public DateTime Date { get; set; }
 
         [Required]
         [Column("documenttype")]

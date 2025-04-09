@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Diagnostics.Metrics;
 
 namespace DAL.Models
 {
@@ -21,19 +16,22 @@ namespace DAL.Models
         public Guid? SalesOrderHeaderId { get; set; }
 
         [Column("itemid")]
-        public Guid? ItemId { get; set; }
+        public Guid ItemId { get; set; }
 
         [Column("measurementid")]
         public Guid? MeasurementId { get; set; }
 
         [Column("quantity", TypeName = "numeric(18,2)")]
-        public decimal? Quantity { get; set; }
+        public int Quantity { get; set; }
 
         [Column("discount", TypeName = "numeric(18,2)")]
         public decimal? Discount { get; set; }
 
+        [Column("tax")]
+        public bool Tax { get; set; }
+
         [Column("amount", TypeName = "numeric(18,2)")]
-        public decimal? Amount { get; set; }
+        public decimal Amount { get; set; }
 
         [Column("tenantid")]
         public Guid? TenantId { get; set; }

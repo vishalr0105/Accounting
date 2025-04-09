@@ -7,6 +7,8 @@ import { SalesOrdersComponent } from './sales-orders/sales-orders.component';
 import { RecurringSalesComponent } from './recurring-sales/recurring-sales.component';
 import { InvoicesComponent } from './invoices/invoices.component';
 import { CreateProductFormComponent } from './create-product-form/create-product-form.component';
+import { PaymentLinksComponent } from './payment-links/payment-links.component';
+import { ImportCustomersComponent } from './import-customers/import-customers.component';
 
 const routes: Routes = [
   {
@@ -22,6 +24,10 @@ const routes: Routes = [
     component:InvoicesComponent
   },
   {
+    path:'importdata',
+    component:ImportCustomersComponent
+  },
+  {
     path:'estimates',
     component:EstimatesComponent
   },
@@ -34,8 +40,8 @@ const routes: Routes = [
     component:RecurringSalesComponent
   },
   {
-    path:'test',
-    component:CreateProductFormComponent
+    path:'paymentlinks',
+    component:PaymentLinksComponent
   },
 ];
 

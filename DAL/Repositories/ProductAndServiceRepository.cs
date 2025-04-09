@@ -50,7 +50,7 @@ namespace DAL.Repositories
         {
             try
             {
-                var res = await _appContext.productservice.ToListAsync();
+                var res = await _appContext.productservice.Where(i => i.IsActive == true).ToListAsync();
                 return res;
             }
             catch (Exception ex)
@@ -61,25 +61,44 @@ namespace DAL.Repositories
 
         public async Task<ProductAndService> GetProductServiceById(Guid id)
         {
-            var res = await _appContext.productservice.FindAsync(id);
+            var res = await _appContext.productservice.Where(i => i.IsActive == true && i.Id == id).FirstOrDefaultAsync();
             return res;
         }
 
-        public Task<bool> InActiveProductAndService(Guid id)
+        public async Task<bool> InActiveProductAndService(Guid id)
         {
-            throw new NotImplementedException();
+            var item = await _appContext.productservice.FindAsync(id);
+
+            if (item == null)
+            {
+                return false;
+            }
+
+            item.IsActive = false;
+            await _appContext.SaveChangesAsync();
+
+            return true;
         }
 
         public async Task<List<ProductAndService>> SearchProductAndService(string searchterm)
         {
-            var res = await _appContext.productservice.Where(c => c.Name.ToLower().Contains(searchterm))
-                                                .ToListAsync();
+            var res = await _appContext.productservice.Where(c => c.Name.ToLower().Contains(searchterm)).ToListAsync();
             return res;
         }
 
-        public Task<bool> UpdateProductAndService(ProductAndService item)
+        public async Task<bool> UpdateProductAndService(ProductAndService item)
         {
-            throw new NotImplementedException();
+            var existingitem = await _appContext.productservice.FindAsync(item.Id);
+
+            if (existingitem == null)
+            {
+                return false;
+            }
+
+            _appContext.Entry(existingitem).CurrentValues.SetValues(item);
+            await _appContext.SaveChangesAsync();
+
+            return true;
         }
     }
 }

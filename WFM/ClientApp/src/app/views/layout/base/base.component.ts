@@ -46,10 +46,10 @@ export class BaseComponent implements OnInit {
   ngOnInit(): void {
     this.chatservice.objMsg = new SignalRMsgVm();
     this.createChatForm();
-    this.teammembers$ = this.teammemberservice.getALLTeamMember();
-    this.teammembers$.subscribe(res => {
-      this.teammembers = res;
-    })
+    // this.teammembers$ = this.teammemberservice.getALLTeamMember();
+    // this.teammembers$.subscribe(res => {
+    //   this.teammembers = res;
+    // })
     this.handleChatMessages();
   }
   showhideChatwindow() {
@@ -104,7 +104,7 @@ export class BaseComponent implements OnInit {
     })
   }
   handleChatMessages() {
-    this.chatservice.objMsg.sendByUserId = this.authservice.currentUser.id;
+    this.chatservice.objMsg.sendByUserId = this.authservice?.currentUser?.id;
     this.mysocketid = sessionStorage.getItem('SocketId');
     this.chatservice.objMsg.senderSocketId = this.mysocketid;
 

@@ -16,8 +16,13 @@ import { CreateProductFormComponent } from './create-product-form/create-product
 import { EditPageComponent } from './edit-page/edit-page.component';
 import { EmailViewComponent } from './email-view/email-view.component';
 import { HttpClientModule } from '@angular/common/http';
+import { PaymentLinksComponent } from './payment-links/payment-links.component';
+import { SalesOrderNewComponent } from './sales-order-new/sales-order-new.component';
+import { RecurringPaymentNewComponent } from './recurring-payment-new/recurring-payment-new.component';
+import { ImportCustomersComponent } from './import-customers/import-customers.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 // import { DropDownButtonModule } from '@syncfusion/ej2-angular-splitbuttons';
-
+// import { IgxGridModule } from 'igniteui-angular';
 @NgModule({
   declarations: [
     OverviewComponent,
@@ -28,7 +33,11 @@ import { HttpClientModule } from '@angular/common/http';
     RecurringSalesComponent,
     CreateProductFormComponent,
     EditPageComponent,
-    EmailViewComponent
+    EmailViewComponent,
+    PaymentLinksComponent,
+    SalesOrderNewComponent,
+    RecurringPaymentNewComponent,
+    ImportCustomersComponent
   ],
   imports: [
     CommonModule,
@@ -37,6 +46,9 @@ import { HttpClientModule } from '@angular/common/http';
     FormsModule,
     SharedSyncfusionModule,
     HttpClientModule,
+    NgbModule,
+    // AgGridModule.withComponents([]),
+    // IgxGridModule,
     // GridModule ,
     // DropDownButtonModule,
     ...SYNCFUSION_MODULES

@@ -1,0 +1,15 @@
+.step {
+  padding: 10px 20px;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.step.active {
+  background-color: #28a745;
+  color: white;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}

@@ -61,19 +61,24 @@ namespace DAL.Models
         public Guid TenantId { get; set; }
 
         [Column("initialqty")]
-        public string InitialQty { get; set; } // Initial quantity (text is mapped as string)
+        public string InitialQty { get; set; }
 
         [Column("inventoryasofdate")]
-        public string InventoryAsOfDate { get; set; } // Inventory as of date (text is mapped as string)
+        public string InventoryAsOfDate { get; set; }
 
         [Column("reorderpoints")]
-        public string ReorderPoints { get; set; } // Reorder points (text is mapped as string)
+        public string ReorderPoints { get; set; }
 
         [Column("inventoryassetaccount")]
-        public string InventoryAssetAccount { get; set; } // Inventory asset account
+        public string InventoryAssetAccount { get; set; }
+
         [Column("isseller")]
-        public bool IsSeller { get; set; } // Inventory asset account
+        public bool IsSeller { get; set; }
+
         [Column("ispurchaser")]
-        public bool IsPurchaser { get; set; } // Inventory asset account
+        public bool IsPurchaser { get; set; }
+
+        [Column("isactive")]
+        public bool IsActive { get; set; }
     }
 }
