@@ -8,8 +8,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using WFM;
 using Microsoft.Extensions.Options;
-using DAL.Repositories;
-using iTextSharp.text;
 
 namespace Accounting.Controllers
 {

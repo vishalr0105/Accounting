@@ -5,6 +5,7 @@ import { EstimatesService } from '../salesServices/estimates.service';
 import { SalesOrderService } from '../salesServices/sales-order.service';
 import { Router } from '@angular/router';
 import { catchError, concatMap, map, of, shareReplay, switchMap } from 'rxjs';
+import { DataFetchService } from 'src/app/gloable-services/data-fetch.service';
 
 @Component({
   selector: 'app-sales-orders',
@@ -21,88 +22,30 @@ export class SalesOrdersComponent implements OnInit {
   status: any = 'all';
   date: any = 'all';
   statusDropdown:any=[]
-  constructor(private salesOrderService:SalesOrderService,private router:Router) { }
+  constructor(private salesOrderService:SalesOrderService,private router:Router,private dataFetchService: DataFetchService) { }
 
   ngOnInit(): void {
     this.loadStatusDropdownValues()
     this.fetchSalesOrderData()
   }
 
-   fetchSalesOrderData(): void {
+  fetchSalesOrderData(): void {
+    this.salesOrders = [];
+    this.filteredData = [];
 
-        this.salesOrders =[];
-        this.filteredData = [];
-        // Prevent API call if the same page was already requested
-        // if (this.currentPage === this.currentPageRequested) {
-        //   console.log(`Page ${this.currentPage} already requested`);
-        //   return; // Skip the API call if it's the same page
-        // }
-
-        // Mark the current page as requested
-        this.currentPageRequested = this.currentPage;
-
-        // First, get the total count of sales orders
-        this.salesOrderService
-          .getSalesOrderCount(
-            this.status,
-            this.date,
-          )
-          .pipe(
-            switchMap((countResponse: any) => {
-              // Assuming response contains the total count like { totalcount: 500 }
-              this.totalCount = countResponse.totalcount;
-
-              const totalPages = Math.ceil(this.totalCount / this.chunkSize);
-              console.log('Total Pages:', totalPages);
-
-              // Create an observable for all the pages that we need to fetch
-              const pageRequests = Array.from(
-                { length: totalPages },
-                (_, pageIndex) => {
-                  return this.salesOrderService
-                    .getSalesOrders(
-                      this.chunkSize,
-                      pageIndex + 1,
-                      this.status,
-                      this.date,
-                    )
-                    .pipe(
-                      catchError((err) => {
-                        console.error('Error fetching page', pageIndex + 1, err);
-                        return of([]); // Return an empty array in case of error
-                      })
-                    );
-                }
-              );
-
-              // Use concatMap to handle all page requests sequentially (so the requests don't overload the server)
-              return of(...pageRequests); // Spread the pageRequests into an observable
-            }),
-            concatMap((request) => request), // Ensure the requests happen one after the other
-            map((pageData: any[]) => {
-              // Accumulate the sales data from each chunk
-              this.salesOrders = [...this.salesOrders, ...pageData];
-              this.filteredData = [...this.salesOrders];
-
-            }),
-            catchError((err) => {
-              console.error('Error occurred during fetching sales data', err);
-              return of([]); // Return an empty array in case of any error
-            })
-          )
-          .pipe(
-            // Cache the result for reuse and avoid multiple calls for the same data
-            shareReplay(1)
-          )
-          .subscribe({
-            next: () => {
-              console.log('Sales data loaded successfully');
-            },
-            error: (err) => {
-              console.error('Error in subscription', err);
-            },
-          });
-      }
+    // Use the global data fetch service to fetch data in chunks
+    this.dataFetchService
+      .fetchData(
+        () => this.salesOrderService.getSalesOrderCount(this.status, this.date), // get total count
+        (chunkSize, page) => this.salesOrderService.getSalesOrders(chunkSize, page, this.status, this.date), // get paginated data
+        this.chunkSize
+      )
+      .subscribe((data) => {
+        this.salesOrders = [...this.salesOrders, ...data];
+        this.filteredData = [...this.salesOrders];
+        console.log('Sales orders loaded successfully');
+      });
+  }
 
       loadStatusDropdownValues(){
         this.salesOrderService.getSalesOrderStaus().subscribe({

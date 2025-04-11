@@ -13,6 +13,7 @@ import {
 import { AllSalesService } from '../salesServices/all-sales.service';
 import { catchError, concatMap, map, of, shareReplay, switchMap } from 'rxjs';
 import { CustomersService } from '../../customers/service/customers.service';
+import { DataFetchService } from 'src/app/gloable-services/data-fetch.service';
 
 @Component({
   selector: 'app-all-sales',
@@ -46,7 +47,8 @@ export class AllSalesComponent implements OnInit {
     private http: HttpClient,
     private router: Router,
     private allSalesService: AllSalesService,
-    private customersService: CustomersService
+    private customersService: CustomersService,
+    private dataFetchService:DataFetchService
   ) {
     console.log('totalCount', this.totalCount);
   }
@@ -56,80 +58,19 @@ export class AllSalesComponent implements OnInit {
     this.fetchSalesData();
   }
   fetchSalesData(): void {
-    this.salesData =[];
+    this.salesData = [];
     this.filteredData = [];
-    // Prevent API call if the same page was already requested
-    // if (this.currentPage === this.currentPageRequested) {
-    //   console.log(`Page ${this.currentPage} already requested`);
-    //   return; // Skip the API call if it's the same page
-    // }
 
-    // Mark the current page as requested
-    this.currentPageRequested = this.currentPage;
-
-    // First, get the total count of sales orders
-    this.allSalesService
-      .getAllSalesOrdersCount(
-        this.type,
-        this.date,
-        this.customer
+    this.dataFetchService
+      .fetchData(
+        () => this.allSalesService.getAllSalesOrdersCount(this.type, this.date, this.customer),
+        (chunkSize, page) => this.allSalesService.getAllSalesOrders(chunkSize, page, this.type, this.date, this.customer),
+        this.chunkSize
       )
-      .pipe(
-        switchMap((countResponse: any) => {
-          // Assuming response contains the total count like { totalcount: 500 }
-          this.totalCount = countResponse.totalcount;
-
-          const totalPages = Math.ceil(this.totalCount / this.chunkSize);
-          console.log('Total Pages:', totalPages);
-
-          // Create an observable for all the pages that we need to fetch
-          const pageRequests = Array.from(
-            { length: totalPages },
-            (_, pageIndex) => {
-              return this.allSalesService
-                .getAllSalesOrders(
-                  this.chunkSize,
-                  pageIndex + 1,
-                  this.type,
-                  this.date,
-                  this.customer
-                )
-                .pipe(
-                  catchError((err) => {
-                    console.error('Error fetching page', pageIndex + 1, err);
-                    return of([]); // Return an empty array in case of error
-                  })
-                );
-            }
-          );
-
-          // Use concatMap to handle all page requests sequentially (so the requests don't overload the server)
-          return of(...pageRequests); // Spread the pageRequests into an observable
-        }),
-        concatMap((request) => request), // Ensure the requests happen one after the other
-        map((pageData: any[]) => {
-          // Accumulate the sales data from each chunk
-          this.salesData = [...this.salesData, ...pageData];
-          this.filteredData = [...this.salesData];
-          console.log('Unique types:', [...new Set(this.salesData.map(res => res.type))]);
-
-        }),
-        catchError((err) => {
-          console.error('Error occurred during fetching sales data', err);
-          return of([]); // Return an empty array in case of any error
-        })
-      )
-      .pipe(
-        // Cache the result for reuse and avoid multiple calls for the same data
-        shareReplay(1)
-      )
-      .subscribe({
-        next: () => {
-          console.log('Sales data loaded successfully');
-        },
-        error: (err) => {
-          console.error('Error in subscription', err);
-        },
+      .subscribe((data) => {
+        this.salesData = [...this.salesData, ...data];
+        this.filteredData = [...this.salesData];
+        console.log('Unique types:', [...new Set(this.salesData.map((res) => res.type))]);
       });
   }
   loadCustomerDropdownValues(){

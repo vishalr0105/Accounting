@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CustomerService } from '../salesServices/customer.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-import-customers',
@@ -9,7 +11,9 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 export class ImportCustomersComponent implements OnInit {
   fileError: boolean = false;
   uploadbtn:boolean=true
-  constructor(private modalService: NgbModal) {}
+  file: File | null = null;
+
+  constructor(private modalService: NgbModal,private customerService:CustomerService,private router :Router) {}
 
   ngOnInit(): void {
 
@@ -34,9 +38,9 @@ export class ImportCustomersComponent implements OnInit {
 
    // Handle file input change event
    onFileChange(event: any): void {
-    debugger
-    const file = event.target.files[0];
 
+    const file = event.target.files[0];
+    this.file=file
     // Allowed file extensions
     const allowedExtensions = ['.csv', '.xlsx', '.xls'];
 
@@ -52,6 +56,25 @@ export class ImportCustomersComponent implements OnInit {
         this.fileError = true; // Show error if the file is invalid
       }
     }
+  }
+
+  Upload(modal:any){
+
+    console.log(this.file,'this.file');
+    const formData = new FormData();
+    formData.append('file', this.file, this.file.name);
+
+    this.customerService.uploadExcelFile(formData).subscribe({
+      next:(res)=>{
+        console.log(res);
+        modal.close()
+        this.router.navigate(['/admin/customer/customer-list'])
+      },
+      error:(err)=>{
+        console.log('err',err);
+
+      }
+    })
   }
 
 }

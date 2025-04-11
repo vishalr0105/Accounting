@@ -3,11 +3,13 @@ using DAL;
 using DAL.DTOS;
 using DAL.Models;
 using DAL.Repositories.Interfaces;
-using iTextSharp.text;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using NPOI.SS.UserModel;
+using NPOI.XSSF.UserModel;
 using WFM;
 
 namespace Accounting.Controllers
@@ -25,8 +27,9 @@ namespace Accounting.Controllers
         private readonly SignInManager<MasterUser> _signInManager;
         private readonly IAuthorizationService _authorizationService;
         private readonly IConfiguration _config;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public CustomerController(ApplicationDbContext context, IMapper mapper, IAuthorizationService authorizationService,
+        public CustomerController(ApplicationDbContext context, IMapper mapper, IWebHostEnvironment webHostEnvironment, IAuthorizationService authorizationService,
             ILogger<CustomerController> logger, IUnitOfWork unitOfWork, IConfiguration config, UserManager<MasterUser> userManager,
             SignInManager<MasterUser> signInManager, IOptions<AppSettings> appSettings, RoleManager<ApplicationRole> roleManager)
         {
@@ -39,6 +42,7 @@ namespace Accounting.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
+            _webHostEnvironment = webHostEnvironment;
         }
 
 
@@ -318,6 +322,135 @@ namespace Accounting.Controllers
                 _logger.LogDebug("CustomerController: InActiveCustomer Error.");
                 return Ok(new { ErrorMessage = ex.Message ?? ex.InnerException.Message });
             }
+        }
+
+
+        [HttpPost]
+        [Route("csvimport")]
+        public async Task<IActionResult> ImportCustomersCsv(IFormFile file)
+        {
+            _logger.LogInformation($"Called csvimport API.");
+
+            try
+            {
+                if (file == null || file.Length == 0)
+                {
+                    return BadRequest("No file uploaded.");
+                }
+                return Ok(new { isSuccess = true, message = $"Customers imported from csv file successfully." });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogDebug("CustomerController: ImportCustomersCsv Error.");
+                return Ok(new { ErrorMessage = ex.Message ?? ex.InnerException.Message });
+            }
+        }
+
+
+        [HttpPost]
+        [Route("excelimport")]
+        public async Task<IActionResult> ImportCustomersExcel([FromForm] IFormFile file)
+        {
+            _logger.LogInformation($"Called excelimport API.");
+
+            try
+            {
+                if (file == null || file.Length == 0)
+                {
+                    return BadRequest(new { isSuccess = false, message = "No file uploaded." });
+                }
+
+                string fileExtension = Path.GetExtension(file.FileName).ToLower();
+                if (fileExtension != ".xlsx" && fileExtension != ".xls")
+                {
+                    return BadRequest(new { isSuccess = false, message = "Please upload a valid Excel file (.xls or .xlsx)." });
+                }
+
+                var tempFilePath = Path.Combine(Path.GetTempPath(), Path.GetFileName(file.FileName));
+
+                using (var fileStream = new FileStream(tempFilePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(fileStream);
+                }
+                var customers = ImportCustomers(tempFilePath);
+                if (System.IO.File.Exists(tempFilePath))
+                {
+                    System.IO.File.Delete(tempFilePath);
+                }
+
+                foreach (var item in customers)
+                {
+                    await _unitOfWork.CustomerRepository.CreateCustomer(item);
+                }
+                return Ok(new { isSuccess = true, message = $"Customers imported from excel file successfully." });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogDebug("CustomerController: ImportCustomersExcel Error.");
+                return StatusCode(500, new { isSuccess = false, message = "An error occurred while processing the file.", details = ex.Message });
+            }
+        }
+
+
+        [NonAction]
+        public List<Customer> ImportCustomers(string filePath)
+        {
+            var customers = new List<Customer>();
+
+            try
+            {
+                using (var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+                {
+                    XSSFWorkbook workbook = new XSSFWorkbook(fileStream);
+                    if (workbook.NumberOfSheets == 0)
+                    {
+                        throw new ArgumentException("The Excel file does not contain any sheets.");
+                    }
+
+                    ISheet sheet = workbook.GetSheetAt(0); // Assuming the first sheet contains customer data
+
+                    for (int rowIndex = 1; rowIndex <= sheet.LastRowNum; rowIndex++) // Skip header row
+                    {
+                        IRow row = sheet.GetRow(rowIndex);
+
+                        // Map the data from the row to the Customer model
+                        var customer = new Customer
+                        {
+                            //No = row.GetCell(0)?.ToString(),
+                            //Title = row.GetCell(1)?.ToString(),
+                            FirstName = row.GetCell(0)?.ToString(),
+                            //MiddleName = row.GetCell(3)?.ToString(),
+                            ObjectType = row.GetCell(3)?.ToString(),
+                            //LastName = row.GetCell(4)?.ToString(),
+                            Email = row.GetCell(4)?.ToString(),
+                            PhoneNumber = row.GetCell(5)?.ToString(),
+                            BillingAddressLine1 = row.GetCell(9)?.ToString(),
+                            BillingAddressCity = row.GetCell(10)?.ToString(),
+                            BillingAddressState = row.GetCell(11)?.ToString(),
+                            BillingAddressZipCode = row.GetCell(12)?.ToString(),
+                            BillingAddressCountry = row.GetCell(13)?.ToString(),
+                            OpeningBalance = row.GetCell(14)?.ToString(),
+                            CreatedAt = DateTime.Now.ToString(),
+                            Id = Guid.NewGuid(),
+                            CreatedBy = "user"
+                            
+                            //AutoCollection = row.GetCell(6)?.ToString(),
+                            //NetTermDays = row.GetCell(7)?.ToString(),
+                            //AllowDirectDebit = row.GetCell(8)?.ToString() == "Yes", // Example condition
+                        };
+
+                        customers.Add(customer);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log error if the file can't be processed or an exception occurs
+                _logger.LogError($"Error processing Excel file: {ex.Message}", ex);
+                throw new Exception("Error processing the Excel file.", ex); // Propagate the error for further handling
+            }
+
+            return customers;
         }
     }
 }

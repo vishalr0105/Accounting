@@ -4,6 +4,7 @@ import { MenuEventArgs, MenuItemModel } from '@syncfusion/ej2-angular-navigation
 import { InvoicesService } from '../salesServices/invoices.service';
 import { Router } from '@angular/router';
 import { catchError, concatMap, map, of, shareReplay, switchMap } from 'rxjs';
+import { DataFetchService } from 'src/app/gloable-services/data-fetch.service';
 
 @Component({
   selector: 'app-invoices',
@@ -20,7 +21,7 @@ export class InvoicesComponent implements OnInit {
   status: any = 'all';
   date: any = 'all';
   statusDropdown:any=[]
-  constructor(private invoiceService:InvoicesService,private router:Router) { }
+  constructor(private invoiceService:InvoicesService,private router:Router,private dataFetchService: DataFetchService) { }
 
   ngOnInit(): void {
     this.loadStatusDropdownValues()
@@ -41,81 +42,22 @@ export class InvoicesComponent implements OnInit {
       }
     })
   }
-   fetchInvoiceData(): void {
 
-      this.invoiceData =[];
-      this.filteredData = [];
-      // Prevent API call if the same page was already requested
-      // if (this.currentPage === this.currentPageRequested) {
-      //   console.log(`Page ${this.currentPage} already requested`);
-      //   return; // Skip the API call if it's the same page
-      // }
+  fetchInvoiceData(): void {
+    this.invoiceData = [];
+    this.filteredData = [];
 
-      // Mark the current page as requested
-      this.currentPageRequested = this.currentPage;
-
-      // First, get the total count of sales orders
-      this.invoiceService
-        .getInvoiceCount(
-          this.status,
-          this.date,
-        )
-        .pipe(
-          switchMap((countResponse: any) => {
-            // Assuming response contains the total count like { totalcount: 500 }
-            this.totalCount = countResponse.totalcount;
-
-            const totalPages = Math.ceil(this.totalCount / this.chunkSize);
-            console.log('Total Pages:', totalPages);
-
-            // Create an observable for all the pages that we need to fetch
-            const pageRequests = Array.from(
-              { length: totalPages },
-              (_, pageIndex) => {
-                return this.invoiceService
-                  .getInvoices(
-                    this.chunkSize,
-                    pageIndex + 1,
-                    this.status,
-                    this.date,
-                  )
-                  .pipe(
-                    catchError((err) => {
-                      console.error('Error fetching page', pageIndex + 1, err);
-                      return of([]); // Return an empty array in case of error
-                    })
-                  );
-              }
-            );
-
-            // Use concatMap to handle all page requests sequentially (so the requests don't overload the server)
-            return of(...pageRequests); // Spread the pageRequests into an observable
-          }),
-          concatMap((request) => request), // Ensure the requests happen one after the other
-          map((pageData: any[]) => {
-            // Accumulate the sales data from each chunk
-            this.invoiceData = [...this.invoiceData, ...pageData];
-            this.filteredData = [...this.invoiceData];
-
-          }),
-          catchError((err) => {
-            console.error('Error occurred during fetching sales data', err);
-            return of([]); // Return an empty array in case of any error
-          })
-        )
-        .pipe(
-          // Cache the result for reuse and avoid multiple calls for the same data
-          shareReplay(1)
-        )
-        .subscribe({
-          next: () => {
-            console.log('Sales data loaded successfully');
-          },
-          error: (err) => {
-            console.error('Error in subscription', err);
-          },
-        });
-    }
+    this.dataFetchService
+      .fetchData(
+        () => this.invoiceService.getInvoiceCount(this.status, this.date),
+        (chunkSize, page) => this.invoiceService.getInvoices(chunkSize, page, this.status, this.date),
+        this.chunkSize
+      )
+      .subscribe((data) => {
+        this.invoiceData = [...this.invoiceData, ...data];
+        this.filteredData = [...this.invoiceData];
+      });
+  }
 
   segments = [
     { label: 'Overdue', displayTxt: 'Overdue', count: '$11.04', color: 'blue' },

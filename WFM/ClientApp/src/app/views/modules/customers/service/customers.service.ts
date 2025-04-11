@@ -12,7 +12,7 @@ export class CustomersService {
   constructor(private globalService: GlobalApiService) {}
 
   getCustomers(): Observable<any> {
-    return this.globalService.request('GET', `${this.baseEndpoint}/getcustomers`).pipe(
+    return this.globalService.request('GET', `${this.baseEndpoint}/getcustomers?pageSize=100&currentPage=1`).pipe(
       map((customers: any[]) =>
         customers.map(customer => ({
           id: customer.id,

@@ -30,9 +30,16 @@ namespace DAL.Repositories
 
         public async Task<Customer> CreateCustomer(Customer cust)
         {
-            var res = await _appContext.customer.AddAsync(cust);
-            await _appContext.SaveChangesAsync();
-            return res.Entity;
+            try
+            {
+                var res = await _appContext.customer.AddAsync(cust);
+                await _appContext.SaveChangesAsync();
+                return res.Entity;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         public async Task<bool> UpdateCustomer(Customer cust)
@@ -111,7 +118,25 @@ namespace DAL.Repositories
                                     FirstName = c.FirstName,
                                     MiddleName = c.MiddleName,
                                     LastName = c.LastName,
-                                    Email = c.Email
+                                    Email = c.Email,
+                                    BillingAddressCity=c.BillingAddressCity,
+                                    BillingAddressCountry=c.BillingAddressCountry,
+                                    BillingAddressFirstName=c.BillingAddressFirstName,
+                                    BillingAddressLastName = c.BillingAddressLastName,
+                                    BillingAddressLine1 = c.BillingAddressLine1,
+                                    BillingAddressLine2 = c.BillingAddressLine2,
+                                    BillingAddressState = c.BillingAddressState,
+                                    BillingAddressStateCode = c.BillingAddressStateCode,
+                                    BillingAddressZipCode = c.BillingAddressZipCode,
+                                    ShippingAddressCity = c.ShippingAddressCity,
+                                    ShippingAddressCountry = c.ShippingAddressCountry,
+                                    ShippingAddressFirstName = c.ShippingAddressFirstName,
+                                    ShippingAddressLastName = c.ShippingAddressLastName,
+                                    ShippingAddressLine1 = c.ShippingAddressLine1,
+                                    ShippingAddressLine2 = c.ShippingAddressLine2,
+                                    ShippingAddressState = c.ShippingAddressState,
+                                    ShippingAddressStateCode = c.ShippingAddressStateCode,
+                                    ShippingAddressZipCode = c.ShippingAddressZipCode
                                 }).ToListAsync();
             return res;
         }

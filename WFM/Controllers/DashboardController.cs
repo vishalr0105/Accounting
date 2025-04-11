@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
 using DAL;
-using DAL.Models;
 using DAL.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using WFM.Helpers;
 using WFM.ViewModels.Dtos;
 
 namespace WFM.Controllers

@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using WFM;
 using Microsoft.Extensions.Options;
-using static DAL.Models.ProductServiceCreateReq;
 
 namespace Accounting.Controllers
 {

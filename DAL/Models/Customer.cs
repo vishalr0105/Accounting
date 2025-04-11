@@ -214,5 +214,23 @@ namespace DAL.Models
         public string? MiddleName { get; set; }
         public string? LastName { get; set; }
         public string? Email { get; set; }
+        public string? BillingAddressFirstName { get; set; }
+        public string? BillingAddressLastName { get; set; }
+        public string? BillingAddressLine1 { get; set; }
+        public string? BillingAddressLine2 { get; set; }
+        public string? BillingAddressCity { get; set; }
+        public string? BillingAddressStateCode { get; set; }
+        public string? BillingAddressZipCode { get; set; }
+        public string? BillingAddressState { get; set; }
+        public string? BillingAddressCountry { get; set; }
+        public string? ShippingAddressFirstName { get; set; }
+        public string? ShippingAddressLastName { get; set; }
+        public string? ShippingAddressLine1 { get; set; }
+        public string? ShippingAddressLine2 { get; set; }
+        public string? ShippingAddressCity { get; set; }
+        public string? ShippingAddressStateCode { get; set; }
+        public string? ShippingAddressState { get; set; }
+        public string? ShippingAddressCountry { get; set; }
+        public string? ShippingAddressZipCode { get; set; }
     }
 }

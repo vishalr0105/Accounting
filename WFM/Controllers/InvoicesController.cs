@@ -4,7 +4,7 @@ using DAL;
 using DAL.Models;
 using DAL.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using System;
+using System.Globalization;
 using WFM.Helpers;
 using Utilities = WFM.Helpers.Utilities;
 
@@ -40,13 +40,13 @@ namespace WFM.Controllers
 
         [HttpGet]
         [Route("gettotalcount")]
-        public async Task<IActionResult> GetTotalCount( [FromQuery] string status = "all", [FromQuery] string date = "all")
+        public async Task<IActionResult> GetTotalCount([FromQuery] string status = "all", [FromQuery] string date = "all")
         {
             _logger.LogInformation($"Called gettotalcount API.");
             try
             {
                 var count = await _unitofwork.SalesInvoiceHeaderRepository.GetSalesInvoiceCountAsync(status, date);
-                return Ok(new { totalcount = count });
+                return Ok(new { totalcount = 500 });
             }
             catch (Exception ex)
             {
@@ -87,6 +87,23 @@ namespace WFM.Controllers
                 }
 
                 return Ok(list.Skip((currentPage - 1) * pageSize).Take(pageSize).ToList());
+
+
+                //var allInvoices = GenerateSampleInvoices();
+                //var filteredInvoices = allInvoices.AsQueryable();
+
+                //if (status != "all")
+                //{
+                //    filteredInvoices = filteredInvoices.Where(i => i.Status.Equals(status, StringComparison.OrdinalIgnoreCase));
+                //}
+                ////if (date != "all")
+                ////{
+                ////    var targetDate = DateTime.ParseExact(date, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+                ////    filteredInvoices = filteredInvoices.Where(i => DateTime.Parse().Date == targetDate.Date);
+                ////}
+                //var totalCount = filteredInvoices.Count();
+                //var pagedInvoices = filteredInvoices.Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
+                //return Ok(pagedInvoices);
             }
             catch (Exception ex)
             {
@@ -95,6 +112,36 @@ namespace WFM.Controllers
             }
         }
 
+        private List<InvoiceListItem> GenerateSampleInvoices()
+        {
+            var random = new Random();
+            var customers = new[] { "Bob", "Alice", "Charlie", "David", "Eve", "Frank", "Grace", "Henry", "Ivy", "Jack" };
+            var statuses = new[] { "PendingApproval", "Approved", "Rejected", "Paid", "Cancelled" };
+
+            var invoices = new List<InvoiceListItem>();
+            var startDate = new DateTime(2025, 1, 1);
+            var endDate = new DateTime(2025, 12, 31);
+            var dateRange = (endDate - startDate).Days;
+
+            for (int i = 0; i < 500; i++)
+            {
+                var randomDays = random.Next(dateRange);
+                var randomTime = TimeSpan.FromSeconds(random.Next(86400));
+                var randomDate = startDate.AddDays(randomDays).Add(randomTime);
+
+                invoices.Add(new InvoiceListItem
+                {
+                    Id = Guid.NewGuid(),
+                    Date = DateTime.Now,
+                    No = (i + 1).ToString("D3"),
+                    Customer = customers[random.Next(customers.Length)],
+                    Amount = (decimal)Math.Round(random.NextDouble() * 1000, 2),
+                    Status = statuses[random.Next(statuses.Length)]
+                });
+            }
+
+            return invoices;
+        }
 
         [HttpGet]
         [Route("statuslist")]
@@ -130,7 +177,7 @@ namespace WFM.Controllers
                     Id = customer.Id,
                     Email = customer.Email,
                     Name = $"{customer.FirstName} {customer.LastName}",
-                    PhoneNumber = "902837487" ,
+                    PhoneNumber = "902837487",
                     UnbilledCharges = 0.00M
 
                 };
@@ -215,7 +262,7 @@ namespace WFM.Controllers
                     TaxAmount = model.SalesTax,
                     TaxPercent = model.SelectedTaxRate * 100,
                     TaxableSubtotal = model.TaxableSubtotal,
-                    DueDate=model.DueDate.ToString(),
+                    DueDate = model.DueDate.ToString(),
                     No = no,
                     CreatedBy = currentUser,
                     Status = 1,
